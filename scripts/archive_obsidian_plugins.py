@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Archive Obsidian plugin sources and installed builds.
 
-This script is designed to live in the standalone Obsidian-Plugin repo.
+This script is designed to live in the standalone Obsidian-Plugins repo.
 It reads a vault, builds an inventory of installed plugins, resolves source
 repositories from submodules/BRAT/community registry, stores real source code
 as git bundles, and snapshots installed plugin build artifacts.

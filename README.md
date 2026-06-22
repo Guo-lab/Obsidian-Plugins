@@ -12,7 +12,7 @@ Goals:
 ## Structure
 
 ```text
-Obsidian-Plugin/
+Obsidian-Plugins/
   plugins.yaml                 # generated inventory: installed plugins, repo URLs, enabled state, archive status
   bundles/                     # tracked git bundle archives; these contain real source history
   snapshots/                   # tracked installed plugin build snapshots from vaults
