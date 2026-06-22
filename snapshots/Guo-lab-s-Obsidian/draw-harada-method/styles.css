@@ -1,0 +1,183 @@
+/*
+  Harada Method — theme system
+  ─────────────────────────────────────────────────────────────────────────────
+  HOW TO USE:
+    Add "@theme: <name>" as the first line of any harada code block.
+    Available themes: default · technical · engineering · physical
+                      intellectual · network · stability · skills · creative
+
+  HOW TO ADD A NEW THEME:
+    Add a new "table.harada.harada-theme-<name>" block below with the 6 vars.
+
+  EXAMPLE:
+    ```harada
+    @theme: physical
+    💪 My Physical Goals
+      💪 Key Plan 1
+        ...
+    ```
+  ─────────────────────────────────────────────────────────────────────────────
+*/
+
+/* ═══════════════════════════════════════════════════════
+   BASE LAYOUT  (shared by all themes)
+   ═══════════════════════════════════════════════════════ */
+
+table.harada {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 12px 0;
+
+    /* ── Default theme (blue) — overridden per theme below ── */
+    --h-border:    #2c4a7c;
+    --h-inner:     #c8d4e8;
+    --h-goal-bg:   #1e3a6e;
+    --h-goal-text: #ffd166;
+    --h-plan-bg:   #bacfee;
+    --h-plan-text: #12275a;
+    --h-act-bg:    #f0f5ff;
+    --h-act-text:  #2d3f5e;
+}
+
+table.harada td.cell {
+    width: 11%;
+    height: 72px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 4px 3px;
+    word-break: break-word;
+    white-space: normal;
+    overflow: hidden;
+    line-height: 1.35;
+    font-size: 10px;
+    border: 1px solid var(--h-inner);
+}
+
+table.harada td.left   { border-left:   2.5px solid var(--h-border); }
+table.harada td.right  { border-right:  2.5px solid var(--h-border); }
+table.harada td.top    { border-top:    2.5px solid var(--h-border); }
+table.harada td.bottom { border-bottom: 2.5px solid var(--h-border); }
+
+table.harada td.action {
+    background-color: var(--h-act-bg);
+    color: var(--h-act-text);
+    font-size: 10px;
+}
+
+table.harada td.keyplan {
+    background-color: var(--h-plan-bg);
+    color: var(--h-plan-text);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+table.harada td.goal {
+    background-color: var(--h-goal-bg);
+    color: var(--h-goal-text);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   THEMES  — each overrides 6 CSS variables
+   ═══════════════════════════════════════════════════════ */
+
+/* 🔵 default / technical  — deep navy + gold */
+table.harada.harada-theme-default,
+table.harada.harada-theme-technical {
+    --h-border:    #2c4a7c;
+    --h-inner:     #c8d4e8;
+    --h-goal-bg:   #1e3a6e;
+    --h-goal-text: #ffd166;
+    --h-plan-bg:   #bacfee;
+    --h-plan-text: #12275a;
+    --h-act-bg:    #f0f5ff;
+    --h-act-text:  #2d3f5e;
+}
+
+/* ⚙️ engineering  — cool slate + silver */
+table.harada.harada-theme-engineering {
+    --h-border:    #334155;
+    --h-inner:     #cbd5e1;
+    --h-goal-bg:   #0f172a;
+    --h-goal-text: #94a3b8;
+    --h-plan-bg:   #cbd5e1;
+    --h-plan-text: #0f172a;
+    --h-act-bg:    #f1f5f9;
+    --h-act-text:  #1e293b;
+}
+
+/* 💪 physical  — burnt orange + warm cream */
+table.harada.harada-theme-physical {
+    --h-border:    #9a3412;
+    --h-inner:     #fed7aa;
+    --h-goal-bg:   #7c2d12;
+    --h-goal-text: #fed7aa;
+    --h-plan-bg:   #ffedd5;
+    --h-plan-text: #7c2d12;
+    --h-act-bg:    #fff7ed;
+    --h-act-text:  #431407;
+}
+
+/* 📚 intellectual  — deep teal + mint */
+table.harada.harada-theme-intellectual {
+    --h-border:    #0f766e;
+    --h-inner:     #99f6e4;
+    --h-goal-bg:   #134e4a;
+    --h-goal-text: #99f6e4;
+    --h-plan-bg:   #ccfbf1;
+    --h-plan-text: #134e4a;
+    --h-act-bg:    #f0fdf4;
+    --h-act-text:  #166534;
+}
+
+/* 🤝 network  — warm amber + honey */
+table.harada.harada-theme-network {
+    --h-border:    #b45309;
+    --h-inner:     #fde68a;
+    --h-goal-bg:   #78350f;
+    --h-goal-text: #fef3c7;
+    --h-plan-bg:   #fef3c7;
+    --h-plan-text: #78350f;
+    --h-act-bg:    #fffbeb;
+    --h-act-text:  #451a03;
+}
+
+/* 🧘 stability  — deep violet + lavender */
+table.harada.harada-theme-stability {
+    --h-border:    #6d28d9;
+    --h-inner:     #ddd6fe;
+    --h-goal-bg:   #3b0764;
+    --h-goal-text: #e9d5ff;
+    --h-plan-bg:   #ede9fe;
+    --h-plan-text: #3b0764;
+    --h-act-bg:    #faf5ff;
+    --h-act-text:  #2e1065;
+}
+
+/* 🎯 skills  — forest green + lime */
+table.harada.harada-theme-skills {
+    --h-border:    #3f6212;
+    --h-inner:     #bef264;
+    --h-goal-bg:   #1a2e05;
+    --h-goal-text: #d9f99d;
+    --h-plan-bg:   #d9f99d;
+    --h-plan-text: #1a2e05;
+    --h-act-bg:    #f7fee7;
+    --h-act-text:  #1a2e05;
+}
+
+/* ✍️ creative  — deep rose + blush */
+table.harada.harada-theme-creative {
+    --h-border:    #9f1239;
+    --h-inner:     #fda4af;
+    --h-goal-bg:   #881337;
+    --h-goal-text: #ffe4e6;
+    --h-plan-bg:   #ffe4e6;
+    --h-plan-text: #881337;
+    --h-act-bg:    #fff1f2;
+    --h-act-text:  #4c0519;
+}

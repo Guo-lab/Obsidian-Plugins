@@ -1,0 +1,10 @@
+# ---- Local archive caches (not committed) ----
+# `mirrors/` contains local `git clone --mirror` caches.
+# They can be regenerated from `bundles/*.bundle` or upstream repos.
+mirrors/
+.verify/
+cache/
+
+# ---- OS / editor noise ----
+.DS_Store
+*.tmp
