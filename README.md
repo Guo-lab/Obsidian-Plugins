@@ -52,15 +52,3 @@ The script will:
 7. Create git bundles in `bundles/` containing full source history.
 8. Snapshot installed plugin build artifacts into `snapshots/<vault-name>/`.
 9. Generate `plugins.yaml` and a dated report in `reports/`.
-
-## When is it safe to remove `plugin-repos` from the vault?
-
-Only after:
-
-- `plugins.yaml` exists.
-- Important plugins have `archive_status: bundled`.
-- Corresponding `bundles/<plugin-id>.bundle` files exist.
-- `reports/latest.md` or dated report shows bundle verification success.
-- Installed build snapshots exist under `snapshots/<vault-name>/`.
-
-After that, the vault's `plugin-repos` submodules become redundant for archival purposes.

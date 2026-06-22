@@ -14,10 +14,6 @@ var __getOwnPropSymbols = Object.getOwnPropertySymbols;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __propIsEnum = Object.prototype.propertyIsEnumerable;
-var __knownSymbol = (name, symbol) => (symbol = Symbol[name]) ? symbol : Symbol.for("Symbol." + name);
-var __typeError = (msg) => {
-  throw TypeError(msg);
-};
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __spreadValues = (a, b) => {
   for (var prop in b || (b = {}))
@@ -70,7 +66,10 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  return value;
+};
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -91,50 +90,6 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-var __await = function(promise, isYieldStar) {
-  this[0] = promise;
-  this[1] = isYieldStar;
-};
-var __asyncGenerator = (__this, __arguments, generator) => {
-  var resume = (k, v, yes, no) => {
-    try {
-      var x = generator[k](v), isAwait = (v = x.value) instanceof __await, done = x.done;
-      Promise.resolve(isAwait ? v[0] : v).then((y) => isAwait ? resume(k === "return" ? k : "next", v[1] ? { done: y.done, value: y.value } : y, yes, no) : yes({ value: y, done })).catch((e) => resume("throw", e, yes, no));
-    } catch (e) {
-      no(e);
-    }
-  }, method = (k) => it[k] = (x) => new Promise((yes, no) => resume(k, x, yes, no)), it = {};
-  return generator = generator.apply(__this, __arguments), it[__knownSymbol("asyncIterator")] = () => it, method("next"), method("throw"), method("return"), it;
-};
-var __yieldStar = (value) => {
-  var obj = value[__knownSymbol("asyncIterator")], isAwait = false, method, it = {};
-  if (obj == null) {
-    obj = value[__knownSymbol("iterator")]();
-    method = (k) => it[k] = (x) => obj[k](x);
-  } else {
-    obj = obj.call(value);
-    method = (k) => it[k] = (v) => {
-      if (isAwait) {
-        isAwait = false;
-        if (k === "throw") throw v;
-        return v;
-      }
-      isAwait = true;
-      return {
-        done: false,
-        value: new __await(new Promise((resolve) => {
-          var x = obj[k](v);
-          if (!(x instanceof Object)) __typeError("Object expected");
-          resolve(x);
-        }), 1)
-      };
-    };
-  }
-  return it[__knownSymbol("iterator")] = () => it, method("next"), "throw" in obj ? method("throw") : it.throw = (x) => {
-    throw x;
-  }, "return" in obj && method("return"), it;
-};
-var __forAwait = (obj, it, method) => (it = obj[__knownSymbol("asyncIterator")]) ? it.call(obj) : (obj = obj[__knownSymbol("iterator")](), it = {}, method = (key, fn2) => (fn2 = obj[key]) && (it[key] = (arg) => new Promise((yes, no, done) => (arg = fn2.call(obj, arg), done = arg.done, Promise.resolve(arg.value).then((value) => yes({ value, done }), no)))), method("next"), method("return"), it);
 
 // node_modules/escape-string-regexp/index.js
 var require_escape_string_regexp = __commonJS({
@@ -1309,16 +1264,16 @@ var require_slugify = __commonJS({
 // node_modules/crypto-js/core.js
 var require_core = __commonJS({
   "node_modules/crypto-js/core.js"(exports, module2) {
-    (function(root, factory2) {
+    (function(root, factory) {
       if (typeof exports === "object") {
-        module2.exports = exports = factory2();
+        module2.exports = exports = factory();
       } else if (typeof define === "function" && define.amd) {
-        define([], factory2);
+        define([], factory);
       } else {
-        root.CryptoJS = factory2();
+        root.CryptoJS = factory();
       }
     })(exports, function() {
-      var CryptoJS = CryptoJS || (function(Math2, undefined2) {
+      var CryptoJS = CryptoJS || function(Math2, undefined2) {
         var crypto2;
         if (typeof window !== "undefined" && window.crypto) {
           crypto2 = window.crypto;
@@ -1358,7 +1313,7 @@ var require_core = __commonJS({
           }
           throw new Error("Native crypto module could not be used to get secure random number.");
         };
-        var create = Object.create || /* @__PURE__ */ (function() {
+        var create = Object.create || function() {
           function F() {
           }
           return function(obj) {
@@ -1368,10 +1323,10 @@ var require_core = __commonJS({
             F.prototype = null;
             return subtype;
           };
-        })();
+        }();
         var C = {};
         var C_lib = C.lib = {};
-        var Base = C_lib.Base = /* @__PURE__ */ (function() {
+        var Base = C_lib.Base = function() {
           return {
             /**
              * Creates a new object that inherits from this object.
@@ -1418,9 +1373,9 @@ var require_core = __commonJS({
              *     var instance = MyType.create();
              */
             create: function() {
-              var instance9 = this.extend();
-              instance9.init.apply(instance9, arguments);
-              return instance9;
+              var instance11 = this.extend();
+              instance11.init.apply(instance11, arguments);
+              return instance11;
             },
             /**
              * Initializes a newly created object.
@@ -1470,7 +1425,7 @@ var require_core = __commonJS({
               return this.init.prototype.extend(this);
             }
           };
-        })();
+        }();
         var WordArray = C_lib.WordArray = Base.extend({
           /**
            * Initializes a newly created word array.
@@ -1561,9 +1516,9 @@ var require_core = __commonJS({
            *     var clone = wordArray.clone();
            */
           clone: function() {
-            var clone3 = Base.clone.call(this);
-            clone3.words = this.words.slice(0);
-            return clone3;
+            var clone4 = Base.clone.call(this);
+            clone4.words = this.words.slice(0);
+            return clone4;
           },
           /**
            * Creates a word array filled with random bytes.
@@ -1795,9 +1750,9 @@ var require_core = __commonJS({
            *     var clone = bufferedBlockAlgorithm.clone();
            */
           clone: function() {
-            var clone3 = Base.clone.call(this);
-            clone3._data = this._data.clone();
-            return clone3;
+            var clone4 = Base.clone.call(this);
+            clone4._data = this._data.clone();
+            return clone4;
           },
           _minBufferSize: 0
         });
@@ -1908,7 +1863,7 @@ var require_core = __commonJS({
         });
         var C_algo = C.algo = {};
         return C;
-      })(Math);
+      }(Math);
       return CryptoJS;
     });
   }
@@ -1917,13 +1872,13 @@ var require_core = __commonJS({
 // node_modules/crypto-js/sha1.js
 var require_sha1 = __commonJS({
   "node_modules/crypto-js/sha1.js"(exports, module2) {
-    (function(root, factory2) {
+    (function(root, factory) {
       if (typeof exports === "object") {
-        module2.exports = exports = factory2(require_core());
+        module2.exports = exports = factory(require_core());
       } else if (typeof define === "function" && define.amd) {
-        define(["./core"], factory2);
+        define(["./core"], factory);
       } else {
-        factory2(root.CryptoJS);
+        factory(root.CryptoJS);
       }
     })(exports, function(CryptoJS) {
       (function() {
@@ -1992,9 +1947,9 @@ var require_sha1 = __commonJS({
             return this._hash;
           },
           clone: function() {
-            var clone3 = Hasher.clone.call(this);
-            clone3._hash = this._hash.clone();
-            return clone3;
+            var clone4 = Hasher.clone.call(this);
+            clone4._hash = this._hash.clone();
+            return clone4;
           }
         });
         C.SHA1 = Hasher._createHelper(SHA1);
@@ -2008,13 +1963,13 @@ var require_sha1 = __commonJS({
 // node_modules/crypto-js/enc-latin1.js
 var require_enc_latin1 = __commonJS({
   "node_modules/crypto-js/enc-latin1.js"(exports, module2) {
-    (function(root, factory2) {
+    (function(root, factory) {
       if (typeof exports === "object") {
-        module2.exports = exports = factory2(require_core());
+        module2.exports = exports = factory(require_core());
       } else if (typeof define === "function" && define.amd) {
-        define(["./core"], factory2);
+        define(["./core"], factory);
       } else {
-        factory2(root.CryptoJS);
+        factory(root.CryptoJS);
       }
     })(exports, function(CryptoJS) {
       return CryptoJS.enc.Latin1;
@@ -2027,11 +1982,11 @@ var require_logger = __commonJS({
   "node_modules/js-logger/src/logger.js"(exports, module2) {
     (function(global2) {
       "use strict";
-      var Logger12 = {};
-      Logger12.VERSION = "1.6.1";
+      var Logger13 = {};
+      Logger13.VERSION = "1.6.1";
       var logHandler;
       var contextualLoggersByNameMap = {};
-      var bind2 = function(scope, func) {
+      var bind3 = function(scope, func) {
         return function() {
           return func.apply(scope, arguments);
         };
@@ -2050,13 +2005,13 @@ var require_logger = __commonJS({
       var defineLogLevel = function(value, name) {
         return { value, name };
       };
-      Logger12.TRACE = defineLogLevel(1, "TRACE");
-      Logger12.DEBUG = defineLogLevel(2, "DEBUG");
-      Logger12.INFO = defineLogLevel(3, "INFO");
-      Logger12.TIME = defineLogLevel(4, "TIME");
-      Logger12.WARN = defineLogLevel(5, "WARN");
-      Logger12.ERROR = defineLogLevel(8, "ERROR");
-      Logger12.OFF = defineLogLevel(99, "OFF");
+      Logger13.TRACE = defineLogLevel(1, "TRACE");
+      Logger13.DEBUG = defineLogLevel(2, "DEBUG");
+      Logger13.INFO = defineLogLevel(3, "INFO");
+      Logger13.TIME = defineLogLevel(4, "TIME");
+      Logger13.WARN = defineLogLevel(5, "WARN");
+      Logger13.ERROR = defineLogLevel(8, "ERROR");
+      Logger13.OFF = defineLogLevel(99, "OFF");
       var ContextualLogger = function(defaultContext) {
         this.context = defaultContext;
         this.setLevel(defaultContext.filterLevel);
@@ -2079,28 +2034,28 @@ var require_logger = __commonJS({
           return lvl.value >= filterLevel.value;
         },
         trace: function() {
-          this.invoke(Logger12.TRACE, arguments);
+          this.invoke(Logger13.TRACE, arguments);
         },
         debug: function() {
-          this.invoke(Logger12.DEBUG, arguments);
+          this.invoke(Logger13.DEBUG, arguments);
         },
         info: function() {
-          this.invoke(Logger12.INFO, arguments);
+          this.invoke(Logger13.INFO, arguments);
         },
         warn: function() {
-          this.invoke(Logger12.WARN, arguments);
+          this.invoke(Logger13.WARN, arguments);
         },
         error: function() {
-          this.invoke(Logger12.ERROR, arguments);
+          this.invoke(Logger13.ERROR, arguments);
         },
         time: function(label) {
           if (typeof label === "string" && label.length > 0) {
-            this.invoke(Logger12.TIME, [label, "start"]);
+            this.invoke(Logger13.TIME, [label, "start"]);
           }
         },
         timeEnd: function(label) {
           if (typeof label === "string" && label.length > 0) {
-            this.invoke(Logger12.TIME, [label, "end"]);
+            this.invoke(Logger13.TIME, [label, "end"]);
           }
         },
         // Invokes the logger callback if it's not being filtered.
@@ -2110,23 +2065,23 @@ var require_logger = __commonJS({
           }
         }
       };
-      var globalLogger = new ContextualLogger({ filterLevel: Logger12.OFF });
+      var globalLogger = new ContextualLogger({ filterLevel: Logger13.OFF });
       (function() {
-        var L = Logger12;
-        L.enabledFor = bind2(globalLogger, globalLogger.enabledFor);
-        L.trace = bind2(globalLogger, globalLogger.trace);
-        L.debug = bind2(globalLogger, globalLogger.debug);
-        L.time = bind2(globalLogger, globalLogger.time);
-        L.timeEnd = bind2(globalLogger, globalLogger.timeEnd);
-        L.info = bind2(globalLogger, globalLogger.info);
-        L.warn = bind2(globalLogger, globalLogger.warn);
-        L.error = bind2(globalLogger, globalLogger.error);
+        var L = Logger13;
+        L.enabledFor = bind3(globalLogger, globalLogger.enabledFor);
+        L.trace = bind3(globalLogger, globalLogger.trace);
+        L.debug = bind3(globalLogger, globalLogger.debug);
+        L.time = bind3(globalLogger, globalLogger.time);
+        L.timeEnd = bind3(globalLogger, globalLogger.timeEnd);
+        L.info = bind3(globalLogger, globalLogger.info);
+        L.warn = bind3(globalLogger, globalLogger.warn);
+        L.error = bind3(globalLogger, globalLogger.error);
         L.log = L.info;
       })();
-      Logger12.setHandler = function(func) {
+      Logger13.setHandler = function(func) {
         logHandler = func;
       };
-      Logger12.setLevel = function(level) {
+      Logger13.setLevel = function(level) {
         globalLogger.setLevel(level);
         for (var key in contextualLoggersByNameMap) {
           if (contextualLoggersByNameMap.hasOwnProperty(key)) {
@@ -2134,13 +2089,13 @@ var require_logger = __commonJS({
           }
         }
       };
-      Logger12.getLevel = function() {
+      Logger13.getLevel = function() {
         return globalLogger.getLevel();
       };
-      Logger12.get = function(name) {
+      Logger13.get = function(name) {
         return contextualLoggersByNameMap[name] || (contextualLoggersByNameMap[name] = new ContextualLogger(merge3({ name }, globalLogger.context)));
       };
-      Logger12.createDefaultHandler = function(options) {
+      Logger13.createDefaultHandler = function(options) {
         options = options || {};
         options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
           if (context.name) {
@@ -2159,7 +2114,7 @@ var require_logger = __commonJS({
           messages = Array.prototype.slice.call(messages);
           var hdlr = console.log;
           var timerLabel;
-          if (context.level === Logger12.TIME) {
+          if (context.level === Logger13.TIME) {
             timerLabel = (context.name ? "[" + context.name + "] " : "") + messages[0];
             if (messages[1] === "start") {
               if (console.time) {
@@ -2175,15 +2130,15 @@ var require_logger = __commonJS({
               }
             }
           } else {
-            if (context.level === Logger12.WARN && console.warn) {
+            if (context.level === Logger13.WARN && console.warn) {
               hdlr = console.warn;
-            } else if (context.level === Logger12.ERROR && console.error) {
+            } else if (context.level === Logger13.ERROR && console.error) {
               hdlr = console.error;
-            } else if (context.level === Logger12.INFO && console.info) {
+            } else if (context.level === Logger13.INFO && console.info) {
               hdlr = console.info;
-            } else if (context.level === Logger12.DEBUG && console.debug) {
+            } else if (context.level === Logger13.DEBUG && console.debug) {
               hdlr = console.debug;
-            } else if (context.level === Logger12.TRACE && console.trace) {
+            } else if (context.level === Logger13.TRACE && console.trace) {
               hdlr = console.trace;
             }
             options.formatter(messages, context);
@@ -2191,22 +2146,22 @@ var require_logger = __commonJS({
           }
         };
       };
-      Logger12.useDefaults = function(options) {
-        Logger12.setLevel(options && options.defaultLevel || Logger12.DEBUG);
-        Logger12.setHandler(Logger12.createDefaultHandler(options));
+      Logger13.useDefaults = function(options) {
+        Logger13.setLevel(options && options.defaultLevel || Logger13.DEBUG);
+        Logger13.setHandler(Logger13.createDefaultHandler(options));
       };
-      Logger12.setDefaults = Logger12.useDefaults;
+      Logger13.setDefaults = Logger13.useDefaults;
       if (typeof define === "function" && define.amd) {
-        define(Logger12);
+        define(Logger13);
       } else if (typeof module2 !== "undefined" && module2.exports) {
-        module2.exports = Logger12;
+        module2.exports = Logger13;
       } else {
-        Logger12._prevLogger = global2.Logger;
-        Logger12.noConflict = function() {
-          global2.Logger = Logger12._prevLogger;
-          return Logger12;
+        Logger13._prevLogger = global2.Logger;
+        Logger13.noConflict = function() {
+          global2.Logger = Logger13._prevLogger;
+          return Logger13;
         };
-        global2.Logger = Logger12;
+        global2.Logger = Logger13;
       }
     })(exports);
   }
@@ -2288,13 +2243,13 @@ var require_remove = __commonJS({
       if (!state.registry[name]) {
         return;
       }
-      var index = state.registry[name].map(function(registered) {
+      var index2 = state.registry[name].map(function(registered) {
         return registered.orig;
       }).indexOf(method);
-      if (index === -1) {
+      if (index2 === -1) {
         return;
       }
-      state.registry[name].splice(index, 1);
+      state.registry[name].splice(index2, 1);
     }
   }
 });
@@ -2305,8 +2260,8 @@ var require_before_after_hook = __commonJS({
     var register = require_register();
     var addHook = require_add();
     var removeHook = require_remove();
-    var bind2 = Function.bind;
-    var bindable = bind2.bind(bind2);
+    var bind3 = Function.bind;
+    var bindable = bind3.bind(bind3);
     function bindApi(hook2, state, name) {
       var removeHookRef = bindable(removeHook, null).apply(
         null,
@@ -2360,7 +2315,8 @@ var require_wrappy = __commonJS({
   "node_modules/wrappy/wrappy.js"(exports, module2) {
     module2.exports = wrappy;
     function wrappy(fn2, cb) {
-      if (fn2 && cb) return wrappy(fn2)(cb);
+      if (fn2 && cb)
+        return wrappy(fn2)(cb);
       if (typeof fn2 !== "function")
         throw new TypeError("need wrapper function");
       Object.keys(fn2).forEach(function(k) {
@@ -2407,7 +2363,8 @@ var require_once = __commonJS({
     });
     function once2(fn2) {
       var f = function() {
-        if (f.called) return f.value;
+        if (f.called)
+          return f.value;
         f.called = true;
         return f.value = fn2.apply(this, arguments);
       };
@@ -2432,7 +2389,7 @@ var require_once = __commonJS({
 // node_modules/lz-string/libs/lz-string.js
 var require_lz_string = __commonJS({
   "node_modules/lz-string/libs/lz-string.js"(exports, module2) {
-    var LZString2 = (function() {
+    var LZString2 = function() {
       var f = String.fromCharCode;
       var keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
       var keyStrUriSafe = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$";
@@ -2448,14 +2405,13 @@ var require_lz_string = __commonJS({
       }
       var LZString3 = {
         compressToBase64: function(input) {
-          if (input == null) return "";
+          if (input == null)
+            return "";
           var res = LZString3._compress(input, 6, function(a) {
             return keyStrBase64.charAt(a);
           });
           switch (res.length % 4) {
-            // To produce valid Base64
             default:
-            // When could this happen ?
             case 0:
               return res;
             case 1:
@@ -2467,23 +2423,28 @@ var require_lz_string = __commonJS({
           }
         },
         decompressFromBase64: function(input) {
-          if (input == null) return "";
-          if (input == "") return null;
-          return LZString3._decompress(input.length, 32, function(index) {
-            return getBaseValue(keyStrBase64, input.charAt(index));
+          if (input == null)
+            return "";
+          if (input == "")
+            return null;
+          return LZString3._decompress(input.length, 32, function(index2) {
+            return getBaseValue(keyStrBase64, input.charAt(index2));
           });
         },
         compressToUTF16: function(input) {
-          if (input == null) return "";
+          if (input == null)
+            return "";
           return LZString3._compress(input, 15, function(a) {
             return f(a + 32);
           }) + " ";
         },
         decompressFromUTF16: function(compressed) {
-          if (compressed == null) return "";
-          if (compressed == "") return null;
-          return LZString3._decompress(compressed.length, 16384, function(index) {
-            return compressed.charCodeAt(index) - 32;
+          if (compressed == null)
+            return "";
+          if (compressed == "")
+            return null;
+          return LZString3._decompress(compressed.length, 16384, function(index2) {
+            return compressed.charCodeAt(index2) - 32;
           });
         },
         //compress into uint8array (UCS-2 big endian format)
@@ -2515,18 +2476,21 @@ var require_lz_string = __commonJS({
         },
         //compress into a string that is already URI encoded
         compressToEncodedURIComponent: function(input) {
-          if (input == null) return "";
+          if (input == null)
+            return "";
           return LZString3._compress(input, 6, function(a) {
             return keyStrUriSafe.charAt(a);
           });
         },
         //decompress from an output of compressToEncodedURIComponent
         decompressFromEncodedURIComponent: function(input) {
-          if (input == null) return "";
-          if (input == "") return null;
+          if (input == null)
+            return "";
+          if (input == "")
+            return null;
           input = input.replace(/ /g, "+");
-          return LZString3._decompress(input.length, 32, function(index) {
-            return getBaseValue(keyStrUriSafe, input.charAt(index));
+          return LZString3._decompress(input.length, 32, function(index2) {
+            return getBaseValue(keyStrUriSafe, input.charAt(index2));
           });
         },
         compress: function(uncompressed) {
@@ -2535,7 +2499,8 @@ var require_lz_string = __commonJS({
           });
         },
         _compress: function(uncompressed, bitsPerChar, getCharFromInt) {
-          if (uncompressed == null) return "";
+          if (uncompressed == null)
+            return "";
           var i, value, context_dictionary = {}, context_dictionaryToCreate = {}, context_c = "", context_wc = "", context_w = "", context_enlargeIn = 2, context_dictSize = 3, context_numBits = 2, context_data = [], context_data_val = 0, context_data_position = 0, ii;
           for (ii = 0; ii < uncompressed.length; ii += 1) {
             context_c = uncompressed.charAt(ii);
@@ -2720,15 +2685,18 @@ var require_lz_string = __commonJS({
             if (context_data_position == bitsPerChar - 1) {
               context_data.push(getCharFromInt(context_data_val));
               break;
-            } else context_data_position++;
+            } else
+              context_data_position++;
           }
           return context_data.join("");
         },
         decompress: function(compressed) {
-          if (compressed == null) return "";
-          if (compressed == "") return null;
-          return LZString3._decompress(compressed.length, 32768, function(index) {
-            return compressed.charCodeAt(index);
+          if (compressed == null)
+            return "";
+          if (compressed == "")
+            return null;
+          return LZString3._decompress(compressed.length, 32768, function(index2) {
+            return compressed.charCodeAt(index2);
           });
         },
         _decompress: function(length, resetValue, getNextValue) {
@@ -2870,7 +2838,7 @@ var require_lz_string = __commonJS({
         }
       };
       return LZString3;
-    })();
+    }();
     if (typeof define === "function" && define.amd) {
       define(function() {
         return LZString2;
@@ -3317,7 +3285,8 @@ var require_lib = __commonJS({
       /** @override **/
       offset(ts) {
         const date = new Date(ts);
-        if (isNaN(date)) return NaN;
+        if (isNaN(date))
+          return NaN;
         const dtf = makeDTF2(this.name);
         let [year, month, day, adOrBc, hour, minute, second] = dtf.formatToParts ? partsOffset2(dtf, date) : hackyOffset2(dtf, date);
         if (adOrBc === "BC") {
@@ -3439,7 +3408,7 @@ var require_lib = __commonJS({
     function mapMonths2(f) {
       const ms = [];
       for (let i = 1; i <= 12; i++) {
-        const dt = DateTime2.utc(2009, i, 1);
+        const dt = DateTime2.utc(2016, i, 1);
         ms.push(f(dt));
       }
       return ms;
@@ -3452,8 +3421,8 @@ var require_lib = __commonJS({
       }
       return ms;
     }
-    function listStuff2(loc, length, englishFn, intlFn) {
-      const mode = loc.listingMode();
+    function listStuff2(loc, length, defaultOK, englishFn, intlFn) {
+      const mode = loc.listingMode(defaultOK);
       if (mode === "error") {
         return null;
       } else if (mode === "en") {
@@ -3476,7 +3445,8 @@ var require_lib = __commonJS({
         const _a2 = opts, { padTo, floor } = _a2, otherOpts = __objRest(_a2, ["padTo", "floor"]);
         if (!forceSimple || Object.keys(otherOpts).length > 0) {
           const intlOpts = __spreadValues({ useGrouping: false }, opts);
-          if (opts.padTo > 0) intlOpts.minimumIntegerDigits = opts.padTo;
+          if (opts.padTo > 0)
+            intlOpts.minimumIntegerDigits = opts.padTo;
           this.inf = getCachedINF2(intl, intlOpts);
         }
       }
@@ -3493,11 +3463,8 @@ var require_lib = __commonJS({
     var PolyDateFormatter2 = class {
       constructor(dt, intl, opts) {
         this.opts = opts;
-        this.originalZone = void 0;
         let z = void 0;
-        if (this.opts.timeZone) {
-          this.dt = dt;
-        } else if (dt.zone.type === "fixed") {
+        if (dt.zone.isUniversal) {
           const gmtOffset = -1 * (dt.offset / 60);
           const offsetZ = gmtOffset >= 0 ? `Etc/GMT+${gmtOffset}` : `Etc/GMT${gmtOffset}`;
           if (dt.offset !== 0 && IANAZone2.create(offsetZ).valid) {
@@ -3505,47 +3472,27 @@ var require_lib = __commonJS({
             this.dt = dt;
           } else {
             z = "UTC";
-            this.dt = dt.offset === 0 ? dt : dt.setZone("UTC").plus({ minutes: dt.offset });
-            this.originalZone = dt.zone;
+            if (opts.timeZoneName) {
+              this.dt = dt;
+            } else {
+              this.dt = dt.offset === 0 ? dt : DateTime2.fromMillis(dt.ts + dt.offset * 60 * 1e3);
+            }
           }
         } else if (dt.zone.type === "system") {
           this.dt = dt;
-        } else if (dt.zone.type === "iana") {
+        } else {
           this.dt = dt;
           z = dt.zone.name;
-        } else {
-          z = "UTC";
-          this.dt = dt.setZone("UTC").plus({ minutes: dt.offset });
-          this.originalZone = dt.zone;
         }
         const intlOpts = __spreadValues({}, this.opts);
         intlOpts.timeZone = intlOpts.timeZone || z;
         this.dtf = getCachedDTF2(intl, intlOpts);
       }
       format() {
-        if (this.originalZone) {
-          return this.formatToParts().map(({ value }) => value).join("");
-        }
         return this.dtf.format(this.dt.toJSDate());
       }
       formatToParts() {
-        const parts = this.dtf.formatToParts(this.dt.toJSDate());
-        if (this.originalZone) {
-          return parts.map((part) => {
-            if (part.type === "timeZoneName") {
-              const offsetName = this.originalZone.offsetName(this.dt.ts, {
-                locale: this.dt.locale,
-                format: this.opts.timeZoneName
-              });
-              return __spreadProps(__spreadValues({}, part), {
-                value: offsetName
-              });
-            } else {
-              return part;
-            }
-          });
-        }
-        return parts;
+        return this.dtf.formatToParts(this.dt.toJSDate());
       }
       resolvedOptions() {
         return this.dtf.resolvedOptions();
@@ -3635,8 +3582,8 @@ var require_lib = __commonJS({
       redefaultToSystem(alts = {}) {
         return this.clone(__spreadProps(__spreadValues({}, alts), { defaultToEN: false }));
       }
-      months(length, format = false) {
-        return listStuff2(this, length, months2, () => {
+      months(length, format = false, defaultOK = true) {
+        return listStuff2(this, length, defaultOK, months2, () => {
           const intl = format ? { month: length, day: "numeric" } : { month: length }, formatStr = format ? "format" : "standalone";
           if (!this.monthsCache[formatStr][length]) {
             this.monthsCache[formatStr][length] = mapMonths2((dt) => this.extract(dt, intl, "month"));
@@ -3644,8 +3591,8 @@ var require_lib = __commonJS({
           return this.monthsCache[formatStr][length];
         });
       }
-      weekdays(length, format = false) {
-        return listStuff2(this, length, weekdays2, () => {
+      weekdays(length, format = false, defaultOK = true) {
+        return listStuff2(this, length, defaultOK, weekdays2, () => {
           const intl = format ? { weekday: length, year: "numeric", month: "long", day: "numeric" } : { weekday: length }, formatStr = format ? "format" : "standalone";
           if (!this.weekdaysCache[formatStr][length]) {
             this.weekdaysCache[formatStr][length] = mapWeekdays2(
@@ -3655,10 +3602,11 @@ var require_lib = __commonJS({
           return this.weekdaysCache[formatStr][length];
         });
       }
-      meridiems() {
+      meridiems(defaultOK = true) {
         return listStuff2(
           this,
           void 0,
+          defaultOK,
           () => meridiems2,
           () => {
             if (!this.meridiemCache) {
@@ -3671,8 +3619,8 @@ var require_lib = __commonJS({
           }
         );
       }
-      eras(length) {
-        return listStuff2(this, length, eras2, () => {
+      eras(length, defaultOK = true) {
+        return listStuff2(this, length, defaultOK, eras2, () => {
           const intl = { era: length };
           if (!this.eraCache[length]) {
             this.eraCache[length] = [DateTime2.utc(-40, 1, 1), DateTime2.utc(2017, 1, 1)].map(
@@ -3831,13 +3779,17 @@ var require_lib = __commonJS({
         return input;
       } else if (isString3(input)) {
         const lowered = input.toLowerCase();
-        if (lowered === "default") return defaultZone3;
-        else if (lowered === "local" || lowered === "system") return SystemZone2.instance;
-        else if (lowered === "utc" || lowered === "gmt") return FixedOffsetZone2.utcInstance;
-        else return FixedOffsetZone2.parseSpecifier(lowered) || IANAZone2.create(input);
+        if (lowered === "default")
+          return defaultZone3;
+        else if (lowered === "local" || lowered === "system")
+          return SystemZone2.instance;
+        else if (lowered === "utc" || lowered === "gmt")
+          return FixedOffsetZone2.utcInstance;
+        else
+          return FixedOffsetZone2.parseSpecifier(lowered) || IANAZone2.create(input);
       } else if (isNumber3(input)) {
         return FixedOffsetZone2.instance(input);
-      } else if (typeof input === "object" && "offset" in input && typeof input.offset === "function") {
+      } else if (typeof input === "object" && input.offset && typeof input.offset === "number") {
         return input;
       } else {
         return new InvalidZone2(input);
@@ -3936,10 +3888,10 @@ var require_lib = __commonJS({
       /**
        * Set the cutoff year after which a string encoding a year as two digits is interpreted to occur in the current century.
        * @type {number}
-       * @example Settings.twoDigitCutoffYear = 0 // cut-off year is 0, so all 'yy' are interpreted as current century
+       * @example Settings.twoDigitCutoffYear = 0 // cut-off year is 0, so all 'yy' are interpretted as current century
        * @example Settings.twoDigitCutoffYear = 50 // '49' -> 1949; '50' -> 2050
-       * @example Settings.twoDigitCutoffYear = 1950 // interpreted as 50
-       * @example Settings.twoDigitCutoffYear = 2050 // ALSO interpreted as 50
+       * @example Settings.twoDigitCutoffYear = 1950 // interpretted as 50
+       * @example Settings.twoDigitCutoffYear = 2050 // ALSO interpretted as 50
        */
       static set twoDigitCutoffYear(cutoffYear) {
         twoDigitCutoffYear2 = cutoffYear % 100;
@@ -4084,7 +4036,7 @@ var require_lib = __commonJS({
       );
       if (obj.year < 100 && obj.year >= 0) {
         d = new Date(d);
-        d.setUTCFullYear(obj.year, obj.month - 1, obj.day);
+        d.setUTCFullYear(d.getUTCFullYear() - 1900);
       }
       return +d;
     }
@@ -4095,7 +4047,8 @@ var require_lib = __commonJS({
     function untruncateYear2(year) {
       if (year > 99) {
         return year;
-      } else return year > Settings2.twoDigitCutoffYear ? 1900 + year : 2e3 + year;
+      } else
+        return year > Settings2.twoDigitCutoffYear ? 1900 + year : 2e3 + year;
     }
     function parseZoneInfo2(ts, offsetFormat, locale, timeZone = null) {
       const date = new Date(ts), intlOpts = {
@@ -4132,7 +4085,8 @@ var require_lib = __commonJS({
       for (const u in obj) {
         if (hasOwnProperty3(obj, u)) {
           const v = obj[u];
-          if (v === void 0 || v === null) continue;
+          if (v === void 0 || v === null)
+            continue;
           normalized[normalizer(u)] = asNumber2(v);
         }
       }
@@ -4322,7 +4276,7 @@ var require_lib = __commonJS({
           const c = fmt.charAt(i);
           if (c === "'") {
             if (currentFull.length > 0) {
-              splits.push({ literal: bracketed || /^\s+$/.test(currentFull), val: currentFull });
+              splits.push({ literal: bracketed, val: currentFull });
             }
             current = null;
             currentFull = "";
@@ -4333,14 +4287,14 @@ var require_lib = __commonJS({
             currentFull += c;
           } else {
             if (currentFull.length > 0) {
-              splits.push({ literal: /^\s+$/.test(currentFull), val: currentFull });
+              splits.push({ literal: false, val: currentFull });
             }
             currentFull = c;
             current = c;
           }
         }
         if (currentFull.length > 0) {
-          splits.push({ literal: bracketed || /^\s+$/.test(currentFull), val: currentFull });
+          splits.push({ literal: bracketed, val: currentFull });
         }
         return splits;
       }
@@ -4359,21 +4313,21 @@ var require_lib = __commonJS({
         const df = this.systemLoc.dtFormatter(dt, __spreadValues(__spreadValues({}, this.opts), opts));
         return df.format();
       }
-      dtFormatter(dt, opts = {}) {
-        return this.loc.dtFormatter(dt, __spreadValues(__spreadValues({}, this.opts), opts));
+      formatDateTime(dt, opts = {}) {
+        const df = this.loc.dtFormatter(dt, __spreadValues(__spreadValues({}, this.opts), opts));
+        return df.format();
       }
-      formatDateTime(dt, opts) {
-        return this.dtFormatter(dt, opts).format();
+      formatDateTimeParts(dt, opts = {}) {
+        const df = this.loc.dtFormatter(dt, __spreadValues(__spreadValues({}, this.opts), opts));
+        return df.formatToParts();
       }
-      formatDateTimeParts(dt, opts) {
-        return this.dtFormatter(dt, opts).formatToParts();
-      }
-      formatInterval(interval, opts) {
-        const df = this.dtFormatter(interval.start, opts);
+      formatInterval(interval, opts = {}) {
+        const df = this.loc.dtFormatter(interval.start, __spreadValues(__spreadValues({}, this.opts), opts));
         return df.dtf.formatRange(interval.start.toJSDate(), interval.end.toJSDate());
       }
-      resolvedOptions(dt, opts) {
-        return this.dtFormatter(dt, opts).resolvedOptions();
+      resolvedOptions(dt, opts = {}) {
+        const df = this.loc.dtFormatter(dt, __spreadValues(__spreadValues({}, this.opts), opts));
+        return df.resolvedOptions();
       }
       num(n3, p = 0) {
         if (this.opts.forceSimple) {
@@ -4403,29 +4357,23 @@ var require_lib = __commonJS({
           }
         }, era = (length) => knownEnglish ? eraForDateTime2(dt, length) : string({ era: length }, "era"), tokenToString = (token) => {
           switch (token) {
-            // ms
             case "S":
               return this.num(dt.millisecond);
             case "u":
-            // falls through
             case "SSS":
               return this.num(dt.millisecond, 3);
-            // seconds
             case "s":
               return this.num(dt.second);
             case "ss":
               return this.num(dt.second, 2);
-            // fractional seconds
             case "uu":
               return this.num(Math.floor(dt.millisecond / 10), 2);
             case "uuu":
               return this.num(Math.floor(dt.millisecond / 100));
-            // minutes
             case "m":
               return this.num(dt.minute);
             case "mm":
               return this.num(dt.minute, 2);
-            // hours
             case "h":
               return this.num(dt.hour % 12 === 0 ? 12 : dt.hour % 12);
             case "hh":
@@ -4434,7 +4382,6 @@ var require_lib = __commonJS({
               return this.num(dt.hour);
             case "HH":
               return this.num(dt.hour, 2);
-            // offset
             case "Z":
               return formatOffset3({ format: "narrow", allowZ: this.opts.allowZ });
             case "ZZ":
@@ -4445,18 +4392,14 @@ var require_lib = __commonJS({
               return dt.zone.offsetName(dt.ts, { format: "short", locale: this.loc.locale });
             case "ZZZZZ":
               return dt.zone.offsetName(dt.ts, { format: "long", locale: this.loc.locale });
-            // zone
             case "z":
               return dt.zoneName;
-            // meridiems
             case "a":
               return meridiem();
-            // dates
             case "d":
               return useDateTimeFormatter ? string({ day: "numeric" }, "day") : this.num(dt.day);
             case "dd":
               return useDateTimeFormatter ? string({ day: "2-digit" }, "day") : this.num(dt.day, 2);
-            // weekdays - standalone
             case "c":
               return this.num(dt.weekday);
             case "ccc":
@@ -4465,7 +4408,6 @@ var require_lib = __commonJS({
               return weekday("long", true);
             case "ccccc":
               return weekday("narrow", true);
-            // weekdays - format
             case "E":
               return this.num(dt.weekday);
             case "EEE":
@@ -4474,7 +4416,6 @@ var require_lib = __commonJS({
               return weekday("long", false);
             case "EEEEE":
               return weekday("narrow", false);
-            // months - standalone
             case "L":
               return useDateTimeFormatter ? string({ month: "numeric", day: "numeric" }, "month") : this.num(dt.month);
             case "LL":
@@ -4485,7 +4426,6 @@ var require_lib = __commonJS({
               return month("long", true);
             case "LLLLL":
               return month("narrow", true);
-            // months - format
             case "M":
               return useDateTimeFormatter ? string({ month: "numeric" }, "month") : this.num(dt.month);
             case "MM":
@@ -4496,7 +4436,6 @@ var require_lib = __commonJS({
               return month("long", false);
             case "MMMMM":
               return month("narrow", false);
-            // years
             case "y":
               return useDateTimeFormatter ? string({ year: "numeric" }, "year") : this.num(dt.year);
             case "yy":
@@ -4505,7 +4444,6 @@ var require_lib = __commonJS({
               return useDateTimeFormatter ? string({ year: "numeric" }, "year") : this.num(dt.year, 4);
             case "yyyyyy":
               return useDateTimeFormatter ? string({ year: "numeric" }, "year") : this.num(dt.year, 6);
-            // eras
             case "G":
               return era("short");
             case "GG":
@@ -4706,7 +4644,8 @@ var require_lib = __commonJS({
         hour: parseInteger2(hourStr),
         minute: parseInteger2(minuteStr)
       };
-      if (secondStr) result.second = parseInteger2(secondStr);
+      if (secondStr)
+        result.second = parseInteger2(secondStr);
       if (weekdayStr) {
         result.weekday = weekdayStr.length > 3 ? weekdaysLong2.indexOf(weekdayStr) + 1 : weekdaysShort2.indexOf(weekdayStr) + 1;
       }
@@ -4920,38 +4859,19 @@ var require_lib = __commonJS({
       };
       return new Duration2(conf);
     }
-    function durationToMillis2(matrix, vals) {
-      var _a2;
-      let sum = (_a2 = vals.milliseconds) != null ? _a2 : 0;
-      for (const unit of reverseUnits2.slice(1)) {
-        if (vals[unit]) {
-          sum += vals[unit] * matrix[unit]["milliseconds"];
-        }
-      }
-      return sum;
+    function antiTrunc(n3) {
+      return n3 < 0 ? Math.floor(n3) : Math.ceil(n3);
     }
-    function normalizeValues2(matrix, vals) {
-      const factor = durationToMillis2(matrix, vals) < 0 ? -1 : 1;
-      orderedUnits$1.reduceRight((previous, current) => {
+    function convert(matrix2, fromMap, fromUnit, toMap, toUnit) {
+      const conv = matrix2[toUnit][fromUnit], raw = fromMap[fromUnit] / conv, sameSign = Math.sign(raw) === Math.sign(toMap[toUnit]), added = !sameSign && toMap[toUnit] !== 0 && Math.abs(raw) <= 1 ? antiTrunc(raw) : Math.trunc(raw);
+      toMap[toUnit] += added;
+      fromMap[fromUnit] -= added * conv;
+    }
+    function normalizeValues2(matrix2, vals) {
+      reverseUnits2.reduce((previous, current) => {
         if (!isUndefined3(vals[current])) {
           if (previous) {
-            const previousVal = vals[previous] * factor;
-            const conv = matrix[current][previous];
-            const rollUp = Math.floor(previousVal / conv);
-            vals[current] += rollUp * factor;
-            vals[previous] -= rollUp * conv * factor;
-          }
-          return current;
-        } else {
-          return previous;
-        }
-      }, null);
-      orderedUnits$1.reduce((previous, current) => {
-        if (!isUndefined3(vals[current])) {
-          if (previous) {
-            const fraction = vals[previous] % 1;
-            vals[previous] -= fraction;
-            vals[current] += fraction * matrix[previous][current];
+            convert(matrix2, vals, previous, vals, current);
           }
           return current;
         } else {
@@ -4974,15 +4894,15 @@ var require_lib = __commonJS({
        */
       constructor(config) {
         const accurate = config.conversionAccuracy === "longterm" || false;
-        let matrix = accurate ? accurateMatrix2 : casualMatrix2;
+        let matrix2 = accurate ? accurateMatrix2 : casualMatrix2;
         if (config.matrix) {
-          matrix = config.matrix;
+          matrix2 = config.matrix;
         }
         this.values = config.values;
         this.loc = config.loc || Locale2.create();
         this.conversionAccuracy = accurate ? "longterm" : "casual";
         this.invalid = config.invalid || null;
-        this.matrix = matrix;
+        this.matrix = matrix2;
         this.isLuxonDuration = true;
       }
       /**
@@ -5140,7 +5060,8 @@ var require_lib = __commonJS({
           millisecond: "milliseconds",
           milliseconds: "milliseconds"
         }[unit ? unit.toLowerCase() : unit];
-        if (!normalized) throw new InvalidUnitError2(unit);
+        if (!normalized)
+          throw new InvalidUnitError2(unit);
         return normalized;
       }
       /**
@@ -5208,7 +5129,6 @@ var require_lib = __commonJS({
        * ```
        */
       toHuman(opts = {}) {
-        if (!this.isValid) return INVALID$2;
         const l3 = orderedUnits$1.map((unit) => {
           const val = this.values[unit];
           if (isUndefined3(val)) {
@@ -5224,7 +5144,8 @@ var require_lib = __commonJS({
        * @return {Object}
        */
       toObject() {
-        if (!this.isValid) return {};
+        if (!this.isValid)
+          return {};
         return __spreadValues({}, this.values);
       }
       /**
@@ -5238,19 +5159,27 @@ var require_lib = __commonJS({
        * @return {string}
        */
       toISO() {
-        if (!this.isValid) return null;
+        if (!this.isValid)
+          return null;
         let s3 = "P";
-        if (this.years !== 0) s3 += this.years + "Y";
-        if (this.months !== 0 || this.quarters !== 0) s3 += this.months + this.quarters * 3 + "M";
-        if (this.weeks !== 0) s3 += this.weeks + "W";
-        if (this.days !== 0) s3 += this.days + "D";
+        if (this.years !== 0)
+          s3 += this.years + "Y";
+        if (this.months !== 0 || this.quarters !== 0)
+          s3 += this.months + this.quarters * 3 + "M";
+        if (this.weeks !== 0)
+          s3 += this.weeks + "W";
+        if (this.days !== 0)
+          s3 += this.days + "D";
         if (this.hours !== 0 || this.minutes !== 0 || this.seconds !== 0 || this.milliseconds !== 0)
           s3 += "T";
-        if (this.hours !== 0) s3 += this.hours + "H";
-        if (this.minutes !== 0) s3 += this.minutes + "M";
+        if (this.hours !== 0)
+          s3 += this.hours + "H";
+        if (this.minutes !== 0)
+          s3 += this.minutes + "M";
         if (this.seconds !== 0 || this.milliseconds !== 0)
           s3 += roundTo2(this.seconds + this.milliseconds / 1e3, 3) + "S";
-        if (s3 === "P") s3 += "T0S";
+        if (s3 === "P")
+          s3 += "T0S";
         return s3;
       }
       /**
@@ -5270,19 +5199,30 @@ var require_lib = __commonJS({
        * @return {string}
        */
       toISOTime(opts = {}) {
-        if (!this.isValid) return null;
+        if (!this.isValid)
+          return null;
         const millis = this.toMillis();
-        if (millis < 0 || millis >= 864e5) return null;
-        opts = __spreadProps(__spreadValues({
+        if (millis < 0 || millis >= 864e5)
+          return null;
+        opts = __spreadValues({
           suppressMilliseconds: false,
           suppressSeconds: false,
           includePrefix: false,
           format: "extended"
-        }, opts), {
-          includeOffset: false
-        });
-        const dateTime = DateTime2.fromMillis(millis, { zone: "UTC" });
-        return dateTime.toISOTime(opts);
+        }, opts);
+        const value = this.shiftTo("hours", "minutes", "seconds", "milliseconds");
+        let fmt = opts.format === "basic" ? "hhmm" : "hh:mm";
+        if (!opts.suppressSeconds || value.seconds !== 0 || value.milliseconds !== 0) {
+          fmt += opts.format === "basic" ? "ss" : ":ss";
+          if (!opts.suppressMilliseconds || value.milliseconds !== 0) {
+            fmt += ".SSS";
+          }
+        }
+        let str = value.toFormat(fmt);
+        if (opts.includePrefix) {
+          str = "T" + str;
+        }
+        return str;
       }
       /**
        * Returns an ISO 8601 representation of this Duration appropriate for use in JSON.
@@ -5303,8 +5243,7 @@ var require_lib = __commonJS({
        * @return {number}
        */
       toMillis() {
-        if (!this.isValid) return NaN;
-        return durationToMillis2(this.matrix, this.values);
+        return this.as("milliseconds");
       }
       /**
        * Returns an milliseconds value of this Duration. Alias of {@link toMillis}
@@ -5319,7 +5258,8 @@ var require_lib = __commonJS({
        * @return {Duration}
        */
       plus(duration) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const dur = _Duration.fromDurationLike(duration), result = {};
         for (const k of orderedUnits$1) {
           if (hasOwnProperty3(dur.values, k) || hasOwnProperty3(this.values, k)) {
@@ -5334,7 +5274,8 @@ var require_lib = __commonJS({
        * @return {Duration}
        */
       minus(duration) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const dur = _Duration.fromDurationLike(duration);
         return this.plus(dur.negate());
       }
@@ -5346,7 +5287,8 @@ var require_lib = __commonJS({
        * @return {Duration}
        */
       mapUnits(fn2) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const result = {};
         for (const k of Object.keys(this.values)) {
           result[k] = asNumber2(fn2(this.values[k], k));
@@ -5372,7 +5314,8 @@ var require_lib = __commonJS({
        * @return {Duration}
        */
       set(values) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const mixed = __spreadValues(__spreadValues({}, this.values), normalizeObject2(values, _Duration.normalizeUnit));
         return clone$1(this, { values: mixed });
       }
@@ -5381,9 +5324,9 @@ var require_lib = __commonJS({
        * @example dur.reconfigure({ locale: 'en-GB' })
        * @return {Duration}
        */
-      reconfigure({ locale, numberingSystem, conversionAccuracy, matrix } = {}) {
+      reconfigure({ locale, numberingSystem, conversionAccuracy, matrix: matrix2 } = {}) {
         const loc = this.loc.clone({ locale, numberingSystem });
-        const opts = { loc, matrix, conversionAccuracy };
+        const opts = { loc, matrix: matrix2, conversionAccuracy };
         return clone$1(this, opts);
       }
       /**
@@ -5399,21 +5342,13 @@ var require_lib = __commonJS({
       }
       /**
        * Reduce this Duration to its canonical representation in its current units.
-       * Assuming the overall value of the Duration is positive, this means:
-       * - excessive values for lower-order units are converted to higher-order units (if possible, see first and second example)
-       * - negative lower-order units are converted to higher order units (there must be such a higher order unit, otherwise
-       *   the overall value would be negative, see second example)
-       * - fractional values for higher-order units are converted to lower-order units (if possible, see fourth example)
-       *
-       * If the overall value is negative, the result of this method is equivalent to `this.negate().normalize().negate()`.
        * @example Duration.fromObject({ years: 2, days: 5000 }).normalize().toObject() //=> { years: 15, days: 255 }
-       * @example Duration.fromObject({ days: 5000 }).normalize().toObject() //=> { days: 5000 }
        * @example Duration.fromObject({ hours: 12, minutes: -45 }).normalize().toObject() //=> { hours: 11, minutes: 15 }
-       * @example Duration.fromObject({ years: 2.5, days: 0, hours: 0 }).normalize().toObject() //=> { years: 2, days: 182, hours: 12 }
        * @return {Duration}
        */
       normalize() {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const vals = this.toObject();
         normalizeValues2(this.matrix, vals);
         return clone$1(this, { values: vals }, true);
@@ -5424,7 +5359,8 @@ var require_lib = __commonJS({
        * @return {Duration}
        */
       rescale() {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const vals = removeZeroes2(this.normalize().shiftToAll().toObject());
         return clone$1(this, { values: vals }, true);
       }
@@ -5434,7 +5370,8 @@ var require_lib = __commonJS({
        * @return {Duration}
        */
       shiftTo(...units) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         if (units.length === 0) {
           return this;
         }
@@ -5455,6 +5392,11 @@ var require_lib = __commonJS({
             const i = Math.trunc(own);
             built[k] = i;
             accumulated[k] = (own * 1e3 - i * 1e3) / 1e3;
+            for (const down in vals) {
+              if (orderedUnits$1.indexOf(down) > orderedUnits$1.indexOf(k)) {
+                convert(this.matrix, vals, down, built, k);
+              }
+            }
           } else if (isNumber3(vals[k])) {
             accumulated[k] = vals[k];
           }
@@ -5464,8 +5406,7 @@ var require_lib = __commonJS({
             built[lastUnit] += key === lastUnit ? accumulated[key] : accumulated[key] / this.matrix[lastUnit][key];
           }
         }
-        normalizeValues2(this.matrix, built);
-        return clone$1(this, { values: built }, true);
+        return clone$1(this, { values: built }, true).normalize();
       }
       /**
        * Shift this Duration to all available units.
@@ -5473,7 +5414,8 @@ var require_lib = __commonJS({
        * @return {Duration}
        */
       shiftToAll() {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         return this.shiftTo(
           "years",
           "months",
@@ -5491,7 +5433,8 @@ var require_lib = __commonJS({
        * @return {Duration}
        */
       negate() {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const negated = {};
         for (const k of Object.keys(this.values)) {
           negated[k] = this.values[k] === 0 ? 0 : -this.values[k];
@@ -5597,7 +5540,8 @@ var require_lib = __commonJS({
           return false;
         }
         function eq(v1, v2) {
-          if (v1 === void 0 || v1 === 0) return v2 === void 0 || v2 === 0;
+          if (v1 === void 0 || v1 === 0)
+            return v2 === void 0 || v2 === 0;
           return v1 === v2;
         }
         for (const u of orderedUnits$1) {
@@ -5789,9 +5733,10 @@ var require_lib = __commonJS({
        * @return {number}
        */
       count(unit = "milliseconds") {
-        if (!this.isValid) return NaN;
+        if (!this.isValid)
+          return NaN;
         const start2 = this.start.startOf(unit), end2 = this.end.startOf(unit);
-        return Math.floor(end2.diff(start2, unit).get(unit)) + (end2.valueOf() !== this.end.valueOf());
+        return Math.floor(end2.diff(start2, unit).get(unit)) + 1;
       }
       /**
        * Returns whether this Interval's start and end are both in the same unit of time
@@ -5814,7 +5759,8 @@ var require_lib = __commonJS({
        * @return {boolean}
        */
       isAfter(dateTime) {
-        if (!this.isValid) return false;
+        if (!this.isValid)
+          return false;
         return this.s > dateTime;
       }
       /**
@@ -5823,7 +5769,8 @@ var require_lib = __commonJS({
        * @return {boolean}
        */
       isBefore(dateTime) {
-        if (!this.isValid) return false;
+        if (!this.isValid)
+          return false;
         return this.e <= dateTime;
       }
       /**
@@ -5832,7 +5779,8 @@ var require_lib = __commonJS({
        * @return {boolean}
        */
       contains(dateTime) {
-        if (!this.isValid) return false;
+        if (!this.isValid)
+          return false;
         return this.s <= dateTime && this.e > dateTime;
       }
       /**
@@ -5843,7 +5791,8 @@ var require_lib = __commonJS({
        * @return {Interval}
        */
       set({ start: start2, end: end2 } = {}) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         return _Interval.fromDateTimes(start2 || this.s, end2 || this.e);
       }
       /**
@@ -5852,7 +5801,8 @@ var require_lib = __commonJS({
        * @return {Array}
        */
       splitAt(...dateTimes) {
-        if (!this.isValid) return [];
+        if (!this.isValid)
+          return [];
         const sorted = dateTimes.map(friendlyDateTime2).filter((d) => this.contains(d)).sort(), results = [];
         let { s: s3 } = this, i = 0;
         while (s3 < this.e) {
@@ -5891,7 +5841,8 @@ var require_lib = __commonJS({
        * @return {Array}
        */
       divideEqually(numberOfParts) {
-        if (!this.isValid) return [];
+        if (!this.isValid)
+          return [];
         return this.splitBy(this.length() / numberOfParts).slice(0, numberOfParts);
       }
       /**
@@ -5908,7 +5859,8 @@ var require_lib = __commonJS({
        * @return {boolean}
        */
       abutsStart(other) {
-        if (!this.isValid) return false;
+        if (!this.isValid)
+          return false;
         return +this.e === +other.s;
       }
       /**
@@ -5917,7 +5869,8 @@ var require_lib = __commonJS({
        * @return {boolean}
        */
       abutsEnd(other) {
-        if (!this.isValid) return false;
+        if (!this.isValid)
+          return false;
         return +other.e === +this.s;
       }
       /**
@@ -5926,7 +5879,8 @@ var require_lib = __commonJS({
        * @return {boolean}
        */
       engulfs(other) {
-        if (!this.isValid) return false;
+        if (!this.isValid)
+          return false;
         return this.s <= other.s && this.e >= other.e;
       }
       /**
@@ -5948,7 +5902,8 @@ var require_lib = __commonJS({
        * @return {Interval}
        */
       intersection(other) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const s3 = this.s > other.s ? this.s : other.s, e = this.e < other.e ? this.e : other.e;
         if (s3 >= e) {
           return null;
@@ -5963,7 +5918,8 @@ var require_lib = __commonJS({
        * @return {Interval}
        */
       union(other) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const s3 = this.s < other.s ? this.s : other.s, e = this.e > other.e ? this.e : other.e;
         return _Interval.fromDateTimes(s3, e);
       }
@@ -6028,7 +5984,8 @@ var require_lib = __commonJS({
        * @return {string}
        */
       toString() {
-        if (!this.isValid) return INVALID$1;
+        if (!this.isValid)
+          return INVALID$1;
         return `[${this.s.toISO()} \u2013 ${this.e.toISO()})`;
       }
       /**
@@ -6059,7 +6016,8 @@ var require_lib = __commonJS({
        * @return {string}
        */
       toISO(opts) {
-        if (!this.isValid) return INVALID$1;
+        if (!this.isValid)
+          return INVALID$1;
         return `${this.s.toISO(opts)}/${this.e.toISO(opts)}`;
       }
       /**
@@ -6069,7 +6027,8 @@ var require_lib = __commonJS({
        * @return {string}
        */
       toISODate() {
-        if (!this.isValid) return INVALID$1;
+        if (!this.isValid)
+          return INVALID$1;
         return `${this.s.toISODate()}/${this.e.toISODate()}`;
       }
       /**
@@ -6080,7 +6039,8 @@ var require_lib = __commonJS({
        * @return {string}
        */
       toISOTime(opts) {
-        if (!this.isValid) return INVALID$1;
+        if (!this.isValid)
+          return INVALID$1;
         return `${this.s.toISOTime(opts)}/${this.e.toISOTime(opts)}`;
       }
       /**
@@ -6095,7 +6055,8 @@ var require_lib = __commonJS({
        * @return {string}
        */
       toFormat(dateFormat, { separator = " \u2013 " } = {}) {
-        if (!this.isValid) return INVALID$1;
+        if (!this.isValid)
+          return INVALID$1;
         return `${this.s.toFormat(dateFormat)}${separator}${this.e.toFormat(dateFormat)}`;
       }
       /**
@@ -6295,11 +6256,6 @@ var require_lib = __commonJS({
           if (highWater > later) {
             results[unit]--;
             cursor = earlier.plus(results);
-            if (cursor > later) {
-              highWater = cursor;
-              results[unit]--;
-              cursor = earlier.plus(results);
-            }
           } else {
             cursor = highWater;
           }
@@ -6436,12 +6392,10 @@ var require_lib = __commonJS({
           return literal(t);
         }
         switch (t.val) {
-          // era
           case "G":
-            return oneOf2(loc.eras("short"), 0);
+            return oneOf2(loc.eras("short", false), 0);
           case "GG":
-            return oneOf2(loc.eras("long"), 0);
-          // years
+            return oneOf2(loc.eras("long", false), 0);
           case "y":
             return intUnit2(oneToSix);
           case "yy":
@@ -6452,34 +6406,30 @@ var require_lib = __commonJS({
             return intUnit2(fourToSix);
           case "yyyyyy":
             return intUnit2(six);
-          // months
           case "M":
             return intUnit2(oneOrTwo);
           case "MM":
             return intUnit2(two);
           case "MMM":
-            return oneOf2(loc.months("short", true), 1);
+            return oneOf2(loc.months("short", true, false), 1);
           case "MMMM":
-            return oneOf2(loc.months("long", true), 1);
+            return oneOf2(loc.months("long", true, false), 1);
           case "L":
             return intUnit2(oneOrTwo);
           case "LL":
             return intUnit2(two);
           case "LLL":
-            return oneOf2(loc.months("short", false), 1);
+            return oneOf2(loc.months("short", false, false), 1);
           case "LLLL":
-            return oneOf2(loc.months("long", false), 1);
-          // dates
+            return oneOf2(loc.months("long", false, false), 1);
           case "d":
             return intUnit2(oneOrTwo);
           case "dd":
             return intUnit2(two);
-          // ordinals
           case "o":
             return intUnit2(oneToThree);
           case "ooo":
             return intUnit2(three);
-          // time
           case "HH":
             return intUnit2(two);
           case "H":
@@ -6510,45 +6460,34 @@ var require_lib = __commonJS({
             return simple2(oneOrTwo);
           case "uuu":
             return intUnit2(one);
-          // meridiem
           case "a":
             return oneOf2(loc.meridiems(), 0);
-          // weekYear (k)
           case "kkkk":
             return intUnit2(four);
           case "kk":
             return intUnit2(twoToFour, untruncateYear2);
-          // weekNumber (W)
           case "W":
             return intUnit2(oneOrTwo);
           case "WW":
             return intUnit2(two);
-          // weekdays
           case "E":
           case "c":
             return intUnit2(one);
           case "EEE":
-            return oneOf2(loc.weekdays("short", false), 1);
+            return oneOf2(loc.weekdays("short", false, false), 1);
           case "EEEE":
-            return oneOf2(loc.weekdays("long", false), 1);
+            return oneOf2(loc.weekdays("long", false, false), 1);
           case "ccc":
-            return oneOf2(loc.weekdays("short", true), 1);
+            return oneOf2(loc.weekdays("short", true, false), 1);
           case "cccc":
-            return oneOf2(loc.weekdays("long", true), 1);
-          // offset/zone
+            return oneOf2(loc.weekdays("long", true, false), 1);
           case "Z":
           case "ZZ":
             return offset3(new RegExp(`([+-]${oneOrTwo.source})(?::(${two.source}))?`), 2);
           case "ZZZ":
             return offset3(new RegExp(`([+-]${oneOrTwo.source})(${two.source})?`), 2);
-          // we don't support ZZZZ (PST) or ZZZZZ (Pacific Standard Time) in parsing
-          // because we don't have any way to figure out what they are
           case "z":
             return simple2(/[a-z_+-/]{1,256}?/i);
-          // this special-case "token" represents a place where a macro-token expanded into a white-space literal
-          // in this case we accept any non-newline white-space
-          case " ":
-            return simple2(/[^\S\n\r]/);
           default:
             return literal(t);
         }
@@ -6580,13 +6519,9 @@ var require_lib = __commonJS({
       },
       dayperiod: "a",
       dayPeriod: "a",
-      hour12: {
+      hour: {
         numeric: "h",
         "2-digit": "hh"
-      },
-      hour24: {
-        numeric: "H",
-        "2-digit": "HH"
       },
       minute: {
         numeric: "m",
@@ -6601,31 +6536,16 @@ var require_lib = __commonJS({
         short: "ZZZ"
       }
     };
-    function tokenForPart2(part, formatOpts, resolvedOpts) {
+    function tokenForPart2(part, formatOpts) {
       const { type, value } = part;
       if (type === "literal") {
-        const isSpace = /^\s+$/.test(value);
         return {
-          literal: !isSpace,
-          val: isSpace ? " " : value
+          literal: true,
+          val: value
         };
       }
       const style = formatOpts[type];
-      let actualType = type;
-      if (type === "hour") {
-        if (formatOpts.hour12 != null) {
-          actualType = formatOpts.hour12 ? "hour12" : "hour24";
-        } else if (formatOpts.hourCycle != null) {
-          if (formatOpts.hourCycle === "h11" || formatOpts.hourCycle === "h12") {
-            actualType = "hour12";
-          } else {
-            actualType = "hour24";
-          }
-        } else {
-          actualType = resolvedOpts.hour12 ? "hour12" : "hour24";
-        }
-      }
-      let val = partTypeStyleToTokenVal2[actualType];
+      let val = partTypeStyleToTokenVal2[type];
       if (typeof val === "object") {
         val = val[style];
       }
@@ -6642,25 +6562,25 @@ var require_lib = __commonJS({
       return [`^${re}$`, units];
     }
     function match2(input, regex, handlers) {
-      const matches = input.match(regex);
-      if (matches) {
+      const matches2 = input.match(regex);
+      if (matches2) {
         const all3 = {};
         let matchIndex = 1;
         for (const i in handlers) {
           if (hasOwnProperty3(handlers, i)) {
             const h = handlers[i], groups = h.groups ? h.groups + 1 : 1;
             if (!h.literal && h.token) {
-              all3[h.token.val[0]] = h.deser(matches.slice(matchIndex, matchIndex + groups));
+              all3[h.token.val[0]] = h.deser(matches2.slice(matchIndex, matchIndex + groups));
             }
             matchIndex += groups;
           }
         }
-        return [matches, all3];
+        return [matches2, all3];
       } else {
-        return [matches, {}];
+        return [matches2, {}];
       }
     }
-    function dateTimeFromMatches2(matches) {
+    function dateTimeFromMatches2(matches2) {
       const toField = (token) => {
         switch (token) {
           case "S":
@@ -6696,35 +6616,35 @@ var require_lib = __commonJS({
       };
       let zone = null;
       let specificOffset;
-      if (!isUndefined3(matches.z)) {
-        zone = IANAZone2.create(matches.z);
+      if (!isUndefined3(matches2.z)) {
+        zone = IANAZone2.create(matches2.z);
       }
-      if (!isUndefined3(matches.Z)) {
+      if (!isUndefined3(matches2.Z)) {
         if (!zone) {
-          zone = new FixedOffsetZone2(matches.Z);
+          zone = new FixedOffsetZone2(matches2.Z);
         }
-        specificOffset = matches.Z;
+        specificOffset = matches2.Z;
       }
-      if (!isUndefined3(matches.q)) {
-        matches.M = (matches.q - 1) * 3 + 1;
+      if (!isUndefined3(matches2.q)) {
+        matches2.M = (matches2.q - 1) * 3 + 1;
       }
-      if (!isUndefined3(matches.h)) {
-        if (matches.h < 12 && matches.a === 1) {
-          matches.h += 12;
-        } else if (matches.h === 12 && matches.a === 0) {
-          matches.h = 0;
+      if (!isUndefined3(matches2.h)) {
+        if (matches2.h < 12 && matches2.a === 1) {
+          matches2.h += 12;
+        } else if (matches2.h === 12 && matches2.a === 0) {
+          matches2.h = 0;
         }
       }
-      if (matches.G === 0 && matches.y) {
-        matches.y = -matches.y;
+      if (matches2.G === 0 && matches2.y) {
+        matches2.y = -matches2.y;
       }
-      if (!isUndefined3(matches.u)) {
-        matches.S = parseMillis2(matches.u);
+      if (!isUndefined3(matches2.u)) {
+        matches2.S = parseMillis2(matches2.u);
       }
-      const vals = Object.keys(matches).reduce((r, k) => {
+      const vals = Object.keys(matches2).reduce((r, k) => {
         const f = toField(k);
         if (f) {
-          r[f] = matches[k];
+          r[f] = matches2[k];
         }
         return r;
       }, {});
@@ -6756,13 +6676,13 @@ var require_lib = __commonJS({
       if (disqualifyingUnit) {
         return { input, tokens, invalidReason: disqualifyingUnit.invalidReason };
       } else {
-        const [regexString, handlers] = buildRegex2(units), regex = RegExp(regexString, "i"), [rawMatches, matches] = match2(input, regex, handlers), [result, zone, specificOffset] = matches ? dateTimeFromMatches2(matches) : [null, null, void 0];
-        if (hasOwnProperty3(matches, "a") && hasOwnProperty3(matches, "H")) {
+        const [regexString, handlers] = buildRegex2(units), regex = RegExp(regexString, "i"), [rawMatches, matches2] = match2(input, regex, handlers), [result, zone, specificOffset] = matches2 ? dateTimeFromMatches2(matches2) : [null, null, void 0];
+        if (hasOwnProperty3(matches2, "a") && hasOwnProperty3(matches2, "H")) {
           throw new ConflictingSpecificationError2(
             "Can't include meridiem when specifying 24-hour format"
           );
         }
-        return { input, tokens, regex, rawMatches, matches, result, zone, specificOffset };
+        return { input, tokens, regex, rawMatches, matches: matches2, result, zone, specificOffset };
       }
     }
     function parseFromTokens2(locale, input, format) {
@@ -6774,10 +6694,8 @@ var require_lib = __commonJS({
         return null;
       }
       const formatter = Formatter2.create(locale, formatOpts);
-      const df = formatter.dtFormatter(getDummyDateTime2());
-      const parts = df.formatToParts();
-      const resolvedOpts = df.resolvedOptions();
-      return parts.map((p) => tokenForPart2(p, formatOpts, resolvedOpts));
+      const parts = formatter.formatDateTimeParts(getDummyDateTime2());
+      return parts.map((p) => tokenForPart2(p, formatOpts));
     }
     var nonLeapLadder2 = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
     var leapLadder2 = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
@@ -6849,7 +6767,8 @@ var require_lib = __commonJS({
         return unitOutOfRange2("week", obj.week);
       } else if (!validWeekday) {
         return unitOutOfRange2("weekday", obj.weekday);
-      } else return false;
+      } else
+        return false;
     }
     function hasInvalidOrdinalData2(obj) {
       const validYear = isInteger2(obj.year), validOrdinal = integerBetween2(obj.ordinal, 1, daysInYear2(obj.year));
@@ -6857,7 +6776,8 @@ var require_lib = __commonJS({
         return unitOutOfRange2("year", obj.year);
       } else if (!validOrdinal) {
         return unitOutOfRange2("ordinal", obj.ordinal);
-      } else return false;
+      } else
+        return false;
     }
     function hasInvalidGregorianData2(obj) {
       const validYear = isInteger2(obj.year), validMonth = integerBetween2(obj.month, 1, 12), validDay = integerBetween2(obj.day, 1, daysInMonth2(obj.year, obj.month));
@@ -6867,7 +6787,8 @@ var require_lib = __commonJS({
         return unitOutOfRange2("month", obj.month);
       } else if (!validDay) {
         return unitOutOfRange2("day", obj.day);
-      } else return false;
+      } else
+        return false;
     }
     function hasInvalidTimeData2(obj) {
       const { hour, minute, second, millisecond } = obj;
@@ -6880,7 +6801,8 @@ var require_lib = __commonJS({
         return unitOutOfRange2("second", second);
       } else if (!validMillisecond) {
         return unitOutOfRange2("millisecond", millisecond);
-      } else return false;
+      } else
+        return false;
     }
     var INVALID4 = "Invalid DateTime";
     var MAX_DATE2 = 864e13;
@@ -6893,7 +6815,7 @@ var require_lib = __commonJS({
       }
       return dt.weekData;
     }
-    function clone3(inst, alts) {
+    function clone4(inst, alts) {
       const current = {
         ts: inst.ts,
         zone: inst.zone,
@@ -6958,7 +6880,7 @@ var require_lib = __commonJS({
     }
     function parseDataToDateTime2(parsed, parsedZone, opts, format, text2, specificOffset) {
       const { setZone, zone } = opts;
-      if (parsed && Object.keys(parsed).length !== 0 || parsedZone) {
+      if (parsed && Object.keys(parsed).length !== 0) {
         const interpretationZone = parsedZone || zone, inst = DateTime2.fromObject(parsed, __spreadProps(__spreadValues({}, opts), {
           zone: interpretationZone,
           specificOffset
@@ -6979,7 +6901,8 @@ var require_lib = __commonJS({
     function toISODate2(o, extended) {
       const longFormat = o.c.year > 9999 || o.c.year < 0;
       let c = "";
-      if (longFormat && o.c.year >= 0) c += "+";
+      if (longFormat && o.c.year >= 0)
+        c += "+";
       c += padStart2(o.c.year, longFormat ? 6 : 4);
       if (extended) {
         c += "-";
@@ -6997,13 +6920,13 @@ var require_lib = __commonJS({
       if (extended) {
         c += ":";
         c += padStart2(o.c.minute);
-        if (o.c.millisecond !== 0 || o.c.second !== 0 || !suppressSeconds) {
+        if (o.c.second !== 0 || !suppressSeconds) {
           c += ":";
         }
       } else {
         c += padStart2(o.c.minute);
       }
-      if (o.c.millisecond !== 0 || o.c.second !== 0 || !suppressSeconds) {
+      if (o.c.second !== 0 || !suppressSeconds) {
         c += padStart2(o.c.second);
         if (o.c.millisecond !== 0 || !suppressMilliseconds) {
           c += ".";
@@ -7091,7 +7014,8 @@ var require_lib = __commonJS({
         weekyears: "weekYear",
         ordinal: "ordinal"
       }[unit.toLowerCase()];
-      if (!normalized) throw new InvalidUnitError2(unit);
+      if (!normalized)
+        throw new InvalidUnitError2(unit);
       return normalized;
     }
     function quickDT2(obj, opts) {
@@ -7123,7 +7047,8 @@ var require_lib = __commonJS({
         if (opts.calendary) {
           if (!end2.hasSame(start2, unit)) {
             return end2.startOf(unit).diff(start2.startOf(unit), unit).get(unit);
-          } else return 0;
+          } else
+            return 0;
         } else {
           return end2.diff(start2, unit).get(unit);
         }
@@ -7514,7 +7439,7 @@ var require_lib = __commonJS({
       }
       /**
        * Create an invalid DateTime.
-       * @param {string} reason - simple string of why this DateTime is invalid. Should not contain parameters or anything else data-dependent.
+       * @param {DateTime} reason - simple string of why this DateTime is invalid. Should not contain parameters or anything else data-dependent
        * @param {string} [explanation=null] - longer explanation, may include parameters and other useful debugging information
        * @return {DateTime}
        */
@@ -7824,36 +7749,6 @@ var require_lib = __commonJS({
         }
       }
       /**
-       * Get those DateTimes which have the same local time as this DateTime, but a different offset from UTC
-       * in this DateTime's zone. During DST changes local time can be ambiguous, for example
-       * `2023-10-29T02:30:00` in `Europe/Berlin` can have offset `+01:00` or `+02:00`.
-       * This method will return both possible DateTimes if this DateTime's local time is ambiguous.
-       * @returns {DateTime[]}
-       */
-      getPossibleOffsets() {
-        if (!this.isValid || this.isOffsetFixed) {
-          return [this];
-        }
-        const dayMs = 864e5;
-        const minuteMs = 6e4;
-        const localTS = objToLocalTS2(this.c);
-        const oEarlier = this.zone.offset(localTS - dayMs);
-        const oLater = this.zone.offset(localTS + dayMs);
-        const o1 = this.zone.offset(localTS - oEarlier * minuteMs);
-        const o2 = this.zone.offset(localTS - oLater * minuteMs);
-        if (o1 === o2) {
-          return [this];
-        }
-        const ts1 = localTS - o1 * minuteMs;
-        const ts2 = localTS - o2 * minuteMs;
-        const c1 = tsToObj2(ts1, o1);
-        const c2 = tsToObj2(ts2, o2);
-        if (c1.hour === c2.hour && c1.minute === c2.minute && c1.second === c2.second && c1.millisecond === c2.millisecond) {
-          return [clone3(this, { ts: ts1 }), clone3(this, { ts: ts2 })];
-        }
-        return [this];
-      }
-      /**
        * Returns true if this DateTime is in a leap year, false otherwise
        * @example DateTime.local(2016).isInLeapYear //=> true
        * @example DateTime.local(2013).isInLeapYear //=> false
@@ -7946,7 +7841,7 @@ var require_lib = __commonJS({
             const asObj = this.toObject();
             [newTS] = objToTS2(asObj, offsetGuess, zone);
           }
-          return clone3(this, { ts: newTS, zone });
+          return clone4(this, { ts: newTS, zone });
         }
       }
       /**
@@ -7957,7 +7852,7 @@ var require_lib = __commonJS({
        */
       reconfigure({ locale, numberingSystem, outputCalendar } = {}) {
         const loc = this.loc.clone({ locale, numberingSystem, outputCalendar });
-        return clone3(this, { loc });
+        return clone4(this, { loc });
       }
       /**
        * "Set" the locale. Returns a newly-constructed DateTime.
@@ -7979,7 +7874,8 @@ var require_lib = __commonJS({
        * @return {DateTime}
        */
       set(values) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const normalized = normalizeObject2(values, normalizeUnit2), settingWeekStuff = !isUndefined3(normalized.weekYear) || !isUndefined3(normalized.weekNumber) || !isUndefined3(normalized.weekday), containsOrdinal = !isUndefined3(normalized.ordinal), containsGregorYear = !isUndefined3(normalized.year), containsGregorMD = !isUndefined3(normalized.month) || !isUndefined3(normalized.day), containsGregor = containsGregorYear || containsGregorMD, definiteWeekDef = normalized.weekYear || normalized.weekNumber;
         if ((containsGregor || containsOrdinal) && definiteWeekDef) {
           throw new ConflictingSpecificationError2(
@@ -8001,7 +7897,7 @@ var require_lib = __commonJS({
           }
         }
         const [ts, o] = objToTS2(mixed, this.o, this.zone);
-        return clone3(this, { ts, o });
+        return clone4(this, { ts, o });
       }
       /**
        * Add a period of time to this DateTime and return the resulting DateTime
@@ -8017,9 +7913,10 @@ var require_lib = __commonJS({
        * @return {DateTime}
        */
       plus(duration) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const dur = Duration2.fromDurationLike(duration);
-        return clone3(this, adjustTime2(this, dur));
+        return clone4(this, adjustTime2(this, dur));
       }
       /**
        * Subtract a period of time to this DateTime and return the resulting DateTime
@@ -8028,9 +7925,10 @@ var require_lib = __commonJS({
        @return {DateTime}
        */
       minus(duration) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const dur = Duration2.fromDurationLike(duration).negate();
-        return clone3(this, adjustTime2(this, dur));
+        return clone4(this, adjustTime2(this, dur));
       }
       /**
        * "Set" this DateTime to the beginning of a unit of time.
@@ -8043,26 +7941,22 @@ var require_lib = __commonJS({
        * @return {DateTime}
        */
       startOf(unit) {
-        if (!this.isValid) return this;
+        if (!this.isValid)
+          return this;
         const o = {}, normalizedUnit = Duration2.normalizeUnit(unit);
         switch (normalizedUnit) {
           case "years":
             o.month = 1;
-          // falls through
           case "quarters":
           case "months":
             o.day = 1;
-          // falls through
           case "weeks":
           case "days":
             o.hour = 0;
-          // falls through
           case "hours":
             o.minute = 0;
-          // falls through
           case "minutes":
             o.second = 0;
-          // falls through
           case "seconds":
             o.millisecond = 0;
             break;
@@ -8363,7 +8257,8 @@ var require_lib = __commonJS({
        * @return {Object}
        */
       toObject(opts = {}) {
-        if (!this.isValid) return {};
+        if (!this.isValid)
+          return {};
         const base = __spreadValues({}, this.c);
         if (opts.includeConfig) {
           base.outputCalendar = this.outputCalendar;
@@ -8432,7 +8327,8 @@ var require_lib = __commonJS({
        * @return {boolean}
        */
       hasSame(otherDateTime, unit) {
-        if (!this.isValid) return false;
+        if (!this.isValid)
+          return false;
         const inputMs = otherDateTime.valueOf();
         const adjustedToZone = this.setZone(otherDateTime.zone, { keepLocalTime: true });
         return adjustedToZone.startOf(unit) <= inputMs && inputMs <= adjustedToZone.endOf(unit);
@@ -8466,7 +8362,8 @@ var require_lib = __commonJS({
        * @example DateTime.now().minus({ hours: 36 }).toRelative({ round: false }) //=> "1.5 days ago"
        */
       toRelative(options = {}) {
-        if (!this.isValid) return null;
+        if (!this.isValid)
+          return null;
         const base = options.base || _DateTime.fromObject({}, { zone: this.zone }), padding = options.padding ? this < base ? -options.padding : options.padding : 0;
         let units = ["years", "months", "days", "hours", "minutes", "seconds"];
         let unit = options.unit;
@@ -8494,7 +8391,8 @@ var require_lib = __commonJS({
        * @example DateTime.now().minus({ days: 2 }).toRelativeCalendar() //=> "2 days ago"
        */
       toRelativeCalendar(options = {}) {
-        if (!this.isValid) return null;
+        if (!this.isValid)
+          return null;
         return diffRelative2(options.base || _DateTime.fromObject({}, { zone: this.zone }), this, __spreadProps(__spreadValues({}, options), {
           numeric: "auto",
           units: ["years", "months", "days"],
@@ -8742,13 +8640,10 @@ var require_lib = __commonJS({
       enableDataviewJs: false,
       enableInlineDataviewJs: false,
       prettyRenderInlineFields: true,
-      prettyRenderInlineFieldsInLivePreview: true,
       dataviewJsKeyword: "dataviewjs"
     });
     var Success = class _Success {
       constructor(value) {
-        __publicField(this, "value");
-        __publicField(this, "successful");
         this.value = value;
         this.successful = true;
       }
@@ -8776,8 +8671,6 @@ var require_lib = __commonJS({
     };
     var Failure = class _Failure {
       constructor(error) {
-        __publicField(this, "error");
-        __publicField(this, "successful");
         this.error = error;
         this.successful = false;
       }
@@ -8834,15 +8727,15 @@ var require_lib = __commonJS({
     })(Result || (Result = {}));
     var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
     var parsimmon_umd_min = { exports: {} };
-    parsimmon_umd_min.exports;
     (function(module3, exports2) {
-      !(function(n3, t) {
+      !function(n3, t) {
         module3.exports = t();
-      })("undefined" != typeof self ? self : commonjsGlobal, function() {
-        return (function(n3) {
+      }("undefined" != typeof self ? self : commonjsGlobal, function() {
+        return function(n3) {
           var t = {};
           function r(e) {
-            if (t[e]) return t[e].exports;
+            if (t[e])
+              return t[e].exports;
             var u = t[e] = { i: e, l: false, exports: {} };
             return n3[e].call(u.exports, u, u.exports, r), u.l = true, u.exports;
           }
@@ -8860,21 +8753,23 @@ var require_lib = __commonJS({
           }, r.o = function(n4, t2) {
             return Object.prototype.hasOwnProperty.call(n4, t2);
           }, r.p = "", r(r.s = 0);
-        })([function(n3, t, r) {
+        }([function(n3, t, r) {
           function e(n4) {
-            if (!(this instanceof e)) return new e(n4);
+            if (!(this instanceof e))
+              return new e(n4);
             this._ = n4;
           }
           var u = e.prototype;
           function o(n4, t2) {
-            for (var r2 = 0; r2 < n4; r2++) t2(r2);
+            for (var r2 = 0; r2 < n4; r2++)
+              t2(r2);
           }
           function i(n4, t2, r2) {
-            return (function(n5, t3) {
+            return function(n5, t3) {
               o(t3.length, function(r3) {
                 n5(t3[r3], r3, t3);
               });
-            })(function(r3, e2, u2) {
+            }(function(r3, e2, u2) {
               t2 = n4(t2, r3, e2, u2);
             }, r2), t2;
           }
@@ -8887,34 +8782,37 @@ var require_lib = __commonJS({
             var r2 = { v: 0, buf: t2 };
             return o(n4, function() {
               var n5;
-              r2 = { v: r2.v << 1 | (n5 = r2.buf, n5[0] >> 7), buf: (function(n6) {
+              r2 = { v: r2.v << 1 | (n5 = r2.buf, n5[0] >> 7), buf: function(n6) {
                 var t3 = i(function(n7, t4, r3, e2) {
                   return n7.concat(r3 === e2.length - 1 ? Buffer.from([t4, 0]).readUInt16BE(0) : e2.readUInt16BE(r3));
                 }, [], n6);
                 return Buffer.from(a(function(n7) {
                   return (n7 << 1 & 65535) >> 8;
                 }, t3));
-              })(r2.buf) };
+              }(r2.buf) };
             }), r2;
           }
           function c() {
             return "undefined" != typeof Buffer;
           }
           function s3() {
-            if (!c()) throw new Error("Buffer global does not exist; please use webpack if you need to parse Buffers in the browser.");
+            if (!c())
+              throw new Error("Buffer global does not exist; please use webpack if you need to parse Buffers in the browser.");
           }
           function l3(n4) {
             s3();
             var t2 = i(function(n5, t3) {
               return n5 + t3;
             }, 0, n4);
-            if (t2 % 8 != 0) throw new Error("The bits [" + n4.join(", ") + "] add up to " + t2 + " which is not an even number of bytes; the total should be divisible by 8");
+            if (t2 % 8 != 0)
+              throw new Error("The bits [" + n4.join(", ") + "] add up to " + t2 + " which is not an even number of bytes; the total should be divisible by 8");
             var r2, u2 = t2 / 8, o2 = (r2 = function(n5) {
               return n5 > 48;
             }, i(function(n5, t3) {
               return n5 || (r2(t3) ? t3 : n5);
             }, null, n4));
-            if (o2) throw new Error(o2 + " bit range requested exceeds 48 bit (6 byte) Number max.");
+            if (o2)
+              throw new Error(o2 + " bit range requested exceeds 48 bit (6 byte) Number max.");
             return new e(function(t3, r3) {
               var e2 = u2 + r3;
               return e2 > t3.length ? x(r3, u2.toString() + " bytes") : b(e2, i(function(n5, t4) {
@@ -8929,7 +8827,8 @@ var require_lib = __commonJS({
             });
           }
           function p(n4, t2) {
-            if ("number" != typeof (r2 = t2) || Math.floor(r2) !== r2 || t2 < 0 || t2 > 6) throw new Error(n4 + " requires integer length in range [0, 6].");
+            if ("number" != typeof (r2 = t2) || Math.floor(r2) !== r2 || t2 < 0 || t2 > 6)
+              throw new Error(n4 + " requires integer length in range [0, 6].");
             var r2;
           }
           function d(n4) {
@@ -8968,29 +8867,37 @@ var require_lib = __commonJS({
             return E(t2) || (t2 = [t2]), { status: false, index: -1, value: null, furthest: n4, expected: t2 };
           }
           function B(n4, t2) {
-            if (!t2) return n4;
-            if (n4.furthest > t2.furthest) return n4;
-            var r2 = n4.furthest === t2.furthest ? (function(n5, t3) {
-              if ((function() {
-                if (void 0 !== e._supportsSet) return e._supportsSet;
+            if (!t2)
+              return n4;
+            if (n4.furthest > t2.furthest)
+              return n4;
+            var r2 = n4.furthest === t2.furthest ? function(n5, t3) {
+              if (function() {
+                if (void 0 !== e._supportsSet)
+                  return e._supportsSet;
                 var n6 = "undefined" != typeof Set;
                 return e._supportsSet = n6, n6;
-              })() && Array.from) {
-                for (var r3 = new Set(n5), u2 = 0; u2 < t3.length; u2++) r3.add(t3[u2]);
+              }() && Array.from) {
+                for (var r3 = new Set(n5), u2 = 0; u2 < t3.length; u2++)
+                  r3.add(t3[u2]);
                 var o2 = Array.from(r3);
                 return o2.sort(), o2;
               }
-              for (var i2 = {}, a2 = 0; a2 < n5.length; a2++) i2[n5[a2]] = true;
-              for (var f2 = 0; f2 < t3.length; f2++) i2[t3[f2]] = true;
+              for (var i2 = {}, a2 = 0; a2 < n5.length; a2++)
+                i2[n5[a2]] = true;
+              for (var f2 = 0; f2 < t3.length; f2++)
+                i2[t3[f2]] = true;
               var c2 = [];
-              for (var s4 in i2) ({}).hasOwnProperty.call(i2, s4) && c2.push(s4);
+              for (var s4 in i2)
+                ({}).hasOwnProperty.call(i2, s4) && c2.push(s4);
               return c2.sort(), c2;
-            })(n4.expected, t2.expected) : t2.expected;
+            }(n4.expected, t2.expected) : t2.expected;
             return { status: n4.status, index: n4.index, value: n4.value, furthest: t2.furthest, expected: r2 };
           }
           var j = {};
           function S(n4, t2) {
-            if (w(n4)) return { offset: t2, line: -1, column: -1 };
+            if (w(n4))
+              return { offset: t2, line: -1, column: -1 };
             n4 in j || (j[n4] = {});
             for (var r2 = j[n4], e2 = 0, u2 = 0, o2 = 0, i2 = t2; i2 >= 0; ) {
               if (i2 in r2) {
@@ -9003,19 +8910,23 @@ var require_lib = __commonJS({
             return r2[t2] = { line: a2, lineStart: o2 }, { offset: t2, line: a2 + 1, column: f2 + 1 };
           }
           function _(n4) {
-            if (!y(n4)) throw new Error("not a parser: " + n4);
+            if (!y(n4))
+              throw new Error("not a parser: " + n4);
           }
           function L(n4, t2) {
             return "string" == typeof n4 ? n4.charAt(t2) : n4[t2];
           }
           function O(n4) {
-            if ("number" != typeof n4) throw new Error("not a number: " + n4);
+            if ("number" != typeof n4)
+              throw new Error("not a number: " + n4);
           }
           function k(n4) {
-            if ("function" != typeof n4) throw new Error("not a function: " + n4);
+            if ("function" != typeof n4)
+              throw new Error("not a function: " + n4);
           }
           function P(n4) {
-            if ("string" != typeof n4) throw new Error("not a string: " + n4);
+            if ("string" != typeof n4)
+              throw new Error("not a string: " + n4);
           }
           var q = 2, A = 3, I = 8, F = 5 * I, M = 4 * I, z = "  ";
           function R(n4, t2) {
@@ -9030,21 +8941,24 @@ var require_lib = __commonJS({
           }
           function D(n4, t2) {
             var r2, e2, u2, o2, f2, c2 = t2.index, s4 = c2.offset, l4 = 1;
-            if (s4 === n4.length) return "Got the end of the input";
+            if (s4 === n4.length)
+              return "Got the end of the input";
             if (w(n4)) {
               var h2 = s4 - s4 % I, p2 = s4 - h2, d2 = W(h2, F, M + I, n4.length), v2 = a(function(n5) {
                 return a(function(n6) {
                   return U(n6.toString(16), 2, "0");
                 }, n5);
-              }, (function(n5, t3) {
+              }, function(n5, t3) {
                 var r3 = n5.length, e3 = [], u3 = 0;
-                if (r3 <= t3) return [n5.slice()];
-                for (var o3 = 0; o3 < r3; o3++) e3[u3] || e3.push([]), e3[u3].push(n5[o3]), (o3 + 1) % t3 == 0 && u3++;
+                if (r3 <= t3)
+                  return [n5.slice()];
+                for (var o3 = 0; o3 < r3; o3++)
+                  e3[u3] || e3.push([]), e3[u3].push(n5[o3]), (o3 + 1) % t3 == 0 && u3++;
                 return e3;
-              })(n4.slice(d2.from, d2.to).toJSON().data, I));
-              o2 = (function(n5) {
+              }(n4.slice(d2.from, d2.to).toJSON().data, I));
+              o2 = function(n5) {
                 return 0 === n5.from && 1 === n5.to ? { from: n5.from, to: n5.to } : { from: n5.from / I, to: Math.floor(n5.to / I) };
-              })(d2), e2 = h2 / I, r2 = 3 * p2, p2 >= 4 && (r2 += 1), l4 = 2, u2 = a(function(n5) {
+              }(d2), e2 = h2 / I, r2 = 3 * p2, p2 >= 4 && (r2 += 1), l4 = 2, u2 = a(function(n5) {
                 return n5.length <= 4 ? n5.join(" ") : n5.slice(0, 4).join(" ") + "  " + n5.slice(4).join(" ");
               }, v2), (f2 = (8 * (o2.to > 0 ? o2.to - 1 : o2.to)).toString(16).length) < 2 && (f2 = 2);
             } else {
@@ -9065,10 +8979,12 @@ var require_lib = __commonJS({
             return void 0 !== n4.flags ? n4.flags : [n4.global ? "g" : "", n4.ignoreCase ? "i" : "", n4.multiline ? "m" : "", n4.unicode ? "u" : "", n4.sticky ? "y" : ""].join("");
           }
           function C() {
-            for (var n4 = [].slice.call(arguments), t2 = n4.length, r2 = 0; r2 < t2; r2 += 1) _(n4[r2]);
+            for (var n4 = [].slice.call(arguments), t2 = n4.length, r2 = 0; r2 < t2; r2 += 1)
+              _(n4[r2]);
             return e(function(r3, e2) {
               for (var u2, o2 = new Array(t2), i2 = 0; i2 < t2; i2 += 1) {
-                if (!(u2 = B(n4[i2]._(r3, e2), u2)).status) return u2;
+                if (!(u2 = B(n4[i2]._(r3, e2), u2)).status)
+                  return u2;
                 o2[i2] = u2.value, e2 = u2.index;
               }
               return B(b(e2, o2), u2);
@@ -9076,7 +8992,8 @@ var require_lib = __commonJS({
           }
           function J() {
             var n4 = [].slice.call(arguments);
-            if (0 === n4.length) throw new Error("seqMap needs at least one argument");
+            if (0 === n4.length)
+              throw new Error("seqMap needs at least one argument");
             var t2 = n4.pop();
             return k(t2), C.apply(null, n4).map(function(n5) {
               return t2.apply(null, n5);
@@ -9084,10 +9001,14 @@ var require_lib = __commonJS({
           }
           function T() {
             var n4 = [].slice.call(arguments), t2 = n4.length;
-            if (0 === t2) return Y("zero alternates");
-            for (var r2 = 0; r2 < t2; r2 += 1) _(n4[r2]);
+            if (0 === t2)
+              return Y("zero alternates");
+            for (var r2 = 0; r2 < t2; r2 += 1)
+              _(n4[r2]);
             return e(function(t3, r3) {
-              for (var e2, u2 = 0; u2 < n4.length; u2 += 1) if ((e2 = B(n4[u2]._(t3, r3), e2)).status) return e2;
+              for (var e2, u2 = 0; u2 < n4.length; u2 += 1)
+                if ((e2 = B(n4[u2]._(t3, r3), e2)).status)
+                  return e2;
               return e2;
             });
           }
@@ -9108,16 +9029,18 @@ var require_lib = __commonJS({
             });
           }
           function Q(n4, t2) {
-            !(function(n5) {
-              if (!(n5 instanceof RegExp)) throw new Error("not a regexp: " + n5);
+            !function(n5) {
+              if (!(n5 instanceof RegExp))
+                throw new Error("not a regexp: " + n5);
               for (var t3 = G(n5), r3 = 0; r3 < t3.length; r3++) {
                 var e2 = t3.charAt(r3);
-                if ("i" !== e2 && "m" !== e2 && "u" !== e2 && "s" !== e2) throw new Error('unsupported regexp flag "' + e2 + '": ' + n5);
+                if ("i" !== e2 && "m" !== e2 && "u" !== e2 && "s" !== e2)
+                  throw new Error('unsupported regexp flag "' + e2 + '": ' + n5);
               }
-            })(n4), arguments.length >= 2 ? O(t2) : t2 = 0;
-            var r2 = (function(n5) {
+            }(n4), arguments.length >= 2 ? O(t2) : t2 = 0;
+            var r2 = function(n5) {
               return RegExp("^(?:" + n5.source + ")", G(n5));
-            })(n4), u2 = "" + n4;
+            }(n4), u2 = "" + n4;
             return e(function(n5, e2) {
               var o2 = r2.exec(n5.slice(e2));
               if (o2) {
@@ -9141,12 +9064,15 @@ var require_lib = __commonJS({
             });
           }
           function Z(n4) {
-            if (y(n4)) return e(function(t2, r2) {
-              var e2 = n4._(t2, r2);
-              return e2.index = r2, e2.value = "", e2;
-            });
-            if ("string" == typeof n4) return Z(K(n4));
-            if (n4 instanceof RegExp) return Z(Q(n4));
+            if (y(n4))
+              return e(function(t2, r2) {
+                var e2 = n4._(t2, r2);
+                return e2.index = r2, e2.value = "", e2;
+              });
+            if ("string" == typeof n4)
+              return Z(K(n4));
+            if (n4 instanceof RegExp)
+              return Z(Q(n4));
             throw new Error("not a string, regexp, or parser: " + n4);
           }
           function $(n4) {
@@ -9172,12 +9098,14 @@ var require_lib = __commonJS({
             return Y("fantasy-land/empty");
           }
           u.parse = function(n4) {
-            if ("string" != typeof n4 && !w(n4)) throw new Error(".parse must be called with a string or Buffer as its argument");
+            if ("string" != typeof n4 && !w(n4))
+              throw new Error(".parse must be called with a string or Buffer as its argument");
             var t2, r2 = this.skip(an)._(n4, 0);
             return t2 = r2.status ? { status: true, value: r2.value } : { status: false, index: S(n4, r2.furthest), expected: r2.expected }, delete j[n4], t2;
           }, u.tryParse = function(n4) {
             var t2 = this.parse(n4);
-            if (t2.status) return t2.value;
+            if (t2.status)
+              return t2.value;
             var r2 = N(n4, t2), e2 = new Error(r2);
             throw e2.type = "ParsimmonError", e2.result = t2, e2;
           }, u.assert = function(n4, t2) {
@@ -9202,18 +9130,22 @@ var require_lib = __commonJS({
             var n4 = this;
             return e(function(t2, r2) {
               for (var e2 = [], u2 = void 0; ; ) {
-                if (!(u2 = B(n4._(t2, r2), u2)).status) return B(b(r2, e2), u2);
-                if (r2 === u2.index) throw new Error("infinite loop detected in .many() parser --- calling .many() on a parser which can accept zero characters is usually the cause");
+                if (!(u2 = B(n4._(t2, r2), u2)).status)
+                  return B(b(r2, e2), u2);
+                if (r2 === u2.index)
+                  throw new Error("infinite loop detected in .many() parser --- calling .many() on a parser which can accept zero characters is usually the cause");
                 r2 = u2.index, e2.push(u2.value);
               }
             });
           }, u.tieWith = function(n4) {
             return P(n4), this.map(function(t2) {
-              if ((function(n5) {
-                if (!E(n5)) throw new Error("not an array: " + n5);
-              })(t2), t2.length) {
+              if (function(n5) {
+                if (!E(n5))
+                  throw new Error("not an array: " + n5);
+              }(t2), t2.length) {
                 P(t2[0]);
-                for (var r2 = t2[0], e2 = 1; e2 < t2.length; e2++) P(t2[e2]), r2 += n4 + t2[e2];
+                for (var r2 = t2[0], e2 = 1; e2 < t2.length; e2++)
+                  P(t2[e2]), r2 += n4 + t2[e2];
                 return r2;
               }
               return "";
@@ -9224,10 +9156,12 @@ var require_lib = __commonJS({
             var r2 = this;
             return arguments.length < 2 && (t2 = n4), O(n4), O(t2), e(function(e2, u2) {
               for (var o2 = [], i2 = void 0, a2 = void 0, f2 = 0; f2 < n4; f2 += 1) {
-                if (a2 = B(i2 = r2._(e2, u2), a2), !i2.status) return a2;
+                if (a2 = B(i2 = r2._(e2, u2), a2), !i2.status)
+                  return a2;
                 u2 = i2.index, o2.push(i2.value);
               }
-              for (; f2 < t2 && (a2 = B(i2 = r2._(e2, u2), a2), i2.status); f2 += 1) u2 = i2.index, o2.push(i2.value);
+              for (; f2 < t2 && (a2 = B(i2 = r2._(e2, u2), a2), i2.status); f2 += 1)
+                u2 = i2.index, o2.push(i2.value);
               return B(b(u2, o2), a2);
             });
           }, u.result = function(n4) {
@@ -9300,18 +9234,19 @@ var require_lib = __commonJS({
             return b(t2, S(n4, t2));
           }), un = e(function(n4, t2) {
             return t2 >= n4.length ? x(t2, "any character/byte") : b(t2 + 1, L(n4, t2));
-          }), on = e(function(n4, t2) {
+          }), on2 = e(function(n4, t2) {
             return b(n4.length, n4.slice(t2));
           }), an = e(function(n4, t2) {
             return t2 < n4.length ? x(t2, "EOF") : b(t2, null);
           }), fn2 = Q(/[0-9]/).desc("a digit"), cn = Q(/[0-9]*/).desc("optional digits"), sn = Q(/[a-z]/i).desc("a letter"), ln = Q(/[a-z]*/i).desc("optional letters"), hn = Q(/\s*/).desc("optional whitespace"), pn = Q(/\s+/).desc("whitespace"), dn = K("\r"), vn = K("\n"), gn = K("\r\n"), mn = T(gn, vn, dn).desc("newline"), yn = T(mn, an);
-          e.all = on, e.alt = T, e.any = un, e.cr = dn, e.createLanguage = function(n4) {
+          e.all = on2, e.alt = T, e.any = un, e.cr = dn, e.createLanguage = function(n4) {
             var t2 = {};
-            for (var r2 in n4) ({}).hasOwnProperty.call(n4, r2) && (function(r3) {
-              t2[r3] = tn(function() {
-                return n4[r3](t2);
-              });
-            })(r2);
+            for (var r2 in n4)
+              ({}).hasOwnProperty.call(n4, r2) && function(r3) {
+                t2[r3] = tn(function() {
+                  return n4[r3](t2);
+                });
+              }(r2);
             return t2;
           }, e.crlf = gn, e.custom = function(n4) {
             return e(n4(b, x));
@@ -9320,7 +9255,8 @@ var require_lib = __commonJS({
               return n4.indexOf(t2) < 0;
             }).desc("none of '" + n4 + "'");
           }, e.notFollowedBy = $, e.of = X, e.oneOf = function(n4) {
-            for (var t2 = n4.split(""), r2 = 0; r2 < t2.length; r2++) t2[r2] = "'" + t2[r2] + "'";
+            for (var t2 = n4.split(""), r2 = 0; r2 < t2.length; r2++)
+              t2[r2] = "'" + t2[r2] + "'";
             return nn(function(t3) {
               return n4.indexOf(t3) >= 0;
             }).desc(t2);
@@ -9334,25 +9270,29 @@ var require_lib = __commonJS({
               if (!y(a2)) {
                 if (E(a2) && 2 === a2.length && "string" == typeof a2[0] && y(a2[1])) {
                   var f2 = a2[0];
-                  if (Object.prototype.hasOwnProperty.call(t2, f2)) throw new Error("seqObj: duplicate key " + f2);
+                  if (Object.prototype.hasOwnProperty.call(t2, f2))
+                    throw new Error("seqObj: duplicate key " + f2);
                   t2[f2] = true, r2++;
                   continue;
                 }
                 throw new Error("seqObj arguments must be parsers or [string, parser] array pairs.");
               }
             }
-            if (0 === r2) throw new Error("seqObj expects at least one named parser, found zero");
+            if (0 === r2)
+              throw new Error("seqObj expects at least one named parser, found zero");
             return e(function(n5, t3) {
               for (var r3, e2 = {}, i3 = 0; i3 < o2; i3 += 1) {
                 var a3, f3;
-                if (E(u2[i3]) ? (a3 = u2[i3][0], f3 = u2[i3][1]) : (a3 = null, f3 = u2[i3]), !(r3 = B(f3._(n5, t3), r3)).status) return r3;
+                if (E(u2[i3]) ? (a3 = u2[i3][0], f3 = u2[i3][1]) : (a3 = null, f3 = u2[i3]), !(r3 = B(f3._(n5, t3), r3)).status)
+                  return r3;
                 a3 && (e2[a3] = r3.value), t3 = r3.index;
               }
               return B(b(t3, e2), r3);
             });
           }, e.string = K, e.succeed = X, e.takeWhile = function(n4) {
             return k(n4), e(function(t2, r2) {
-              for (var e2 = r2; e2 < t2.length && n4(L(t2, e2)); ) e2++;
+              for (var e2 = r2; e2 < t2.length && n4(L(t2, e2)); )
+                e2++;
               return b(e2, t2.slice(r2, e2));
             });
           }, e.test = nn, e.whitespace = pn, e["fantasy-land/empty"] = rn, e["fantasy-land/of"] = X, e.Binary = { bitSeq: l3, bitSeqObj: function(n4) {
@@ -9360,13 +9300,16 @@ var require_lib = __commonJS({
             var t2 = {}, r2 = 0, e2 = a(function(n5) {
               if (E(n5)) {
                 var e3 = n5;
-                if (2 !== e3.length) throw new Error("[" + e3.join(", ") + "] should be length 2, got length " + e3.length);
-                if (P(e3[0]), O(e3[1]), Object.prototype.hasOwnProperty.call(t2, e3[0])) throw new Error("duplicate key in bitSeqObj: " + e3[0]);
+                if (2 !== e3.length)
+                  throw new Error("[" + e3.join(", ") + "] should be length 2, got length " + e3.length);
+                if (P(e3[0]), O(e3[1]), Object.prototype.hasOwnProperty.call(t2, e3[0]))
+                  throw new Error("duplicate key in bitSeqObj: " + e3[0]);
                 return t2[e3[0]] = true, r2++, e3;
               }
               return O(n5), [null, n5];
             }, n4);
-            if (r2 < 1) throw new Error("bitSeqObj expects at least one named pair, got [" + n4.join(", ") + "]");
+            if (r2 < 1)
+              throw new Error("bitSeqObj expects at least one named pair, got [" + n4.join(", ") + "]");
             var u2 = a(function(n5) {
               return n5[0];
             }, e2);
@@ -9380,7 +9323,8 @@ var require_lib = __commonJS({
               }, u2));
             });
           }, byte: function(n4) {
-            if (s3(), O(n4), n4 > 255) throw new Error("Value specified to byte constructor (" + n4 + "=0x" + n4.toString(16) + ") is larger in value than a single byte.");
+            if (s3(), O(n4), n4 > 255)
+              throw new Error("Value specified to byte constructor (" + n4 + "=0x" + n4.toString(16) + ") is larger in value than a single byte.");
             var t2 = (n4 > 15 ? "0x" : "0x0") + n4.toString(16);
             return e(function(r2, e2) {
               var u2 = L(r2, e2);
@@ -9405,25 +9349,24 @@ var require_lib = __commonJS({
           }) }, n3.exports = e;
         }]);
       });
-    })(parsimmon_umd_min, parsimmon_umd_min.exports);
-    var parsimmon_umd_minExports = parsimmon_umd_min.exports;
+    })(parsimmon_umd_min);
     var emojiRegex = () => {
-      return /[#*0-9]\uFE0F?\u20E3|[\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23ED-\u23EF\u23F1\u23F2\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB\u25FC\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692\u2694-\u2697\u2699\u269B\u269C\u26A0\u26A7\u26AA\u26B0\u26B1\u26BD\u26BE\u26C4\u26C8\u26CF\u26D1\u26D3\u26E9\u26F0-\u26F5\u26F7\u26F8\u26FA\u2702\u2708\u2709\u270F\u2712\u2714\u2716\u271D\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u27A1\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B55\u3030\u303D\u3297\u3299]\uFE0F?|[\u261D\u270C\u270D](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?|[\u270A\u270B](?:\uD83C[\uDFFB-\uDFFF])?|[\u23E9-\u23EC\u23F0\u23F3\u25FD\u2693\u26A1\u26AB\u26C5\u26CE\u26D4\u26EA\u26FD\u2705\u2728\u274C\u274E\u2753-\u2755\u2795-\u2797\u27B0\u27BF\u2B50]|\u26F9(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|\u2764\uFE0F?(?:\u200D(?:\uD83D\uDD25|\uD83E\uDE79))?|\uD83C(?:[\uDC04\uDD70\uDD71\uDD7E\uDD7F\uDE02\uDE37\uDF21\uDF24-\uDF2C\uDF36\uDF7D\uDF96\uDF97\uDF99-\uDF9B\uDF9E\uDF9F\uDFCD\uDFCE\uDFD4-\uDFDF\uDFF5\uDFF7]\uFE0F?|[\uDF85\uDFC2\uDFC7](?:\uD83C[\uDFFB-\uDFFF])?|[\uDFC3\uDFC4\uDFCA](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDFCB\uDFCC](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDCCF\uDD8E\uDD91-\uDD9A\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF7C\uDF7E-\uDF84\uDF86-\uDF93\uDFA0-\uDFC1\uDFC5\uDFC6\uDFC8\uDFC9\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF8-\uDFFF]|\uDDE6\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF]|\uDDE7\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF]|\uDDE8\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF5\uDDF7\uDDFA-\uDDFF]|\uDDE9\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF]|\uDDEA\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA]|\uDDEB\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7]|\uDDEC\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE]|\uDDED\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA]|\uDDEE\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9]|\uDDEF\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5]|\uDDF0\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF]|\uDDF1\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE]|\uDDF2\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF]|\uDDF3\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF]|\uDDF4\uD83C\uDDF2|\uDDF5\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE]|\uDDF6\uD83C\uDDE6|\uDDF7\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC]|\uDDF8\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF]|\uDDF9\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF]|\uDDFA\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF]|\uDDFB\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA]|\uDDFC\uD83C[\uDDEB\uDDF8]|\uDDFD\uD83C\uDDF0|\uDDFE\uD83C[\uDDEA\uDDF9]|\uDDFF\uD83C[\uDDE6\uDDF2\uDDFC]|\uDFF3\uFE0F?(?:\u200D(?:\u26A7\uFE0F?|\uD83C\uDF08))?|\uDFF4(?:\u200D\u2620\uFE0F?|\uDB40\uDC67\uDB40\uDC62\uDB40(?:\uDC65\uDB40\uDC6E\uDB40\uDC67|\uDC73\uDB40\uDC63\uDB40\uDC74|\uDC77\uDB40\uDC6C\uDB40\uDC73)\uDB40\uDC7F)?)|\uD83D(?:[\uDC08\uDC26](?:\u200D\u2B1B)?|[\uDC3F\uDCFD\uDD49\uDD4A\uDD6F\uDD70\uDD73\uDD76-\uDD79\uDD87\uDD8A-\uDD8D\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA\uDECB\uDECD-\uDECF\uDEE0-\uDEE5\uDEE9\uDEF0\uDEF3]\uFE0F?|[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDC8F\uDC91\uDCAA\uDD7A\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC](?:\uD83C[\uDFFB-\uDFFF])?|[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD74\uDD90](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?|[\uDC00-\uDC07\uDC09-\uDC14\uDC16-\uDC25\uDC27-\uDC3A\uDC3C-\uDC3E\uDC40\uDC44\uDC45\uDC51-\uDC65\uDC6A\uDC79-\uDC7B\uDC7D-\uDC80\uDC84\uDC88-\uDC8E\uDC90\uDC92-\uDCA9\uDCAB-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDDA4\uDDFB-\uDE2D\uDE2F-\uDE34\uDE37-\uDE44\uDE48-\uDE4A\uDE80-\uDEA2\uDEA4-\uDEB3\uDEB7-\uDEBF\uDEC1-\uDEC5\uDED0-\uDED2\uDED5-\uDED7\uDEDC-\uDEDF\uDEEB\uDEEC\uDEF4-\uDEFC\uDFE0-\uDFEB\uDFF0]|\uDC15(?:\u200D\uD83E\uDDBA)?|\uDC3B(?:\u200D\u2744\uFE0F?)?|\uDC41\uFE0F?(?:\u200D\uD83D\uDDE8\uFE0F?)?|\uDC68(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDC68\uDC69]\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFE])))?))?|\uDC69(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?[\uDC68\uDC69]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?|\uDC69\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?))|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFE])))?))?|\uDC6F(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDD75(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDE2E(?:\u200D\uD83D\uDCA8)?|\uDE35(?:\u200D\uD83D\uDCAB)?|\uDE36(?:\u200D\uD83C\uDF2B\uFE0F?)?)|\uD83E(?:[\uDD0C\uDD0F\uDD18-\uDD1F\uDD30-\uDD34\uDD36\uDD77\uDDB5\uDDB6\uDDBB\uDDD2\uDDD3\uDDD5\uDEC3-\uDEC5\uDEF0\uDEF2-\uDEF8](?:\uD83C[\uDFFB-\uDFFF])?|[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDDDE\uDDDF](?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD0D\uDD0E\uDD10-\uDD17\uDD20-\uDD25\uDD27-\uDD2F\uDD3A\uDD3F-\uDD45\uDD47-\uDD76\uDD78-\uDDB4\uDDB7\uDDBA\uDDBC-\uDDCC\uDDD0\uDDE0-\uDDFF\uDE70-\uDE7C\uDE80-\uDE88\uDE90-\uDEBD\uDEBF-\uDEC2\uDECE-\uDEDB\uDEE0-\uDEE8]|\uDD3C(?:\u200D[\u2640\u2642]\uFE0F?|\uD83C[\uDFFB-\uDFFF])?|\uDDD1(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFC-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFD-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFD\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFE]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?))?|\uDEF1(?:\uD83C(?:\uDFFB(?:\u200D\uD83E\uDEF2\uD83C[\uDFFC-\uDFFF])?|\uDFFC(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFD-\uDFFF])?|\uDFFD(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])?|\uDFFE(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFD\uDFFF])?|\uDFFF(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFE])?))?)/g;
+      return /(?:[#*0-9]\uFE0F?\u20E3|[\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23ED-\u23EF\u23F1\u23F2\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB\u25FC\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692\u2694-\u2697\u2699\u269B\u269C\u26A0\u26A7\u26AA\u26B0\u26B1\u26BD\u26BE\u26C4\u26C8\u26CF\u26D1\u26D3\u26E9\u26F0-\u26F5\u26F7\u26F8\u26FA\u2702\u2708\u2709\u270F\u2712\u2714\u2716\u271D\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u27A1\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B55\u3030\u303D\u3297\u3299]\uFE0F?|[\u261D\u270C\u270D](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?|[\u270A\u270B](?:\uD83C[\uDFFB-\uDFFF])?|[\u23E9-\u23EC\u23F0\u23F3\u25FD\u2693\u26A1\u26AB\u26C5\u26CE\u26D4\u26EA\u26FD\u2705\u2728\u274C\u274E\u2753-\u2755\u2795-\u2797\u27B0\u27BF\u2B50]|\u26F9(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|\u2764\uFE0F?(?:\u200D(?:\uD83D\uDD25|\uD83E\uDE79))?|\uD83C(?:[\uDC04\uDD70\uDD71\uDD7E\uDD7F\uDE02\uDE37\uDF21\uDF24-\uDF2C\uDF36\uDF7D\uDF96\uDF97\uDF99-\uDF9B\uDF9E\uDF9F\uDFCD\uDFCE\uDFD4-\uDFDF\uDFF5\uDFF7]\uFE0F?|[\uDF85\uDFC2\uDFC7](?:\uD83C[\uDFFB-\uDFFF])?|[\uDFC3\uDFC4\uDFCA](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDFCB\uDFCC](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDCCF\uDD8E\uDD91-\uDD9A\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF7C\uDF7E-\uDF84\uDF86-\uDF93\uDFA0-\uDFC1\uDFC5\uDFC6\uDFC8\uDFC9\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF8-\uDFFF]|\uDDE6\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF]|\uDDE7\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF]|\uDDE8\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF5\uDDF7\uDDFA-\uDDFF]|\uDDE9\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF]|\uDDEA\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA]|\uDDEB\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7]|\uDDEC\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE]|\uDDED\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA]|\uDDEE\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9]|\uDDEF\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5]|\uDDF0\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF]|\uDDF1\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE]|\uDDF2\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF]|\uDDF3\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF]|\uDDF4\uD83C\uDDF2|\uDDF5\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE]|\uDDF6\uD83C\uDDE6|\uDDF7\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC]|\uDDF8\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF]|\uDDF9\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF]|\uDDFA\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF]|\uDDFB\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA]|\uDDFC\uD83C[\uDDEB\uDDF8]|\uDDFD\uD83C\uDDF0|\uDDFE\uD83C[\uDDEA\uDDF9]|\uDDFF\uD83C[\uDDE6\uDDF2\uDDFC]|\uDFF3\uFE0F?(?:\u200D(?:\u26A7\uFE0F?|\uD83C\uDF08))?|\uDFF4(?:\u200D\u2620\uFE0F?|\uDB40\uDC67\uDB40\uDC62\uDB40(?:\uDC65\uDB40\uDC6E\uDB40\uDC67|\uDC73\uDB40\uDC63\uDB40\uDC74|\uDC77\uDB40\uDC6C\uDB40\uDC73)\uDB40\uDC7F)?)|\uD83D(?:[\uDC3F\uDCFD\uDD49\uDD4A\uDD6F\uDD70\uDD73\uDD76-\uDD79\uDD87\uDD8A-\uDD8D\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA\uDECB\uDECD-\uDECF\uDEE0-\uDEE5\uDEE9\uDEF0\uDEF3]\uFE0F?|[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDC8F\uDC91\uDCAA\uDD7A\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC](?:\uD83C[\uDFFB-\uDFFF])?|[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD74\uDD90](?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?|[\uDC00-\uDC07\uDC09-\uDC14\uDC16-\uDC3A\uDC3C-\uDC3E\uDC40\uDC44\uDC45\uDC51-\uDC65\uDC6A\uDC79-\uDC7B\uDC7D-\uDC80\uDC84\uDC88-\uDC8E\uDC90\uDC92-\uDCA9\uDCAB-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDDA4\uDDFB-\uDE2D\uDE2F-\uDE34\uDE37-\uDE44\uDE48-\uDE4A\uDE80-\uDEA2\uDEA4-\uDEB3\uDEB7-\uDEBF\uDEC1-\uDEC5\uDED0-\uDED2\uDED5-\uDED7\uDEDD-\uDEDF\uDEEB\uDEEC\uDEF4-\uDEFC\uDFE0-\uDFEB\uDFF0]|\uDC08(?:\u200D\u2B1B)?|\uDC15(?:\u200D\uD83E\uDDBA)?|\uDC3B(?:\u200D\u2744\uFE0F?)?|\uDC41\uFE0F?(?:\u200D\uD83D\uDDE8\uFE0F?)?|\uDC68(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDC68\uDC69]\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFE])))?))?|\uDC69(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?[\uDC68\uDC69]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?|\uDC69\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?))|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFE])))?))?|\uDC6F(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDD75(?:\uFE0F|\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDE2E(?:\u200D\uD83D\uDCA8)?|\uDE35(?:\u200D\uD83D\uDCAB)?|\uDE36(?:\u200D\uD83C\uDF2B\uFE0F?)?)|\uD83E(?:[\uDD0C\uDD0F\uDD18-\uDD1F\uDD30-\uDD34\uDD36\uDD77\uDDB5\uDDB6\uDDBB\uDDD2\uDDD3\uDDD5\uDEC3-\uDEC5\uDEF0\uDEF2-\uDEF6](?:\uD83C[\uDFFB-\uDFFF])?|[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD4\uDDD6-\uDDDD](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDDDE\uDDDF](?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD0D\uDD0E\uDD10-\uDD17\uDD20-\uDD25\uDD27-\uDD2F\uDD3A\uDD3F-\uDD45\uDD47-\uDD76\uDD78-\uDDB4\uDDB7\uDDBA\uDDBC-\uDDCC\uDDD0\uDDE0-\uDDFF\uDE70-\uDE74\uDE78-\uDE7C\uDE80-\uDE86\uDE90-\uDEAC\uDEB0-\uDEBA\uDEC0-\uDEC2\uDED0-\uDED9\uDEE0-\uDEE7]|\uDD3C(?:\u200D[\u2640\u2642]\uFE0F?|\uD83C[\uDFFB-\uDFFF])?|\uDDD1(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFC-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFD-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFD\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFE]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF-\uDDB3\uDDBC\uDDBD]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?))?|\uDEF1(?:\uD83C(?:\uDFFB(?:\u200D\uD83E\uDEF2\uD83C[\uDFFC-\uDFFF])?|\uDFFC(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFD-\uDFFF])?|\uDFFD(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])?|\uDFFE(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFD\uDFFF])?|\uDFFF(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFE])?))?))/g;
     };
     function normalizeDuration(dur) {
       if (dur === void 0 || dur === null)
         return dur;
       return dur.shiftToAll().normalize();
     }
-    function getFileTitle(path) {
-      if (path.includes("/"))
-        path = path.substring(path.lastIndexOf("/") + 1);
-      if (path.endsWith(".md"))
-        path = path.substring(0, path.length - 3);
-      return path;
+    function getFileTitle(path2) {
+      if (path2.includes("/"))
+        path2 = path2.substring(path2.lastIndexOf("/") + 1);
+      if (path2.endsWith(".md"))
+        path2 = path2.substring(0, path2.length - 3);
+      return path2;
     }
-    parsimmon_umd_minExports.alt(parsimmon_umd_minExports.regex(new RegExp(emojiRegex(), "")), parsimmon_umd_minExports.regex(/[0-9\p{Letter}_-]+/u).map((str) => str.toLocaleLowerCase()), parsimmon_umd_minExports.whitespace.map((_) => "-"), parsimmon_umd_minExports.any.map((_) => "")).many().map((result) => result.join(""));
-    var HEADER_CANONICALIZER = parsimmon_umd_minExports.alt(parsimmon_umd_minExports.regex(new RegExp(emojiRegex(), "")), parsimmon_umd_minExports.regex(/[0-9\p{Letter}_-]+/u), parsimmon_umd_minExports.whitespace.map((_) => " "), parsimmon_umd_minExports.any.map((_) => " ")).many().map((result) => {
+    parsimmon_umd_min.exports.alt(parsimmon_umd_min.exports.regex(new RegExp(emojiRegex(), "")), parsimmon_umd_min.exports.regex(/[0-9\p{Letter}_-]+/u).map((str) => str.toLocaleLowerCase()), parsimmon_umd_min.exports.whitespace.map((_) => "-"), parsimmon_umd_min.exports.any.map((_) => "")).many().map((result) => result.join(""));
+    var HEADER_CANONICALIZER = parsimmon_umd_min.exports.alt(parsimmon_umd_min.exports.regex(new RegExp(emojiRegex(), "")), parsimmon_umd_min.exports.regex(/[0-9\p{Letter}_-]+/u), parsimmon_umd_min.exports.whitespace.map((_) => " "), parsimmon_umd_min.exports.any.map((_) => " ")).many().map((result) => {
       return result.join("").split(/\s+/).join(" ").trim();
     });
     function normalizeHeaderForLink(header) {
@@ -9431,7 +9374,7 @@ var require_lib = __commonJS({
     }
     function renderMinimalDuration(dur) {
       dur = normalizeDuration(dur);
-      dur = Duration2.fromObject(Object.fromEntries(Object.entries(dur.toObject()).filter(([, quantity]) => quantity != 0)));
+      dur = Duration2.fromObject(Object.fromEntries(Object.entries(dur.toObject()).filter(([, quantity]) => quantity > 0)));
       return dur.toHuman();
     }
     var Values;
@@ -9495,18 +9438,18 @@ var require_lib = __commonJS({
           return { type: "array", value: val };
         else if (isLink(val))
           return { type: "link", value: val };
-        else if (isFunction3(val))
+        else if (isFunction2(val))
           return { type: "function", value: val };
         else if (isHtml(val))
           return { type: "html", value: val };
-        else if (isObject2(val))
+        else if (isObject3(val))
           return { type: "object", value: val };
         else
           return void 0;
       }
       Values2.wrapValue = wrapValue;
       function mapLeaves(val, func) {
-        if (isObject2(val)) {
+        if (isObject3(val)) {
           let result = {};
           for (let [key, value] of Object.entries(val))
             result[key] = mapLeaves(value, func);
@@ -9564,7 +9507,7 @@ var require_lib = __commonJS({
           case "link":
             let link1 = wrap1.value;
             let link2 = wrap2.value;
-            let normalize = linkNormalizer != null ? linkNormalizer : ((x) => x);
+            let normalize = linkNormalizer !== null && linkNormalizer !== void 0 ? linkNormalizer : (x) => x;
             let pathCompare = normalize(link1.path).localeCompare(normalize(link2.path));
             if (pathCompare != 0)
               return pathCompare;
@@ -9577,7 +9520,7 @@ var require_lib = __commonJS({
               return -1;
             if (!link1.subpath && !link2.subpath)
               return 0;
-            return ((_a2 = link1.subpath) != null ? _a2 : "").localeCompare((_b = link2.subpath) != null ? _b : "");
+            return ((_a2 = link1.subpath) !== null && _a2 !== void 0 ? _a2 : "").localeCompare((_b = link2.subpath) !== null && _b !== void 0 ? _b : "");
           case "date":
             return wrap1.value < wrap2.value ? -1 : wrap1.value.equals(wrap2.value) ? 0 : 1;
           case "duration":
@@ -9585,8 +9528,8 @@ var require_lib = __commonJS({
           case "array":
             let f1 = wrap1.value;
             let f2 = wrap2.value;
-            for (let index = 0; index < Math.min(f1.length, f2.length); index++) {
-              let comp = compareValue(f1[index], f2[index]);
+            for (let index2 = 0; index2 < Math.min(f1.length, f2.length); index2++) {
+              let comp = compareValue(f1[index2], f2[index2]);
               if (comp != 0)
                 return comp;
             }
@@ -9616,7 +9559,7 @@ var require_lib = __commonJS({
       Values2.compareValue = compareValue;
       function typeOf(val) {
         var _a2;
-        return (_a2 = wrapValue(val)) == null ? void 0 : _a2.type;
+        return (_a2 = wrapValue(val)) === null || _a2 === void 0 ? void 0 : _a2.type;
       }
       Values2.typeOf = typeOf;
       function isTruthy(field) {
@@ -9708,14 +9651,14 @@ var require_lib = __commonJS({
         }
       }
       Values2.isHtml = isHtml;
-      function isObject2(val) {
+      function isObject3(val) {
         return typeof val == "object" && !isHtml(val) && !isWidget(val) && !isArray2(val) && !isDuration(val) && !isDate4(val) && !isLink(val) && val !== void 0 && !isNull(val);
       }
-      Values2.isObject = isObject2;
-      function isFunction3(val) {
+      Values2.isObject = isObject3;
+      function isFunction2(val) {
         return typeof val == "function";
       }
-      Values2.isFunction = isFunction3;
+      Values2.isFunction = isFunction2;
     })(Values || (Values = {}));
     var Groupings;
     (function(Groupings2) {
@@ -9744,22 +9687,12 @@ var require_lib = __commonJS({
     })(Groupings || (Groupings = {}));
     var Link = class _Link {
       constructor(fields) {
-        /** The file path this link points to. */
-        __publicField(this, "path");
-        /** The display name associated with the link. */
-        __publicField(this, "display");
-        /** The block ID or header this link points to within a file, if relevant. */
-        __publicField(this, "subpath");
-        /** Is this link an embedded link (!)? */
-        __publicField(this, "embed");
-        /** The type of this link, which determines what 'subpath' refers to, if anything. */
-        __publicField(this, "type");
         Object.assign(this, fields);
       }
       /** Create a link to a specific file. */
-      static file(path, embed = false, display) {
+      static file(path2, embed = false, display) {
         return new _Link({
-          path,
+          path: path2,
           embed,
           display,
           subpath: void 0,
@@ -9777,9 +9710,9 @@ var require_lib = __commonJS({
           return _Link.file(linkpath, embed, display);
       }
       /** Create a link to a specific file and header in that file. */
-      static header(path, header, embed, display) {
+      static header(path2, header, embed, display) {
         return new _Link({
-          path,
+          path: path2,
           embed,
           display,
           subpath: normalizeHeaderForLink(header),
@@ -9787,9 +9720,9 @@ var require_lib = __commonJS({
         });
       }
       /** Create a link to a specific file and block in that file. */
-      static block(path, blockId, embed, display) {
+      static block(path2, blockId, embed, display) {
         return new _Link({
-          path,
+          path: path2,
           embed,
           display,
           subpath: blockId,
@@ -9815,8 +9748,8 @@ var require_lib = __commonJS({
       }
       /** Update this link with a new path. */
       //@ts-ignore; error appeared after updating Obsidian to 0.15.4; it also updated other packages but didn't say which
-      withPath(path) {
-        return new _Link(Object.assign({}, this, { path }));
+      withPath(path2) {
+        return new _Link(Object.assign({}, this, { path: path2 }));
       }
       /** Return a new link which points to the same location but with a new display value. */
       withDisplay(display) {
@@ -9866,11 +9799,11 @@ var require_lib = __commonJS({
       /** Convert the inner part of the link to something that Obsidian can open / understand. */
       obsidianLink() {
         var _a2, _b;
-        const escaped = this.path.replaceAll("|", "\\|");
+        const escaped = this.path.replace("|", "\\|");
         if (this.type == "header")
-          return escaped + "#" + ((_a2 = this.subpath) == null ? void 0 : _a2.replaceAll("|", "\\|"));
+          return escaped + "#" + ((_a2 = this.subpath) === null || _a2 === void 0 ? void 0 : _a2.replace("|", "\\|"));
         if (this.type == "block")
-          return escaped + "#^" + ((_b = this.subpath) == null ? void 0 : _b.replaceAll("|", "\\|"));
+          return escaped + "#^" + ((_b = this.subpath) === null || _b === void 0 ? void 0 : _b.replace("|", "\\|"));
         else
           return escaped;
       }
@@ -9881,15 +9814,12 @@ var require_lib = __commonJS({
     };
     var Widget = class {
       constructor($widget) {
-        __publicField(this, "$widget");
         this.$widget = $widget;
       }
     };
     var ListPairWidget = class extends Widget {
       constructor(key, value) {
         super("dataview:list-pair");
-        __publicField(this, "key");
-        __publicField(this, "value");
         this.key = key;
         this.value = value;
       }
@@ -9900,14 +9830,12 @@ var require_lib = __commonJS({
     var ExternalLinkWidget = class extends Widget {
       constructor(url, display) {
         super("dataview:external-link");
-        __publicField(this, "url");
-        __publicField(this, "display");
         this.url = url;
         this.display = display;
       }
       markdown() {
         var _a2;
-        return `[${(_a2 = this.display) != null ? _a2 : this.url}](${this.url})`;
+        return `[${(_a2 = this.display) !== null && _a2 !== void 0 ? _a2 : this.url}](${this.url})`;
       }
     };
     var Widgets;
@@ -9947,15 +9875,15 @@ var require_lib = __commonJS({
         return { type: "binaryop", left: left2, op, right: right2 };
       }
       Fields2.binaryOp = binaryOp;
-      function index(obj, index2) {
-        return { type: "index", object: obj, index: index2 };
+      function index2(obj, index3) {
+        return { type: "index", object: obj, index: index3 };
       }
-      Fields2.index = index;
+      Fields2.index = index2;
       function indexVariable(name) {
         let parts = name.split(".");
         let result = Fields2.variable(parts[0]);
-        for (let index2 = 1; index2 < parts.length; index2++) {
-          result = Fields2.index(result, Fields2.literal(parts[index2]));
+        for (let index3 = 1; index3 < parts.length; index3++) {
+          result = Fields2.index(result, Fields2.literal(parts[index3]));
         }
         return result;
       }
@@ -9992,8 +9920,8 @@ var require_lib = __commonJS({
         return { type: "tag", tag: tag2 };
       }
       Sources2.tag = tag;
-      function csv(path) {
-        return { type: "csv", path };
+      function csv(path2) {
+        return { type: "csv", path: path2 };
       }
       Sources2.csv = csv;
       function folder(prefix) {
@@ -10092,18 +10020,18 @@ var require_lib = __commonJS({
       return Link.infer(link, false, display);
     }
     function createBinaryParser(child, sep, combine) {
-      return parsimmon_umd_minExports.seqMap(child, parsimmon_umd_minExports.seq(parsimmon_umd_minExports.optWhitespace, sep, parsimmon_umd_minExports.optWhitespace, child).many(), (first, rest) => {
+      return parsimmon_umd_min.exports.seqMap(child, parsimmon_umd_min.exports.seq(parsimmon_umd_min.exports.optWhitespace, sep, parsimmon_umd_min.exports.optWhitespace, child).many(), (first, rest) => {
         if (rest.length == 0)
           return first;
         let node = combine(first, rest[0][1], rest[0][3]);
-        for (let index = 1; index < rest.length; index++) {
-          node = combine(node, rest[index][1], rest[index][3]);
+        for (let index2 = 1; index2 < rest.length; index2++) {
+          node = combine(node, rest[index2][1], rest[index2][3]);
         }
         return node;
       });
     }
     function chainOpt(base, ...funcs) {
-      return parsimmon_umd_minExports.custom((success, failure) => {
+      return parsimmon_umd_min.exports.custom((success, failure) => {
         return (input, i) => {
           let result = base._(input, i);
           if (!result.status)
@@ -10118,12 +10046,12 @@ var require_lib = __commonJS({
         };
       });
     }
-    var EXPRESSION = parsimmon_umd_minExports.createLanguage({
+    var EXPRESSION = parsimmon_umd_min.exports.createLanguage({
       // A floating point number; the decimal point is optional.
-      number: (q) => parsimmon_umd_minExports.regexp(/-?[0-9]+(\.[0-9]+)?/).map((str) => Number.parseFloat(str)).desc("number"),
+      number: (q) => parsimmon_umd_min.exports.regexp(/-?[0-9]+(\.[0-9]+)?/).map((str) => Number.parseFloat(str)).desc("number"),
       // A quote-surrounded string which supports escape characters ('\').
-      string: (q) => parsimmon_umd_minExports.string('"').then(parsimmon_umd_minExports.alt(q.escapeCharacter, parsimmon_umd_minExports.noneOf('"\\')).atLeast(0).map((chars) => chars.join(""))).skip(parsimmon_umd_minExports.string('"')).desc("string"),
-      escapeCharacter: (_) => parsimmon_umd_minExports.string("\\").then(parsimmon_umd_minExports.any).map((escaped) => {
+      string: (q) => parsimmon_umd_min.exports.string('"').then(parsimmon_umd_min.exports.alt(q.escapeCharacter, parsimmon_umd_min.exports.noneOf('"\\')).atLeast(0).map((chars) => chars.join(""))).skip(parsimmon_umd_min.exports.string('"')).desc("string"),
+      escapeCharacter: (_) => parsimmon_umd_min.exports.string("\\").then(parsimmon_umd_min.exports.any).map((escaped) => {
         if (escaped === '"')
           return '"';
         if (escaped === "\\")
@@ -10132,28 +10060,28 @@ var require_lib = __commonJS({
           return "\\" + escaped;
       }),
       // A boolean true/false value.
-      bool: (_) => parsimmon_umd_minExports.regexp(/true|false|True|False/).map((str) => str.toLowerCase() == "true").desc("boolean ('true' or 'false')"),
+      bool: (_) => parsimmon_umd_min.exports.regexp(/true|false|True|False/).map((str) => str.toLowerCase() == "true").desc("boolean ('true' or 'false')"),
       // A tag of the form '#stuff/hello-there'.
-      tag: (_) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("#"), parsimmon_umd_minExports.alt(parsimmon_umd_minExports.regexp(/[^\u2000-\u206F\u2E00-\u2E7F'!"#$%&()*+,.:;<=>?@^`{|}~\[\]\\\s]/).desc("text")).many(), (start2, rest) => start2 + rest.join("")).desc("tag ('#hello/stuff')"),
+      tag: (_) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("#"), parsimmon_umd_min.exports.alt(parsimmon_umd_min.exports.regexp(/[^\u2000-\u206F\u2E00-\u2E7F'!"#$%&()*+,.:;<=>?@^`{|}~\[\]\\\s]/).desc("text")).many(), (start2, rest) => start2 + rest.join("")).desc("tag ('#hello/stuff')"),
       // A variable identifier, which is alphanumeric and must start with a letter or... emoji.
-      identifier: (_) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.alt(parsimmon_umd_minExports.regexp(new RegExp("\\p{Letter}", "u")), parsimmon_umd_minExports.regexp(EMOJI_REGEX).desc("text")), parsimmon_umd_minExports.alt(parsimmon_umd_minExports.regexp(/[0-9\p{Letter}_-]/u), parsimmon_umd_minExports.regexp(EMOJI_REGEX).desc("text")).many(), (first, rest) => first + rest.join("")).desc("variable identifier"),
+      identifier: (_) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.alt(parsimmon_umd_min.exports.regexp(new RegExp("\\p{Letter}", "u")), parsimmon_umd_min.exports.regexp(EMOJI_REGEX).desc("text")), parsimmon_umd_min.exports.alt(parsimmon_umd_min.exports.regexp(/[0-9\p{Letter}_-]/u), parsimmon_umd_min.exports.regexp(EMOJI_REGEX).desc("text")).many(), (first, rest) => first + rest.join("")).desc("variable identifier"),
       // An Obsidian link of the form [[<link>]].
-      link: (_) => parsimmon_umd_minExports.regexp(/\[\[([^\[\]]*?)\]\]/u, 1).map((linkInner) => parseInnerLink(linkInner)).desc("file link"),
+      link: (_) => parsimmon_umd_min.exports.regexp(/\[\[([^\[\]]*?)\]\]/u, 1).map((linkInner) => parseInnerLink(linkInner)).desc("file link"),
       // An embeddable link which can start with '!'. This overlaps with the normal negation operator, so it is only
       // provided for metadata parsing.
-      embedLink: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("!").atMost(1), q.link, (p, l3) => {
+      embedLink: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("!").atMost(1), q.link, (p, l3) => {
         if (p.length > 0)
           l3.embed = true;
         return l3;
       }).desc("file link"),
       // Binary plus or minus operator.
-      binaryPlusMinus: (_) => parsimmon_umd_minExports.regexp(/\+|-/).map((str) => str).desc("'+' or '-'"),
+      binaryPlusMinus: (_) => parsimmon_umd_min.exports.regexp(/\+|-/).map((str) => str).desc("'+' or '-'"),
       // Binary times or divide operator.
-      binaryMulDiv: (_) => parsimmon_umd_minExports.regexp(/\*|\/|%/).map((str) => str).desc("'*' or '/' or '%'"),
+      binaryMulDiv: (_) => parsimmon_umd_min.exports.regexp(/\*|\/|%/).map((str) => str).desc("'*' or '/' or '%'"),
       // Binary comparison operator.
-      binaryCompareOp: (_) => parsimmon_umd_minExports.regexp(/>=|<=|!=|>|<|=/).map((str) => str).desc("'>=' or '<=' or '!=' or '=' or '>' or '<'"),
+      binaryCompareOp: (_) => parsimmon_umd_min.exports.regexp(/>=|<=|!=|>|<|=/).map((str) => str).desc("'>=' or '<=' or '!=' or '=' or '>' or '<'"),
       // Binary boolean combination operator.
-      binaryBooleanOp: (_) => parsimmon_umd_minExports.regexp(/and|or|&|\|/i).map((str) => {
+      binaryBooleanOp: (_) => parsimmon_umd_min.exports.regexp(/and|or|&|\|/i).map((str) => {
         if (str.toLowerCase() == "and")
           return "&";
         else if (str.toLowerCase() == "or")
@@ -10162,62 +10090,62 @@ var require_lib = __commonJS({
           return str;
       }).desc("'and' or 'or'"),
       // A date which can be YYYY-MM[-DDTHH:mm:ss].
-      rootDate: (_) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.regexp(/\d{4}/), parsimmon_umd_minExports.string("-"), parsimmon_umd_minExports.regexp(/\d{2}/), (year, _2, month) => {
+      rootDate: (_) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.regexp(/\d{4}/), parsimmon_umd_min.exports.string("-"), parsimmon_umd_min.exports.regexp(/\d{2}/), (year, _2, month) => {
         return DateTime2.fromObject({ year: Number.parseInt(year), month: Number.parseInt(month) });
       }).desc("date in format YYYY-MM[-DDTHH-MM-SS.MS]"),
-      dateShorthand: (_) => parsimmon_umd_minExports.alt(...Object.keys(DATE_SHORTHANDS).sort((a, b) => b.length - a.length).map(parsimmon_umd_minExports.string)),
-      date: (q) => chainOpt(q.rootDate, (ym) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("-"), parsimmon_umd_minExports.regexp(/\d{2}/), (_, day) => ym.set({ day: Number.parseInt(day) })), (ymd) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("T"), parsimmon_umd_minExports.regexp(/\d{2}/), (_, hour) => ymd.set({ hour: Number.parseInt(hour) })), (ymdh) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string(":"), parsimmon_umd_minExports.regexp(/\d{2}/), (_, minute) => ymdh.set({ minute: Number.parseInt(minute) })), (ymdhm) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string(":"), parsimmon_umd_minExports.regexp(/\d{2}/), (_, second) => ymdhm.set({ second: Number.parseInt(second) })), (ymdhms) => parsimmon_umd_minExports.alt(
-        parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("."), parsimmon_umd_minExports.regexp(/\d{3}/), (_, millisecond) => ymdhms.set({ millisecond: Number.parseInt(millisecond) })),
-        parsimmon_umd_minExports.succeed(ymdhms)
+      dateShorthand: (_) => parsimmon_umd_min.exports.alt(...Object.keys(DATE_SHORTHANDS).sort((a, b) => b.length - a.length).map(parsimmon_umd_min.exports.string)),
+      date: (q) => chainOpt(q.rootDate, (ym) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("-"), parsimmon_umd_min.exports.regexp(/\d{2}/), (_, day) => ym.set({ day: Number.parseInt(day) })), (ymd) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("T"), parsimmon_umd_min.exports.regexp(/\d{2}/), (_, hour) => ymd.set({ hour: Number.parseInt(hour) })), (ymdh) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string(":"), parsimmon_umd_min.exports.regexp(/\d{2}/), (_, minute) => ymdh.set({ minute: Number.parseInt(minute) })), (ymdhm) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string(":"), parsimmon_umd_min.exports.regexp(/\d{2}/), (_, second) => ymdhm.set({ second: Number.parseInt(second) })), (ymdhms) => parsimmon_umd_min.exports.alt(
+        parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("."), parsimmon_umd_min.exports.regexp(/\d{3}/), (_, millisecond) => ymdhms.set({ millisecond: Number.parseInt(millisecond) })),
+        parsimmon_umd_min.exports.succeed(ymdhms)
         // pass
-      ), (dt) => parsimmon_umd_minExports.alt(parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("+").or(parsimmon_umd_minExports.string("-")), parsimmon_umd_minExports.regexp(/\d{1,2}(:\d{2})?/), (pm, hr) => dt.setZone("UTC" + pm + hr, { keepLocalTime: true })), parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("Z"), () => dt.setZone("utc", { keepLocalTime: true })), parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("["), parsimmon_umd_minExports.regexp(/[0-9A-Za-z+-\/]+/u), parsimmon_umd_minExports.string("]"), (_a2, zone, _b) => dt.setZone(zone, { keepLocalTime: true })))).assert((dt) => dt.isValid, "valid date").desc("date in format YYYY-MM[-DDTHH-MM-SS.MS]"),
+      ), (dt) => parsimmon_umd_min.exports.alt(parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("+").or(parsimmon_umd_min.exports.string("-")), parsimmon_umd_min.exports.regexp(/\d{1,2}(:\d{2})?/), (pm, hr) => dt.setZone("UTC" + pm + hr, { keepLocalTime: true })), parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("Z"), () => dt.setZone("utc", { keepLocalTime: true })), parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("["), parsimmon_umd_min.exports.regexp(/[0-9A-Za-z+-\/]+/u), parsimmon_umd_min.exports.string("]"), (_a2, zone, _b) => dt.setZone(zone, { keepLocalTime: true })))).assert((dt) => dt.isValid, "valid date").desc("date in format YYYY-MM[-DDTHH-MM-SS.MS]"),
       // A date, plus various shorthand times of day it could be.
-      datePlus: (q) => parsimmon_umd_minExports.alt(q.dateShorthand.map((d) => DATE_SHORTHANDS[d]()), q.date).desc("date in format YYYY-MM[-DDTHH-MM-SS.MS] or in shorthand"),
+      datePlus: (q) => parsimmon_umd_min.exports.alt(q.dateShorthand.map((d) => DATE_SHORTHANDS[d]()), q.date).desc("date in format YYYY-MM[-DDTHH-MM-SS.MS] or in shorthand"),
       // A duration of time.
-      durationType: (_) => parsimmon_umd_minExports.alt(...Object.keys(DURATION_TYPES).sort((a, b) => b.length - a.length).map(parsimmon_umd_minExports.string)),
-      duration: (q) => parsimmon_umd_minExports.seqMap(q.number, parsimmon_umd_minExports.optWhitespace, q.durationType, (count, _, t) => DURATION_TYPES[t].mapUnits((x) => x * count)).sepBy1(parsimmon_umd_minExports.string(",").trim(parsimmon_umd_minExports.optWhitespace).or(parsimmon_umd_minExports.optWhitespace)).map((durations) => durations.reduce((p, c) => p.plus(c))).desc("duration like 4hr2min"),
+      durationType: (_) => parsimmon_umd_min.exports.alt(...Object.keys(DURATION_TYPES).sort((a, b) => b.length - a.length).map(parsimmon_umd_min.exports.string)),
+      duration: (q) => parsimmon_umd_min.exports.seqMap(q.number, parsimmon_umd_min.exports.optWhitespace, q.durationType, (count, _, t) => DURATION_TYPES[t].mapUnits((x) => x * count)).sepBy1(parsimmon_umd_min.exports.string(",").trim(parsimmon_umd_min.exports.optWhitespace).or(parsimmon_umd_min.exports.optWhitespace)).map((durations) => durations.reduce((p, c) => p.plus(c))).desc("duration like 4hr2min"),
       // A raw null value.
-      rawNull: (_) => parsimmon_umd_minExports.string("null"),
+      rawNull: (_) => parsimmon_umd_min.exports.string("null"),
       // Source parsing.
       tagSource: (q) => q.tag.map((tag) => Sources.tag(tag)),
-      csvSource: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("csv(").skip(parsimmon_umd_minExports.optWhitespace), q.string, parsimmon_umd_minExports.string(")"), (_1, path, _2) => Sources.csv(path)),
+      csvSource: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("csv(").skip(parsimmon_umd_min.exports.optWhitespace), q.string, parsimmon_umd_min.exports.string(")"), (_1, path2, _2) => Sources.csv(path2)),
       linkIncomingSource: (q) => q.link.map((link) => Sources.link(link.path, true)),
-      linkOutgoingSource: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("outgoing(").skip(parsimmon_umd_minExports.optWhitespace), q.link, parsimmon_umd_minExports.string(")"), (_1, link, _2) => Sources.link(link.path, false)),
+      linkOutgoingSource: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("outgoing(").skip(parsimmon_umd_min.exports.optWhitespace), q.link, parsimmon_umd_min.exports.string(")"), (_1, link, _2) => Sources.link(link.path, false)),
       folderSource: (q) => q.string.map((str) => Sources.folder(str)),
-      parensSource: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("("), parsimmon_umd_minExports.optWhitespace, q.source, parsimmon_umd_minExports.optWhitespace, parsimmon_umd_minExports.string(")"), (_1, _2, field, _3, _4) => field),
-      negateSource: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.alt(parsimmon_umd_minExports.string("-"), parsimmon_umd_minExports.string("!")), q.atomSource, (_, source) => Sources.negate(source)),
-      atomSource: (q) => parsimmon_umd_minExports.alt(q.parensSource, q.negateSource, q.linkOutgoingSource, q.linkIncomingSource, q.folderSource, q.tagSource, q.csvSource),
+      parensSource: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("("), parsimmon_umd_min.exports.optWhitespace, q.source, parsimmon_umd_min.exports.optWhitespace, parsimmon_umd_min.exports.string(")"), (_1, _2, field, _3, _4) => field),
+      negateSource: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.alt(parsimmon_umd_min.exports.string("-"), parsimmon_umd_min.exports.string("!")), q.atomSource, (_, source) => Sources.negate(source)),
+      atomSource: (q) => parsimmon_umd_min.exports.alt(q.parensSource, q.negateSource, q.linkOutgoingSource, q.linkIncomingSource, q.folderSource, q.tagSource, q.csvSource),
       binaryOpSource: (q) => createBinaryParser(q.atomSource, q.binaryBooleanOp.map((s3) => s3), Sources.binaryOp),
       source: (q) => q.binaryOpSource,
       // Field parsing.
       variableField: (q) => q.identifier.chain((r) => {
         if (KEYWORDS.includes(r.toUpperCase())) {
-          return parsimmon_umd_minExports.fail("Variable fields cannot be a keyword (" + KEYWORDS.join(" or ") + ")");
+          return parsimmon_umd_min.exports.fail("Variable fields cannot be a keyword (" + KEYWORDS.join(" or ") + ")");
         } else {
-          return parsimmon_umd_minExports.succeed(Fields.variable(r));
+          return parsimmon_umd_min.exports.succeed(Fields.variable(r));
         }
       }).desc("variable"),
       numberField: (q) => q.number.map((val) => Fields.literal(val)).desc("number"),
       stringField: (q) => q.string.map((val) => Fields.literal(val)).desc("string"),
       boolField: (q) => q.bool.map((val) => Fields.literal(val)).desc("boolean"),
-      dateField: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("date("), parsimmon_umd_minExports.optWhitespace, q.datePlus, parsimmon_umd_minExports.optWhitespace, parsimmon_umd_minExports.string(")"), (prefix, _1, date, _2, postfix) => Fields.literal(date)).desc("date"),
-      durationField: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("dur("), parsimmon_umd_minExports.optWhitespace, q.duration, parsimmon_umd_minExports.optWhitespace, parsimmon_umd_minExports.string(")"), (prefix, _1, dur, _2, postfix) => Fields.literal(dur)).desc("duration"),
+      dateField: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("date("), parsimmon_umd_min.exports.optWhitespace, q.datePlus, parsimmon_umd_min.exports.optWhitespace, parsimmon_umd_min.exports.string(")"), (prefix, _1, date, _2, postfix) => Fields.literal(date)).desc("date"),
+      durationField: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("dur("), parsimmon_umd_min.exports.optWhitespace, q.duration, parsimmon_umd_min.exports.optWhitespace, parsimmon_umd_min.exports.string(")"), (prefix, _1, dur, _2, postfix) => Fields.literal(dur)).desc("duration"),
       nullField: (q) => q.rawNull.map((_) => Fields.NULL),
       linkField: (q) => q.link.map((f) => Fields.literal(f)),
-      listField: (q) => q.field.sepBy(parsimmon_umd_minExports.string(",").trim(parsimmon_umd_minExports.optWhitespace)).wrap(parsimmon_umd_minExports.string("[").skip(parsimmon_umd_minExports.optWhitespace), parsimmon_umd_minExports.optWhitespace.then(parsimmon_umd_minExports.string("]"))).map((l3) => Fields.list(l3)).desc("list ('[1, 2, 3]')"),
-      objectField: (q) => parsimmon_umd_minExports.seqMap(q.identifier.or(q.string), parsimmon_umd_minExports.string(":").trim(parsimmon_umd_minExports.optWhitespace), q.field, (name, _sep, value) => {
+      listField: (q) => q.field.sepBy(parsimmon_umd_min.exports.string(",").trim(parsimmon_umd_min.exports.optWhitespace)).wrap(parsimmon_umd_min.exports.string("[").skip(parsimmon_umd_min.exports.optWhitespace), parsimmon_umd_min.exports.optWhitespace.then(parsimmon_umd_min.exports.string("]"))).map((l3) => Fields.list(l3)).desc("list ('[1, 2, 3]')"),
+      objectField: (q) => parsimmon_umd_min.exports.seqMap(q.identifier.or(q.string), parsimmon_umd_min.exports.string(":").trim(parsimmon_umd_min.exports.optWhitespace), q.field, (name, _sep, value) => {
         return { name, value };
-      }).sepBy(parsimmon_umd_minExports.string(",").trim(parsimmon_umd_minExports.optWhitespace)).wrap(parsimmon_umd_minExports.string("{").skip(parsimmon_umd_minExports.optWhitespace), parsimmon_umd_minExports.optWhitespace.then(parsimmon_umd_minExports.string("}"))).map((vals) => {
+      }).sepBy(parsimmon_umd_min.exports.string(",").trim(parsimmon_umd_min.exports.optWhitespace)).wrap(parsimmon_umd_min.exports.string("{").skip(parsimmon_umd_min.exports.optWhitespace), parsimmon_umd_min.exports.optWhitespace.then(parsimmon_umd_min.exports.string("}"))).map((vals) => {
         let res = {};
         for (let entry of vals)
           res[entry.name] = entry.value;
         return Fields.object(res);
       }).desc("object ('{ a: 1, b: 2 }')"),
-      atomInlineField: (q) => parsimmon_umd_minExports.alt(q.date, q.duration.map((d) => normalizeDuration(d)), q.string, q.tag, q.embedLink, q.bool, q.number, q.rawNull),
-      inlineFieldList: (q) => q.atomInlineField.sepBy(parsimmon_umd_minExports.string(",").trim(parsimmon_umd_minExports.optWhitespace).lookahead(q.atomInlineField)),
-      inlineField: (q) => parsimmon_umd_minExports.alt(parsimmon_umd_minExports.seqMap(q.atomInlineField, parsimmon_umd_minExports.string(",").trim(parsimmon_umd_minExports.optWhitespace), q.inlineFieldList, (f, _s, l3) => [f].concat(l3)), q.atomInlineField),
-      atomField: (q) => parsimmon_umd_minExports.alt(
-        // Place embed links above negated fields as they are the special parser case '![[thing]]' and are generally unambiguous.
+      atomInlineField: (q) => parsimmon_umd_min.exports.alt(q.date, q.duration.map((d) => normalizeDuration(d)), q.string, q.tag, q.embedLink, q.bool, q.number, q.rawNull),
+      inlineFieldList: (q) => q.atomInlineField.sepBy(parsimmon_umd_min.exports.string(",").trim(parsimmon_umd_min.exports.optWhitespace).lookahead(q.atomInlineField)),
+      inlineField: (q) => parsimmon_umd_min.exports.alt(parsimmon_umd_min.exports.seqMap(q.atomInlineField, parsimmon_umd_min.exports.string(",").trim(parsimmon_umd_min.exports.optWhitespace), q.inlineFieldList, (f, _s, l3) => [f].concat(l3)), q.atomInlineField),
+      atomField: (q) => parsimmon_umd_min.exports.alt(
+        // Place embed links above negated fields as they are the special parser case '![[thing]]' and are generally unambigious.
         q.embedLink.map((l3) => Fields.literal(l3)),
         q.negatedField,
         q.linkField,
@@ -10233,7 +10161,7 @@ var require_lib = __commonJS({
         q.nullField,
         q.variableField
       ),
-      indexField: (q) => parsimmon_umd_minExports.seqMap(q.atomField, parsimmon_umd_minExports.alt(q.dotPostfix, q.indexPostfix, q.functionPostfix).many(), (obj, postfixes) => {
+      indexField: (q) => parsimmon_umd_min.exports.seqMap(q.atomField, parsimmon_umd_min.exports.alt(q.dotPostfix, q.indexPostfix, q.functionPostfix).many(), (obj, postfixes) => {
         let result = obj;
         for (let post of postfixes) {
           switch (post.type) {
@@ -10250,18 +10178,18 @@ var require_lib = __commonJS({
         }
         return result;
       }),
-      negatedField: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("!"), q.indexField, (_, field) => Fields.negate(field)).desc("negated field"),
-      parensField: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("("), parsimmon_umd_minExports.optWhitespace, q.field, parsimmon_umd_minExports.optWhitespace, parsimmon_umd_minExports.string(")"), (_1, _2, field, _3, _4) => field),
-      lambdaField: (q) => parsimmon_umd_minExports.seqMap(q.identifier.sepBy(parsimmon_umd_minExports.string(",").trim(parsimmon_umd_minExports.optWhitespace)).wrap(parsimmon_umd_minExports.string("(").trim(parsimmon_umd_minExports.optWhitespace), parsimmon_umd_minExports.string(")").trim(parsimmon_umd_minExports.optWhitespace)), parsimmon_umd_minExports.string("=>").trim(parsimmon_umd_minExports.optWhitespace), q.field, (ident, _ignore, value) => {
+      negatedField: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("!"), q.indexField, (_, field) => Fields.negate(field)).desc("negated field"),
+      parensField: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("("), parsimmon_umd_min.exports.optWhitespace, q.field, parsimmon_umd_min.exports.optWhitespace, parsimmon_umd_min.exports.string(")"), (_1, _2, field, _3, _4) => field),
+      lambdaField: (q) => parsimmon_umd_min.exports.seqMap(q.identifier.sepBy(parsimmon_umd_min.exports.string(",").trim(parsimmon_umd_min.exports.optWhitespace)).wrap(parsimmon_umd_min.exports.string("(").trim(parsimmon_umd_min.exports.optWhitespace), parsimmon_umd_min.exports.string(")").trim(parsimmon_umd_min.exports.optWhitespace)), parsimmon_umd_min.exports.string("=>").trim(parsimmon_umd_min.exports.optWhitespace), q.field, (ident, _ignore, value) => {
         return { type: "lambda", arguments: ident, value };
       }),
-      dotPostfix: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("."), q.identifier, (_, field) => {
+      dotPostfix: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("."), q.identifier, (_, field) => {
         return { type: "dot", field };
       }),
-      indexPostfix: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("["), parsimmon_umd_minExports.optWhitespace, q.field, parsimmon_umd_minExports.optWhitespace, parsimmon_umd_minExports.string("]"), (_, _2, field, _3, _4) => {
+      indexPostfix: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("["), parsimmon_umd_min.exports.optWhitespace, q.field, parsimmon_umd_min.exports.optWhitespace, parsimmon_umd_min.exports.string("]"), (_, _2, field, _3, _4) => {
         return { type: "index", field };
       }),
-      functionPostfix: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.string("("), parsimmon_umd_minExports.optWhitespace, q.field.sepBy(parsimmon_umd_minExports.string(",").trim(parsimmon_umd_minExports.optWhitespace)), parsimmon_umd_minExports.optWhitespace, parsimmon_umd_minExports.string(")"), (_, _1, fields, _2, _3) => {
+      functionPostfix: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.string("("), parsimmon_umd_min.exports.optWhitespace, q.field.sepBy(parsimmon_umd_min.exports.string(",").trim(parsimmon_umd_min.exports.optWhitespace)), parsimmon_umd_min.exports.optWhitespace, parsimmon_umd_min.exports.string(")"), (_, _1, fields, _2, _3) => {
         return { type: "function", fields };
       }),
       // The precedence hierarchy of operators - multiply/divide, add/subtract, compare, and then boolean operations.
@@ -10291,7 +10219,7 @@ var require_lib = __commonJS({
       QueryFields2.sortBy = sortBy;
     })(QueryFields || (QueryFields = {}));
     function captureRaw(base) {
-      return parsimmon_umd_minExports.custom((success, failure) => {
+      return parsimmon_umd_min.exports.custom((success, failure) => {
         return (input, i) => {
           let result = base._(input, i);
           if (!result.status)
@@ -10303,23 +10231,12 @@ var require_lib = __commonJS({
     function stripNewlines(text2) {
       return text2.split(/[\r\n]+/).map((t) => t.trim()).join("");
     }
-    function precededByWhitespaceIfNotEof(if_eof, parser) {
-      return parsimmon_umd_minExports.eof.map(if_eof).or(parsimmon_umd_minExports.whitespace.then(parser));
-    }
-    var QUERY_LANGUAGE = parsimmon_umd_minExports.createLanguage({
+    var QUERY_LANGUAGE = parsimmon_umd_min.exports.createLanguage({
       // Simple atom parsing, like words, identifiers, numbers.
-      queryType: (q) => parsimmon_umd_minExports.alt(parsimmon_umd_minExports.regexp(/TABLE|LIST|TASK|CALENDAR/i)).map((str) => str.toLowerCase()).desc("query type ('TABLE', 'LIST', 'TASK', or 'CALENDAR')"),
-      explicitNamedField: (q) => parsimmon_umd_minExports.seqMap(EXPRESSION.field.skip(parsimmon_umd_minExports.whitespace), parsimmon_umd_minExports.regexp(/AS/i).skip(parsimmon_umd_minExports.whitespace), EXPRESSION.identifier.or(EXPRESSION.string), (field, _as, ident) => QueryFields.named(ident, field)),
-      comment: () => parsimmon_umd_minExports.Parser((input, i) => {
-        let line = input.substring(i);
-        if (!line.startsWith("//"))
-          return parsimmon_umd_minExports.makeFailure(i, "Not a comment");
-        line = line.split("\n")[0];
-        let comment = line.substring(2).trim();
-        return parsimmon_umd_minExports.makeSuccess(i + line.length, comment);
-      }),
-      namedField: (q) => parsimmon_umd_minExports.alt(q.explicitNamedField, captureRaw(EXPRESSION.field).map(([value, text2]) => QueryFields.named(stripNewlines(text2), value))),
-      sortField: (q) => parsimmon_umd_minExports.seqMap(EXPRESSION.field.skip(parsimmon_umd_minExports.optWhitespace), parsimmon_umd_minExports.regexp(/ASCENDING|DESCENDING|ASC|DESC/i).atMost(1), (field, dir) => {
+      queryType: (q) => parsimmon_umd_min.exports.alt(parsimmon_umd_min.exports.regexp(/TABLE|LIST|TASK|CALENDAR/i)).map((str) => str.toLowerCase()).desc("query type ('TABLE', 'LIST', 'TASK', or 'CALENDAR')"),
+      explicitNamedField: (q) => parsimmon_umd_min.exports.seqMap(EXPRESSION.field.skip(parsimmon_umd_min.exports.whitespace), parsimmon_umd_min.exports.regexp(/AS/i).skip(parsimmon_umd_min.exports.whitespace), EXPRESSION.identifier.or(EXPRESSION.string), (field, _as, ident) => QueryFields.named(ident, field)),
+      namedField: (q) => parsimmon_umd_min.exports.alt(q.explicitNamedField, captureRaw(EXPRESSION.field).map(([value, text2]) => QueryFields.named(stripNewlines(text2), value))),
+      sortField: (q) => parsimmon_umd_min.exports.seqMap(EXPRESSION.field.skip(parsimmon_umd_min.exports.optWhitespace), parsimmon_umd_min.exports.regexp(/ASCENDING|DESCENDING|ASC|DESC/i).atMost(1), (field, dir) => {
         let direction = dir.length == 0 ? "ascending" : dir[0].toLowerCase();
         if (direction == "desc")
           direction = "descending";
@@ -10330,54 +10247,53 @@ var require_lib = __commonJS({
           direction
         };
       }),
-      headerClause: (q) => q.queryType.chain((type) => {
-        switch (type) {
-          case "table": {
-            return precededByWhitespaceIfNotEof(() => ({ type, fields: [], showId: true }), parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.regexp(/WITHOUT\s+ID/i).skip(parsimmon_umd_minExports.optWhitespace).atMost(1), parsimmon_umd_minExports.sepBy(q.namedField, parsimmon_umd_minExports.string(",").trim(parsimmon_umd_minExports.optWhitespace)), (withoutId, fields) => {
-              return { type, fields, showId: withoutId.length == 0 };
-            }));
-          }
+      headerClause: (q) => q.queryType.skip(parsimmon_umd_min.exports.whitespace).chain((qtype) => {
+        switch (qtype) {
+          case "table":
+            return parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.regexp(/WITHOUT\s+ID/i).skip(parsimmon_umd_min.exports.optWhitespace).atMost(1), parsimmon_umd_min.exports.sepBy(q.namedField, parsimmon_umd_min.exports.string(",").trim(parsimmon_umd_min.exports.optWhitespace)), (withoutId, fields) => {
+              return { type: "table", fields, showId: withoutId.length == 0 };
+            });
           case "list":
-            return precededByWhitespaceIfNotEof(() => ({ type, format: void 0, showId: true }), parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.regexp(/WITHOUT\s+ID/i).skip(parsimmon_umd_minExports.optWhitespace).atMost(1), EXPRESSION.field.atMost(1), (withoutId, format) => {
+            return parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.regexp(/WITHOUT\s+ID/i).skip(parsimmon_umd_min.exports.optWhitespace).atMost(1), EXPRESSION.field.atMost(1), (withoutId, format) => {
               return {
-                type,
+                type: "list",
                 format: format.length == 1 ? format[0] : void 0,
                 showId: withoutId.length == 0
               };
-            }));
+            });
           case "task":
-            return parsimmon_umd_minExports.succeed({ type });
+            return parsimmon_umd_min.exports.succeed({ type: "task" });
           case "calendar":
-            return parsimmon_umd_minExports.whitespace.then(parsimmon_umd_minExports.seqMap(q.namedField, (field) => {
+            return parsimmon_umd_min.exports.seqMap(q.namedField, (field) => {
               return {
-                type,
+                type: "calendar",
                 showId: true,
                 field
               };
-            }));
+            });
           default:
-            return parsimmon_umd_minExports.fail(`Unrecognized query type '${type}'`);
+            return parsimmon_umd_min.exports.fail(`Unrecognized query type '${qtype}'`);
         }
       }).desc("TABLE or LIST or TASK or CALENDAR"),
-      fromClause: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.regexp(/FROM/i), parsimmon_umd_minExports.whitespace, EXPRESSION.source, (_1, _2, source) => source),
-      whereClause: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.regexp(/WHERE/i), parsimmon_umd_minExports.whitespace, EXPRESSION.field, (where, _, field) => {
+      fromClause: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.regexp(/FROM/i), parsimmon_umd_min.exports.whitespace, EXPRESSION.source, (_1, _2, source) => source),
+      whereClause: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.regexp(/WHERE/i), parsimmon_umd_min.exports.whitespace, EXPRESSION.field, (where, _, field) => {
         return { type: "where", clause: field };
       }).desc("WHERE <expression>"),
-      sortByClause: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.regexp(/SORT/i), parsimmon_umd_minExports.whitespace, q.sortField.sepBy1(parsimmon_umd_minExports.string(",").trim(parsimmon_umd_minExports.optWhitespace)), (sort, _1, fields) => {
+      sortByClause: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.regexp(/SORT/i), parsimmon_umd_min.exports.whitespace, q.sortField.sepBy1(parsimmon_umd_min.exports.string(",").trim(parsimmon_umd_min.exports.optWhitespace)), (sort2, _1, fields) => {
         return { type: "sort", fields };
       }).desc("SORT field [ASC/DESC]"),
-      limitClause: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.regexp(/LIMIT/i), parsimmon_umd_minExports.whitespace, EXPRESSION.field, (limit, _1, field) => {
+      limitClause: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.regexp(/LIMIT/i), parsimmon_umd_min.exports.whitespace, EXPRESSION.field, (limit, _1, field) => {
         return { type: "limit", amount: field };
       }).desc("LIMIT <value>"),
-      flattenClause: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.regexp(/FLATTEN/i).skip(parsimmon_umd_minExports.whitespace), q.namedField, (_, field) => {
+      flattenClause: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.regexp(/FLATTEN/i).skip(parsimmon_umd_min.exports.whitespace), q.namedField, (_, field) => {
         return { type: "flatten", field };
       }).desc("FLATTEN <value> [AS <name>]"),
-      groupByClause: (q) => parsimmon_umd_minExports.seqMap(parsimmon_umd_minExports.regexp(/GROUP BY/i).skip(parsimmon_umd_minExports.whitespace), q.namedField, (_, field) => {
+      groupByClause: (q) => parsimmon_umd_min.exports.seqMap(parsimmon_umd_min.exports.regexp(/GROUP BY/i).skip(parsimmon_umd_min.exports.whitespace), q.namedField, (_, field) => {
         return { type: "group", field };
       }).desc("GROUP BY <value> [AS <name>]"),
       // Full query parsing.
-      clause: (q) => parsimmon_umd_minExports.alt(q.fromClause, q.whereClause, q.sortByClause, q.limitClause, q.groupByClause, q.flattenClause),
-      query: (q) => parsimmon_umd_minExports.seqMap(q.headerClause.trim(optionalWhitespaceOrComment), q.fromClause.trim(optionalWhitespaceOrComment).atMost(1), q.clause.trim(optionalWhitespaceOrComment).many(), (header, from, clauses) => {
+      clause: (q) => parsimmon_umd_min.exports.alt(q.fromClause, q.whereClause, q.sortByClause, q.limitClause, q.groupByClause, q.flattenClause),
+      query: (q) => parsimmon_umd_min.exports.seqMap(q.headerClause.trim(parsimmon_umd_min.exports.optWhitespace), q.fromClause.trim(parsimmon_umd_min.exports.optWhitespace).atMost(1), q.clause.trim(parsimmon_umd_min.exports.optWhitespace).many(), (header, from, clauses) => {
         return {
           header,
           source: from.length == 0 ? Sources.folder("") : from[0],
@@ -10386,11 +10302,10 @@ var require_lib = __commonJS({
         };
       })
     });
-    var optionalWhitespaceOrComment = parsimmon_umd_minExports.alt(parsimmon_umd_minExports.whitespace, QUERY_LANGUAGE.comment).many().map((arr) => arr.join(""));
     var getAPI2 = (app) => {
       var _a2;
       if (app)
-        return (_a2 = app.plugins.plugins.dataview) == null ? void 0 : _a2.api;
+        return (_a2 = app.plugins.plugins.dataview) === null || _a2 === void 0 ? void 0 : _a2.api;
       else
         return window.DataviewAPI;
     };
@@ -10411,22 +10326,22 @@ var generateGardenSnapshot_exports = {};
 __export(generateGardenSnapshot_exports, {
   generateGardenSnapshot: () => generateGardenSnapshot
 });
-var import_obsidian18, import_promises, SNAPSHOT_PATH, generateGardenSnapshot;
+var import_obsidian21, import_promises2, SNAPSHOT_PATH, generateGardenSnapshot;
 var init_generateGardenSnapshot = __esm({
   "src/test/snapshot/generateGardenSnapshot.ts"() {
     "use strict";
-    import_obsidian18 = require("obsidian");
-    import_promises = __toESM(require("fs/promises"));
+    import_obsidian21 = require("obsidian");
+    import_promises2 = __toESM(require("fs/promises"));
     SNAPSHOT_PATH = "src/test/snapshot/snapshot.md";
-    generateGardenSnapshot = (settings, publisher) => __async(null, null, function* () {
+    generateGardenSnapshot = (settings, publisher) => __async(void 0, null, function* () {
       const devPluginPath = settings.devPluginPath;
       if (!devPluginPath) {
-        new import_obsidian18.Notice("devPluginPath missing, run generateGardenSettings.mjs");
+        new import_obsidian21.Notice("devPluginPath missing, run generateGardenSettings.mjs");
         return;
       }
       const marked = yield publisher.getFilesMarkedForPublishing();
       let fileString = "IMAGES: \n";
-      fileString += marked.images.map((path) => `${path}
+      fileString += marked.images.map((path2) => `${path2}
 `);
       const assetPaths = /* @__PURE__ */ new Set();
       for (const file of marked.notes) {
@@ -10438,16 +10353,16 @@ var init_generateGardenSnapshot = __esm({
         assets.images.map((image) => assetPaths.add(image.path));
         fileString += `${content}
 `;
-        fileString += Array.from(assetPaths).map((path) => `${path}
+        fileString += Array.from(assetPaths).map((path2) => `${path2}
 `);
       }
       fileString += "==========\n";
       const fullSnapshotPath = `${devPluginPath}/${SNAPSHOT_PATH}`;
-      if (import_obsidian18.Platform.isDesktop) {
-        yield import_promises.default.writeFile(fullSnapshotPath, fileString);
+      if (import_obsidian21.Platform.isDesktop) {
+        yield import_promises2.default.writeFile(fullSnapshotPath, fileString);
       }
-      new import_obsidian18.Notice(`Snapshot written to ${fullSnapshotPath}`);
-      new import_obsidian18.Notice(`Check snapshot to make sure nothing has accidentally changed`);
+      new import_obsidian21.Notice(`Snapshot written to ${fullSnapshotPath}`);
+      new import_obsidian21.Notice(`Check snapshot to make sure nothing has accidentally changed`);
     });
   }
 });
@@ -10458,7 +10373,7 @@ __export(main_exports, {
   default: () => DigitalGarden
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian19 = require("obsidian");
+var import_obsidian22 = require("obsidian");
 
 // src/publisher/Publisher.ts
 var import_obsidian6 = require("obsidian");
@@ -10716,7 +10631,7 @@ function sanitizePermalink(permalink) {
 
 // src/publishFile/Validator.ts
 var import_obsidian = require("obsidian");
-var hasPublishFlag = (frontMatter) => !!(frontMatter == null ? void 0 : frontMatter["dg-publish"]);
+var hasPublishFlag = (frontMatter) => !!(frontMatter == null ? void 0 : frontMatter["dg-publish"]) && (frontMatter == null ? void 0 : frontMatter["dg-publish"]) !== "false";
 function isPublishFrontmatterValid(frontMatter) {
   if (!hasPublishFlag(frontMatter)) {
     new import_obsidian.Notice(
@@ -10749,7 +10664,8 @@ var LimitReachedError = class extends Error {
 function throwIfLimitError(error) {
   if (error && typeof error === "object" && "status" in error && error.status === 403) {
     const responseData = extractResponseData(error);
-    if (!responseData) return;
+    if (!responseData)
+      return;
     const errorType = responseData.error;
     if (errorType === "build_limit_reached" || errorType === "storage_limit_exceeded") {
       throw new LimitReachedError(errorType, responseData);
@@ -10817,16 +10733,16 @@ var RepositoryConnection = class {
       }
     });
   }
-  getFile(path, branch) {
+  getFile(path2, branch) {
     return __async(this, null, function* () {
       logger.info(
-        `Getting file ${path} from repository ${this.getRepositoryName()}`
+        `Getting file ${path2} from repository ${this.getRepositoryName()}`
       );
       try {
         const response = yield this.octokit.request(
           "GET /repos/{owner}/{repo}/contents/{path}",
           __spreadProps(__spreadValues({}, this.getBasePayload()), {
-            path,
+            path: path2,
             ref: branch
           })
         );
@@ -10835,24 +10751,24 @@ var RepositoryConnection = class {
         }
       } catch (error) {
         throw new Error(
-          `Could not get file ${path} from repository ${this.getRepositoryName()}`
+          `Could not get file ${path2} from repository ${this.getRepositoryName()}`
         );
       }
     });
   }
   deleteFile(_0, _1) {
-    return __async(this, arguments, function* (path, { branch, sha }) {
+    return __async(this, arguments, function* (path2, { branch, sha }) {
       try {
-        sha != null ? sha : sha = yield this.getFile(path, branch).then((file) => file == null ? void 0 : file.sha);
+        sha != null ? sha : sha = yield this.getFile(path2, branch).then((file) => file == null ? void 0 : file.sha);
         if (!sha) {
           console.error(
-            `cannot find file ${path} on github, not removing`
+            `cannot find file ${path2} on github, not removing`
           );
           return false;
         }
         const payload = __spreadProps(__spreadValues({}, this.getBasePayload()), {
-          path,
-          message: `Delete content ${path}`,
+          path: path2,
+          message: `Delete content ${path2}`,
           sha,
           branch
         });
@@ -10861,7 +10777,7 @@ var RepositoryConnection = class {
           payload
         );
         import_js_logger.default.info(
-          `Deleted file ${path} from repository ${this.getRepositoryName()}`
+          `Deleted file ${path2} from repository ${this.getRepositoryName()}`
         );
         return result;
       } catch (error) {
@@ -10904,10 +10820,10 @@ var RepositoryConnection = class {
     });
   }
   updateFile(_0) {
-    return __async(this, arguments, function* ({ path, sha, content, branch, message }) {
+    return __async(this, arguments, function* ({ path: path2, sha, content, branch, message }) {
       const payload = __spreadProps(__spreadValues({}, this.getBasePayload()), {
-        path,
-        message: message != null ? message : `Update file ${path}`,
+        path: path2,
+        message: message != null ? message : `Update file ${path2}`,
         content,
         sha,
         branch
@@ -10932,12 +10848,12 @@ var RepositoryConnection = class {
         logger.error("Could not get latest commit");
         return;
       }
-      const normalizePath = (path) => path.startsWith("/") ? path.slice(1) : path;
-      const filesToDelete = filePaths.map((path) => {
-        if (path.endsWith(".md")) {
-          return `${NOTE_PATH_BASE}${normalizePath(path)}`;
+      const normalizePath = (path2) => path2.startsWith("/") ? path2.slice(1) : path2;
+      const filesToDelete = filePaths.map((path2) => {
+        if (path2.endsWith(".md")) {
+          return `${NOTE_PATH_BASE}${normalizePath(path2)}`;
         }
-        return `${IMAGE_PATH_BASE}${normalizePath(path)}`;
+        return `${IMAGE_PATH_BASE}${normalizePath(path2)}`;
       });
       const repoDataPromise = this.octokit.request(
         "GET /repos/{owner}/{repo}",
@@ -10999,7 +10915,7 @@ var RepositoryConnection = class {
       );
       const latestCommitSha = latestCommit.sha;
       const baseTreeSha = latestCommit.commit.tree.sha;
-      const normalizePath = (path) => path.startsWith("/") ? path.slice(1) : path;
+      const normalizePath = (path2) => path2.startsWith("/") ? path2.slice(1) : path2;
       const treePromises = files.map((file) => __async(this, null, function* () {
         const [text2, _] = file.compiledFile;
         try {
@@ -11116,8 +11032,8 @@ var TemplateUpdateChecker = class {
     this.baseGardenConnection = baseGardenConnection;
     this.userGardenConnection = userGardenConnection;
   }
-  getFileInfoFromContent(content, path) {
-    const file = content == null ? void 0 : content.tree.find((x) => x.path === path);
+  getFileInfoFromContent(content, path2) {
+    const file = content == null ? void 0 : content.tree.find((x) => x.path === path2);
     if (!file) {
       return null;
     }
@@ -11347,8 +11263,28 @@ function getUserAgent() {
 // node_modules/@octokit/core/dist-web/index.js
 var import_before_after_hook = __toESM(require_before_after_hook());
 
+// node_modules/is-plain-object/dist/is-plain-object.mjs
+function isObject(o) {
+  return Object.prototype.toString.call(o) === "[object Object]";
+}
+function isPlainObject(o) {
+  var ctor, prot;
+  if (isObject(o) === false)
+    return false;
+  ctor = o.constructor;
+  if (ctor === void 0)
+    return true;
+  prot = ctor.prototype;
+  if (isObject(prot) === false)
+    return false;
+  if (prot.hasOwnProperty("isPrototypeOf") === false) {
+    return false;
+  }
+  return true;
+}
+
 // node_modules/@octokit/endpoint/dist-web/index.js
-var VERSION2 = "9.0.6";
+var VERSION2 = "9.0.0";
 var userAgent = `octokit-endpoint.js/${VERSION2} ${getUserAgent()}`;
 var DEFAULTS = {
   method: "GET",
@@ -11370,25 +11306,14 @@ function lowercaseKeys(object) {
     return newObj;
   }, {});
 }
-function isPlainObject(value) {
-  if (typeof value !== "object" || value === null)
-    return false;
-  if (Object.prototype.toString.call(value) !== "[object Object]")
-    return false;
-  const proto = Object.getPrototypeOf(value);
-  if (proto === null)
-    return true;
-  const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
-  return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
-}
-function mergeDeep(defaults2, options) {
-  const result = Object.assign({}, defaults2);
+function mergeDeep(defaults3, options) {
+  const result = Object.assign({}, defaults3);
   Object.keys(options).forEach((key) => {
     if (isPlainObject(options[key])) {
-      if (!(key in defaults2))
+      if (!(key in defaults3))
         Object.assign(result, { [key]: options[key] });
       else
-        result[key] = mergeDeep(defaults2[key], options[key]);
+        result[key] = mergeDeep(defaults3[key], options[key]);
     } else {
       Object.assign(result, { [key]: options[key] });
     }
@@ -11403,7 +11328,7 @@ function removeUndefinedProperties(obj) {
   }
   return obj;
 }
-function merge(defaults2, route, options) {
+function merge(defaults3, route, options) {
   var _a2;
   if (typeof route === "string") {
     let [method, url] = route.split(" ");
@@ -11414,10 +11339,10 @@ function merge(defaults2, route, options) {
   options.headers = lowercaseKeys(options.headers);
   removeUndefinedProperties(options);
   removeUndefinedProperties(options.headers);
-  const mergedOptions = mergeDeep(defaults2 || {}, options);
+  const mergedOptions = mergeDeep(defaults3 || {}, options);
   if (options.url === "/graphql") {
-    if (defaults2 && ((_a2 = defaults2.mediaType.previews) == null ? void 0 : _a2.length)) {
-      mergedOptions.mediaType.previews = defaults2.mediaType.previews.filter(
+    if (defaults3 && ((_a2 = defaults3.mediaType.previews) == null ? void 0 : _a2.length)) {
+      mergedOptions.mediaType.previews = defaults3.mediaType.previews.filter(
         (preview) => !mergedOptions.mediaType.previews.includes(preview)
       ).concat(mergedOptions.mediaType.previews);
     }
@@ -11438,25 +11363,22 @@ function addQueryParameters(url, parameters) {
     return `${name}=${encodeURIComponent(parameters[name])}`;
   }).join("&");
 }
-var urlVariableRegex = /\{[^{}}]+\}/g;
+var urlVariableRegex = /\{[^}]+\}/g;
 function removeNonChars(variableName) {
-  return variableName.replace(new RegExp("(?:^\\W+)|(?:(?<!\\W)\\W+$)", "g"), "").split(/,/);
+  return variableName.replace(/^\W+|\W+$/g, "").split(/,/);
 }
 function extractUrlVariableNames(url) {
-  const matches = url.match(urlVariableRegex);
-  if (!matches) {
+  const matches2 = url.match(urlVariableRegex);
+  if (!matches2) {
     return [];
   }
-  return matches.map(removeNonChars).reduce((a, b) => a.concat(b), []);
+  return matches2.map(removeNonChars).reduce((a, b) => a.concat(b), []);
 }
 function omit(object, keysToOmit) {
-  const result = { __proto__: null };
-  for (const key of Object.keys(object)) {
-    if (keysToOmit.indexOf(key) === -1) {
-      result[key] = object[key];
-    }
-  }
-  return result;
+  return Object.keys(object).filter((option2) => !keysToOmit.includes(option2)).reduce((obj, key) => {
+    obj[key] = object[key];
+    return obj;
+  }, {});
 }
 function encodeReserved(str) {
   return str.split(/(%[0-9A-Fa-f]{2})/g).map(function(part) {
@@ -11552,7 +11474,7 @@ function parseUrl(template) {
 }
 function expand(template, context) {
   var operators = ["+", "#", ".", "/", ";", "?", "&"];
-  template = template.replace(
+  return template.replace(
     /\{([^\{\}]+)\}|([^\{\}]+)/g,
     function(_, expression, literal) {
       if (expression) {
@@ -11582,11 +11504,6 @@ function expand(template, context) {
       }
     }
   );
-  if (template === "/") {
-    return template;
-  } else {
-    return template.replace(/\/$/, "");
-  }
 }
 function parse(options) {
   var _a2;
@@ -11607,7 +11524,7 @@ function parse(options) {
   if (!/^http/.test(url)) {
     url = options.baseUrl + url;
   }
-  const omittedParameters = Object.keys(options).filter((option) => urlVariableNames.includes(option)).concat("baseUrl");
+  const omittedParameters = Object.keys(options).filter((option2) => urlVariableNames.includes(option2)).concat("baseUrl");
   const remainingParameters = omit(parameters, omittedParameters);
   const isBinaryRequest = /application\/octet-stream/i.test(headers.accept);
   if (!isBinaryRequest) {
@@ -11621,7 +11538,7 @@ function parse(options) {
     }
     if (url.endsWith("/graphql")) {
       if ((_a2 = options.mediaType.previews) == null ? void 0 : _a2.length) {
-        const previewsFromAcceptHeader = headers.accept.match(new RegExp("(?<![\\w-])[\\w-]+(?=-preview)", "g")) || [];
+        const previewsFromAcceptHeader = headers.accept.match(/[\w-]+(?=-preview)/g) || [];
         headers.accept = previewsFromAcceptHeader.concat(options.mediaType.previews).map((preview) => {
           const format = options.mediaType.format ? `.${options.mediaType.format}` : "+json";
           return `application/vnd.github.${preview}-preview${format}`;
@@ -11652,8 +11569,8 @@ function parse(options) {
     options.request ? { request: options.request } : null
   );
 }
-function endpointWithDefaults(defaults2, route, options) {
-  return parse(merge(defaults2, route, options));
+function endpointWithDefaults(defaults3, route, options) {
+  return parse(merge(defaults3, route, options));
 }
 function withDefaults(oldDefaults, newDefaults) {
   const DEFAULTS2 = merge(oldDefaults, newDefaults);
@@ -11702,7 +11619,7 @@ var RequestError = class extends Error {
     if (options.request.headers.authorization) {
       requestCopy.headers = Object.assign({}, options.request.headers, {
         authorization: options.request.headers.authorization.replace(
-          new RegExp("(?<! ) .*$"),
+          / .*$/,
           " [REDACTED]"
         )
       });
@@ -11733,55 +11650,43 @@ var RequestError = class extends Error {
 };
 
 // node_modules/@octokit/request/dist-web/index.js
-var VERSION3 = "8.4.1";
-function isPlainObject2(value) {
-  if (typeof value !== "object" || value === null)
-    return false;
-  if (Object.prototype.toString.call(value) !== "[object Object]")
-    return false;
-  const proto = Object.getPrototypeOf(value);
-  if (proto === null)
-    return true;
-  const Ctor = Object.prototype.hasOwnProperty.call(proto, "constructor") && proto.constructor;
-  return typeof Ctor === "function" && Ctor instanceof Ctor && Function.prototype.call(Ctor) === Function.prototype.call(value);
-}
+var VERSION3 = "8.1.1";
 function getBufferResponse(response) {
   return response.arrayBuffer();
 }
 function fetchWrapper(requestOptions) {
-  var _a2, _b, _c, _d;
+  var _a2, _b, _c;
   const log = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
   const parseSuccessResponseBody = ((_a2 = requestOptions.request) == null ? void 0 : _a2.parseSuccessResponseBody) !== false;
-  if (isPlainObject2(requestOptions.body) || Array.isArray(requestOptions.body)) {
+  if (isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
     requestOptions.body = JSON.stringify(requestOptions.body);
   }
   let headers = {};
   let status;
   let url;
-  let { fetch: fetch2 } = globalThis;
+  let { fetch } = globalThis;
   if ((_b = requestOptions.request) == null ? void 0 : _b.fetch) {
-    fetch2 = requestOptions.request.fetch;
+    fetch = requestOptions.request.fetch;
   }
-  if (!fetch2) {
+  if (!fetch) {
     throw new Error(
       "fetch is not set. Please pass a fetch implementation as new Octokit({ request: { fetch }}). Learn more at https://github.com/octokit/octokit.js/#fetch-missing"
     );
   }
-  return fetch2(requestOptions.url, __spreadValues({
+  return fetch(requestOptions.url, __spreadValues({
     method: requestOptions.method,
     body: requestOptions.body,
-    redirect: (_c = requestOptions.request) == null ? void 0 : _c.redirect,
     headers: requestOptions.headers,
-    signal: (_d = requestOptions.request) == null ? void 0 : _d.signal
-  }, requestOptions.body && { duplex: "half" })).then((response) => __async(null, null, function* () {
+    signal: (_c = requestOptions.request) == null ? void 0 : _c.signal
+  }, requestOptions.body && { duplex: "half" })).then((response) => __async(this, null, function* () {
     url = response.url;
     status = response.status;
     for (const keyAndValue of response.headers) {
       headers[keyAndValue[0]] = keyAndValue[1];
     }
     if ("deprecation" in headers) {
-      const matches = headers.link && headers.link.match(/<([^<>]+)>; rel="deprecation"/);
-      const deprecationLink = matches && matches.pop();
+      const matches2 = headers.link && headers.link.match(/<([^>]+)>; rel="deprecation"/);
+      const deprecationLink = matches2 && matches2.pop();
       log.warn(
         `[@octokit/request] "${requestOptions.method} ${requestOptions.url}" is deprecated. It is scheduled to be removed on ${headers.sunset}${deprecationLink ? `. See ${deprecationLink}` : ""}`
       );
@@ -11840,15 +11745,7 @@ function fetchWrapper(requestOptions) {
       throw error;
     else if (error.name === "AbortError")
       throw error;
-    let message = error.message;
-    if (error.name === "TypeError" && "cause" in error) {
-      if (error.cause instanceof Error) {
-        message = error.cause.message;
-      } else if (typeof error.cause === "string") {
-        message = error.cause;
-      }
-    }
-    throw new RequestError(message, 500, {
+    throw new RequestError(error.message, 500, {
       request: requestOptions
     });
   });
@@ -11857,7 +11754,7 @@ function getResponseData(response) {
   return __async(this, null, function* () {
     const contentType = response.headers.get("content-type");
     if (/application\/json/.test(contentType)) {
-      return response.json().catch(() => response.text()).catch(() => "");
+      return response.json();
     }
     if (!contentType || /^text\/|charset=utf-8$/.test(contentType)) {
       return response.text();
@@ -11868,17 +11765,11 @@ function getResponseData(response) {
 function toErrorMessage(data) {
   if (typeof data === "string")
     return data;
-  let suffix;
-  if ("documentation_url" in data) {
-    suffix = ` - ${data.documentation_url}`;
-  } else {
-    suffix = "";
-  }
   if ("message" in data) {
     if (Array.isArray(data.errors)) {
-      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}${suffix}`;
+      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}`;
     }
-    return `${data.message}${suffix}`;
+    return data.message;
   }
   return `Unknown error: ${JSON.stringify(data)}`;
 }
@@ -12068,21 +11959,21 @@ var createTokenAuth = function createTokenAuth2(token) {
 var VERSION5 = "5.0.0";
 var _a;
 var Octokit = (_a = class {
-  static defaults(defaults2) {
+  static defaults(defaults3) {
     const OctokitWithDefaults = class extends this {
       constructor(...args) {
         const options = args[0] || {};
-        if (typeof defaults2 === "function") {
-          super(defaults2(options));
+        if (typeof defaults3 === "function") {
+          super(defaults3(options));
           return;
         }
         super(
           Object.assign(
             {},
-            defaults2,
+            defaults3,
             options,
-            options.userAgent && defaults2.userAgent ? {
-              userAgent: `${options.userAgent} ${defaults2.userAgent}`
+            options.userAgent && defaults3.userAgent ? {
+              userAgent: `${options.userAgent} ${defaults3.userAgent}`
             } : null
           )
         );
@@ -12230,6 +12121,72 @@ var PublishPlatformConnectionFactory = class {
   }
 };
 
+// src/utils/envSettings.ts
+function generateEnvValues(settings) {
+  var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p;
+  const theme = JSON.parse(settings.theme);
+  let gardenBaseUrl = "";
+  if (settings.gardenBaseUrl && !settings.gardenBaseUrl.startsWith("ghp_") && !settings.gardenBaseUrl.startsWith("github_pat") && settings.gardenBaseUrl.includes(".")) {
+    gardenBaseUrl = settings.gardenBaseUrl;
+  }
+  const envValues = __spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
+    SITE_NAME_HEADER: settings.siteName,
+    SITE_MAIN_LANGUAGE: settings.mainLanguage,
+    SITE_BASE_URL: gardenBaseUrl,
+    SHOW_CREATED_TIMESTAMP: settings.showCreatedTimestamp,
+    TIMESTAMP_FORMAT: settings.timestampFormat,
+    SHOW_UPDATED_TIMESTAMP: settings.showUpdatedTimestamp,
+    NOTE_ICON_DEFAULT: settings.defaultNoteIcon,
+    NOTE_ICON_TITLE: settings.showNoteIconOnTitle,
+    NOTE_ICON_FILETREE: settings.showNoteIconInFileTree,
+    NOTE_ICON_INTERNAL_LINKS: settings.showNoteIconOnInternalLink,
+    NOTE_ICON_BACK_LINKS: settings.showNoteIconOnBackLink,
+    STYLE_SETTINGS_CSS: settings.styleSettingsCss,
+    STYLE_SETTINGS_BODY_CLASSES: settings.styleSettingsBodyClasses,
+    USE_FULL_RESOLUTION_IMAGES: settings.useFullResolutionImages
+  }, ((_a2 = settings.uiStrings) == null ? void 0 : _a2.backlinkHeader) && {
+    UI_BACKLINK_HEADER: settings.uiStrings.backlinkHeader
+  }), ((_b = settings.uiStrings) == null ? void 0 : _b.noBacklinksMessage) && {
+    UI_NO_BACKLINKS_MESSAGE: settings.uiStrings.noBacklinksMessage
+  }), ((_c = settings.uiStrings) == null ? void 0 : _c.searchButtonText) && {
+    UI_SEARCH_BUTTON_TEXT: settings.uiStrings.searchButtonText
+  }), ((_d = settings.uiStrings) == null ? void 0 : _d.searchPlaceholder) && {
+    UI_SEARCH_PLACEHOLDER: settings.uiStrings.searchPlaceholder
+  }), ((_e = settings.uiStrings) == null ? void 0 : _e.searchNotStarted) && {
+    UI_SEARCH_NOT_STARTED_TEXT: settings.uiStrings.searchNotStarted
+  }), ((_f = settings.uiStrings) == null ? void 0 : _f.searchEnterHotkey) && {
+    UI_SEARCH_ENTER_HOTKEY: settings.uiStrings.searchEnterHotkey
+  }), ((_g = settings.uiStrings) == null ? void 0 : _g.searchEnterHint) && {
+    UI_SEARCH_ENTER_HINT: settings.uiStrings.searchEnterHint
+  }), ((_h = settings.uiStrings) == null ? void 0 : _h.searchNavigateHotkey) && {
+    UI_SEARCH_NAVIGATE_HOTKEY: settings.uiStrings.searchNavigateHotkey
+  }), ((_i = settings.uiStrings) == null ? void 0 : _i.searchNavigateHint) && {
+    UI_SEARCH_NAVIGATE_HINT: settings.uiStrings.searchNavigateHint
+  }), ((_j = settings.uiStrings) == null ? void 0 : _j.searchCloseHotkey) && {
+    UI_SEARCH_CLOSE_HOTKEY: settings.uiStrings.searchCloseHotkey
+  }), ((_k = settings.uiStrings) == null ? void 0 : _k.searchCloseHint) && {
+    UI_SEARCH_CLOSE_HINT: settings.uiStrings.searchCloseHint
+  }), ((_l = settings.uiStrings) == null ? void 0 : _l.searchNoResults) && {
+    UI_SEARCH_NO_RESULTS: settings.uiStrings.searchNoResults
+  }), ((_m = settings.uiStrings) == null ? void 0 : _m.searchPreviewPlaceholder) && {
+    UI_SEARCH_PREVIEW_PLACEHOLDER: settings.uiStrings.searchPreviewPlaceholder
+  }), ((_n = settings.uiStrings) == null ? void 0 : _n.canvasDragHint) && {
+    UI_CANVAS_DRAG_HINT: settings.uiStrings.canvasDragHint
+  }), ((_o = settings.uiStrings) == null ? void 0 : _o.canvasZoomHint) && {
+    UI_CANVAS_ZOOM_HINT: settings.uiStrings.canvasZoomHint
+  }), ((_p = settings.uiStrings) == null ? void 0 : _p.canvasResetHint) && {
+    UI_CANVAS_RESET_HINT: settings.uiStrings.canvasResetHint
+  });
+  if (theme.name !== "default") {
+    envValues["THEME"] = theme.cssUrl;
+    envValues["BASE_THEME"] = settings.baseTheme;
+  }
+  return __spreadValues(__spreadValues({}, envValues), settings.defaultNoteSettings);
+}
+function serializeEnvValues(values) {
+  return Object.entries(values).map(([key, value]) => `${key}=${value}`).join("\n");
+}
+
 // src/repositoryConnection/DigitalGardenSiteManager.ts
 var logger3 = import_js_logger4.default.get("digital-garden-site-manager");
 var DigitalGardenSiteManager = class {
@@ -12268,62 +12225,23 @@ var DigitalGardenSiteManager = class {
   }
   updateEnv() {
     return __async(this, null, function* () {
-      var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
-      const theme = JSON.parse(this.settings.theme);
-      const baseTheme = this.settings.baseTheme;
-      const siteName = this.settings.siteName;
-      const mainLanguage = this.settings.mainLanguage;
-      let gardenBaseUrl = "";
-      if (this.settings.gardenBaseUrl && !this.settings.gardenBaseUrl.startsWith("ghp_") && !this.settings.gardenBaseUrl.startsWith("github_pat") && this.settings.gardenBaseUrl.contains(".")) {
-        gardenBaseUrl = this.settings.gardenBaseUrl;
-      }
-      const envValues = __spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
-        SITE_NAME_HEADER: siteName,
-        SITE_MAIN_LANGUAGE: mainLanguage,
-        SITE_BASE_URL: gardenBaseUrl,
-        SHOW_CREATED_TIMESTAMP: this.settings.showCreatedTimestamp,
-        TIMESTAMP_FORMAT: this.settings.timestampFormat,
-        SHOW_UPDATED_TIMESTAMP: this.settings.showUpdatedTimestamp,
-        NOTE_ICON_DEFAULT: this.settings.defaultNoteIcon,
-        NOTE_ICON_TITLE: this.settings.showNoteIconOnTitle,
-        NOTE_ICON_FILETREE: this.settings.showNoteIconInFileTree,
-        NOTE_ICON_INTERNAL_LINKS: this.settings.showNoteIconOnInternalLink,
-        NOTE_ICON_BACK_LINKS: this.settings.showNoteIconOnBackLink,
-        STYLE_SETTINGS_CSS: this.settings.styleSettingsCss,
-        STYLE_SETTINGS_BODY_CLASSES: this.settings.styleSettingsBodyClasses,
-        USE_FULL_RESOLUTION_IMAGES: this.settings.useFullResolutionImages
-      }, ((_a2 = this.settings.uiStrings) == null ? void 0 : _a2.backlinkHeader) && {
-        UI_BACKLINK_HEADER: this.settings.uiStrings.backlinkHeader
-      }), ((_b = this.settings.uiStrings) == null ? void 0 : _b.noBacklinksMessage) && {
-        UI_NO_BACKLINKS_MESSAGE: this.settings.uiStrings.noBacklinksMessage
-      }), ((_c = this.settings.uiStrings) == null ? void 0 : _c.searchButtonText) && {
-        UI_SEARCH_BUTTON_TEXT: this.settings.uiStrings.searchButtonText
-      }), ((_d = this.settings.uiStrings) == null ? void 0 : _d.searchPlaceholder) && {
-        UI_SEARCH_PLACEHOLDER: this.settings.uiStrings.searchPlaceholder
-      }), ((_e = this.settings.uiStrings) == null ? void 0 : _e.searchEnterHint) && {
-        UI_SEARCH_ENTER_HINT: this.settings.uiStrings.searchEnterHint
-      }), ((_f = this.settings.uiStrings) == null ? void 0 : _f.searchNavigateHint) && {
-        UI_SEARCH_NAVIGATE_HINT: this.settings.uiStrings.searchNavigateHint
-      }), ((_g = this.settings.uiStrings) == null ? void 0 : _g.searchCloseHint) && {
-        UI_SEARCH_CLOSE_HINT: this.settings.uiStrings.searchCloseHint
-      }), ((_h = this.settings.uiStrings) == null ? void 0 : _h.searchNoResults) && {
-        UI_SEARCH_NO_RESULTS: this.settings.uiStrings.searchNoResults
-      }), ((_i = this.settings.uiStrings) == null ? void 0 : _i.canvasDragHint) && {
-        UI_CANVAS_DRAG_HINT: this.settings.uiStrings.canvasDragHint
-      }), ((_j = this.settings.uiStrings) == null ? void 0 : _j.canvasZoomHint) && {
-        UI_CANVAS_ZOOM_HINT: this.settings.uiStrings.canvasZoomHint
-      }), ((_k = this.settings.uiStrings) == null ? void 0 : _k.canvasResetHint) && {
-        UI_CANVAS_RESET_HINT: this.settings.uiStrings.canvasResetHint
-      });
-      if (theme.name !== "default") {
-        envValues["THEME"] = theme.cssUrl;
-        envValues["BASE_THEME"] = baseTheme;
-      }
-      const keysToSet = __spreadValues(__spreadValues({}, envValues), this.settings.defaultNoteSettings);
-      const envSettings = Object.entries(keysToSet).map(([key, value]) => `${key}=${value}`).join("\n");
-      const base64Settings = gBase64.encode(envSettings);
+      var _a2;
+      const keysToSet = generateEnvValues(this.settings);
       const currentFile = yield (yield this.getUserGardenConnection()).getFile(".env");
-      const decodedCurrentFile = gBase64.decode((_l = currentFile == null ? void 0 : currentFile.content) != null ? _l : "");
+      const decodedCurrentFile = gBase64.decode((_a2 = currentFile == null ? void 0 : currentFile.content) != null ? _a2 : "");
+      const existingSettings = {};
+      for (const line of decodedCurrentFile.split("\n")) {
+        const trimmedLine = line.trim();
+        if (!trimmedLine || trimmedLine.startsWith("#"))
+          continue;
+        const [key, ...valueParts] = trimmedLine.split("=");
+        if (key) {
+          existingSettings[key.trim()] = valueParts.join("=").trim();
+        }
+      }
+      const mergedSettings = __spreadValues(__spreadValues({}, existingSettings), keysToSet);
+      const envSettings = serializeEnvValues(mergedSettings);
+      const base64Settings = gBase64.encode(envSettings);
       if (decodedCurrentFile === envSettings) {
         logger3.info("No changes to .env file");
         new import_obsidian2.Notice("Settings already up to date!");
@@ -12360,12 +12278,12 @@ var DigitalGardenSiteManager = class {
     }
     return `${baseUrl}${urlPath}`;
   }
-  getNoteContent(path) {
+  getNoteContent(path2) {
     return __async(this, null, function* () {
-      if (path.startsWith("/")) {
-        path = path.substring(1);
+      if (path2.startsWith("/")) {
+        path2 = path2.substring(1);
       }
-      const response = yield (yield this.getUserGardenConnection()).getFile(NOTE_PATH_BASE2 + path);
+      const response = yield (yield this.getUserGardenConnection()).getFile(NOTE_PATH_BASE2 + path2);
       if (!response) {
         return "";
       }
@@ -12457,9 +12375,9 @@ var import_slugify2 = __toESM(require_slugify());
 // src/utils/markdown.ts
 var seperateHashesFromHeader = (rawHeading) => {
   const regex = new RegExp("^(?<hashes>#+)(?<space>\\s?)(?<title>.*)$");
-  const matches = rawHeading.match(regex);
-  if (matches == null ? void 0 : matches.groups) {
-    const { hashes, _space, title } = matches.groups;
+  const matches2 = rawHeading.match(regex);
+  if (matches2 == null ? void 0 : matches2.groups) {
+    const { hashes, _space, title } = matches2.groups;
     return {
       hashes,
       title
@@ -12478,9 +12396,9 @@ var BLOCKREF_REGEX = /(\^\w+([\r\n]|$))/g;
 var CODE_FENCE_REGEX = /`(.*?)`/g;
 var CODEBLOCK_REGEX = /```.*?[\r\n][\s\S]+?```/g;
 var EXCALIDRAW_REGEX = /:\[\[(\d*?,\d*?)\],.*?\]\]/g;
-var TRANSCLUDED_SVG_REGEX = /!\[\[(.*?)(\.(svg))\|(.*?)\]\]|!\[\[(.*?)(\.(svg))\]\]/g;
+var TRANSCLUDED_SVG_REGEX = /!\[\[(.*?)(\.(svg))\\?\|(.*?)\]\]|!\[\[(.*?)(\.(svg))\]\]/g;
 var PDF_REGEX = /!\[(.*?)\]\((.*?)(\.pdf)\)/g;
-var TRANSCLUDED_PDF_REGEX = /!\[\[(.*?)(\.pdf)\|(.*?)\]\]|!\[\[(.*?)(\.pdf)\]\]/g;
+var TRANSCLUDED_PDF_REGEX = /!\[\[(.*?)(\.pdf)\\?\|(.*?)\]\]|!\[\[(.*?)(\.pdf)\]\]/g;
 
 // src/compiler/GardenPageCompiler.ts
 var import_js_logger6 = __toESM(require_logger());
@@ -12496,8 +12414,9 @@ var DataviewCompiler = class {
       let replacedText = text2;
       const dataViewRegex = new RegExp("```\\s*dataview\\s(.+?)```", "gms");
       const dvApi = (0, import_obsidian_dataview.getAPI)();
-      if (!dvApi) return replacedText;
-      const matches = text2.matchAll(dataViewRegex);
+      if (!dvApi)
+        return replacedText;
+      const matches2 = text2.matchAll(dataViewRegex);
       const dataviewJsPrefix = dvApi.settings.dataviewJsKeyword;
       const dataViewJsRegex = new RegExp(
         "```\\s*" + escapeRegExp(dataviewJsPrefix) + "\\s(.+?)```",
@@ -12516,10 +12435,10 @@ var DataviewCompiler = class {
         "gsm"
       );
       const inlineJsMatches = text2.matchAll(inlineJsDataViewRegex);
-      if (!matches && !inlineMatches && !dataviewJsMatches && !inlineJsMatches) {
+      if (!matches2 && !inlineMatches && !dataviewJsMatches && !inlineJsMatches) {
         return text2;
       }
-      for (const queryBlock of matches) {
+      for (const queryBlock of matches2) {
         try {
           const block = queryBlock[0];
           const query = queryBlock[1];
@@ -12748,7 +12667,10 @@ var FrontmatterCompiler = class {
       publishedFrontMatter
     );
     publishedFrontMatter = this.addTimestampsFrontmatter(file)(publishedFrontMatter);
-    const fullFrontMatter = (publishedFrontMatter == null ? void 0 : publishedFrontMatter.dgPassFrontmatter) ? __spreadValues(__spreadValues({}, fileFrontMatter), publishedFrontMatter) : publishedFrontMatter;
+    const userProperties = this.extractUserProperties(fileFrontMatter);
+    const fullFrontMatter = (publishedFrontMatter == null ? void 0 : publishedFrontMatter.dgPassFrontmatter) ? __spreadProps(__spreadValues(__spreadValues({}, fileFrontMatter), publishedFrontMatter), {
+      "dg-note-properties": userProperties
+    }) : __spreadProps(__spreadValues({}, publishedFrontMatter), { "dg-note-properties": userProperties });
     const frontMatterString = JSON.stringify(fullFrontMatter);
     return `---
 ${frontMatterString}
@@ -12855,6 +12777,39 @@ ${frontMatterString}
     }
     return publishedFrontMatter;
   }
+  /**
+   * Extracts all user-defined frontmatter properties, excluding
+   * Obsidian internal fields and dg-* plugin fields that are already
+   * handled by the compilation pipeline.
+   */
+  extractUserProperties(frontmatter) {
+    if (!frontmatter)
+      return {};
+    const skipKeys = /* @__PURE__ */ new Set([
+      "position",
+      // Obsidian internal
+      "dg-publish",
+      "dg-home",
+      "dg-path",
+      "dg-permalink",
+      "dg-hide",
+      "dg-hide-in-graph",
+      "dg-pinned",
+      "dg-metatags",
+      "dg-pass-frontmatter",
+      "dg-content-classes",
+      "dg-note-icon"
+    ]);
+    const userProps = {};
+    for (const [key, value] of Object.entries(frontmatter)) {
+      if (skipKeys.has(key))
+        continue;
+      if (key.startsWith("dg-") || key.startsWith("dg_"))
+        continue;
+      userProps[key] = value;
+    }
+    return userProps;
+  }
 };
 
 // src/compiler/CanvasCompiler.ts
@@ -12873,8 +12828,10 @@ var COLOR_PRESETS = {
   // purple
 };
 function resolveColor(color) {
-  if (!color) return void 0;
-  if (color.startsWith("#")) return color;
+  if (!color)
+    return void 0;
+  if (color.startsWith("#"))
+    return color;
   return COLOR_PRESETS[color];
 }
 function colorToId(color) {
@@ -13204,7 +13161,8 @@ var CanvasCompiler = class {
     const edgeElements = edges.map((edge) => {
       const fromNode = nodeMap.get(edge.fromNode);
       const toNode = nodeMap.get(edge.toNode);
-      if (!fromNode || !toNode) return "";
+      if (!fromNode || !toNode)
+        return "";
       const fromPoint = this.getEdgePoint(
         fromNode,
         edge.fromSide || "right"
@@ -13219,7 +13177,7 @@ var CanvasCompiler = class {
       const hasArrowTo = edge.toEnd !== "none";
       const fromSide = edge.fromSide || "right";
       const toSide = edge.toSide || "left";
-      const { path, cp1, cp2 } = this.createBezierPath(
+      const { path: path2, cp1, cp2 } = this.createBezierPath(
         fromPoint,
         toPoint,
         fromSide,
@@ -13227,7 +13185,7 @@ var CanvasCompiler = class {
       );
       const markerStart = hasArrowFrom ? `marker-start="url(#arrow-${colorId}-start)"` : "";
       const markerEnd = hasArrowTo ? `marker-end="url(#arrow-${colorId})"` : "";
-      let edgeHtml = `<path d="${path}" fill="none" stroke="${color}" stroke-width="2" class="canvas-edge" data-edge-id="${edge.id}" ${markerStart} ${markerEnd} />`;
+      let edgeHtml = `<path d="${path2}" fill="none" stroke="${color}" stroke-width="2" class="canvas-edge" data-edge-id="${edge.id}" ${markerStart} ${markerEnd} />`;
       if (edge.label) {
         const midX = (fromPoint.x + 3 * cp1.x + 3 * cp2.x + toPoint.x) / 8;
         const midY = (fromPoint.y + 3 * cp1.y + 3 * cp2.y + toPoint.y) / 8;
@@ -13779,7 +13737,8 @@ var IANAZone = class _IANAZone extends Zone {
   /** @override **/
   offset(ts) {
     const date = new Date(ts);
-    if (isNaN(date)) return NaN;
+    if (isNaN(date))
+      return NaN;
     const dtf = makeDTF(this.name);
     let [year, month, day, adOrBc, hour, minute, second] = dtf.formatToParts ? partsOffset(dtf, date) : hackyOffset(dtf, date);
     if (adOrBc === "BC") {
@@ -13940,7 +13899,8 @@ var PolyNumberFormatter = class {
     const _a2 = opts, { padTo, floor } = _a2, otherOpts = __objRest(_a2, ["padTo", "floor"]);
     if (!forceSimple || Object.keys(otherOpts).length > 0) {
       const intlOpts = __spreadValues({ useGrouping: false }, opts);
-      if (opts.padTo > 0) intlOpts.minimumIntegerDigits = opts.padTo;
+      if (opts.padTo > 0)
+        intlOpts.minimumIntegerDigits = opts.padTo;
       this.inf = getCachedINF(intl, intlOpts);
     }
   }
@@ -14302,10 +14262,14 @@ function normalizeZone(input, defaultZone2) {
     return input;
   } else if (isString(input)) {
     const lowered = input.toLowerCase();
-    if (lowered === "default") return defaultZone2;
-    else if (lowered === "local" || lowered === "system") return SystemZone.instance;
-    else if (lowered === "utc" || lowered === "gmt") return FixedOffsetZone.utcInstance;
-    else return FixedOffsetZone.parseSpecifier(lowered) || IANAZone.create(input);
+    if (lowered === "default")
+      return defaultZone2;
+    else if (lowered === "local" || lowered === "system")
+      return SystemZone.instance;
+    else if (lowered === "utc" || lowered === "gmt")
+      return FixedOffsetZone.utcInstance;
+    else
+      return FixedOffsetZone.parseSpecifier(lowered) || IANAZone.create(input);
   } else if (isNumber(input)) {
     return FixedOffsetZone.instance(input);
   } else if (typeof input === "object" && "offset" in input && typeof input.offset === "function") {
@@ -14570,7 +14534,8 @@ function weeksInWeekYear(weekYear) {
 function untruncateYear(year) {
   if (year > 99) {
     return year;
-  } else return year > Settings.twoDigitCutoffYear ? 1900 + year : 2e3 + year;
+  } else
+    return year > Settings.twoDigitCutoffYear ? 1900 + year : 2e3 + year;
 }
 function parseZoneInfo(ts, offsetFormat, locale, timeZone = null) {
   const date = new Date(ts), intlOpts = {
@@ -14607,7 +14572,8 @@ function normalizeObject(obj, normalizer) {
   for (const u in obj) {
     if (hasOwnProperty(obj, u)) {
       const v = obj[u];
-      if (v === void 0 || v === null) continue;
+      if (v === void 0 || v === null)
+        continue;
       normalized[normalizer(u)] = asNumber(v);
     }
   }
@@ -14883,29 +14849,23 @@ var Formatter = class _Formatter {
       }
     }, era = (length) => knownEnglish ? eraForDateTime(dt, length) : string({ era: length }, "era"), tokenToString = (token) => {
       switch (token) {
-        // ms
         case "S":
           return this.num(dt.millisecond);
         case "u":
-        // falls through
         case "SSS":
           return this.num(dt.millisecond, 3);
-        // seconds
         case "s":
           return this.num(dt.second);
         case "ss":
           return this.num(dt.second, 2);
-        // fractional seconds
         case "uu":
           return this.num(Math.floor(dt.millisecond / 10), 2);
         case "uuu":
           return this.num(Math.floor(dt.millisecond / 100));
-        // minutes
         case "m":
           return this.num(dt.minute);
         case "mm":
           return this.num(dt.minute, 2);
-        // hours
         case "h":
           return this.num(dt.hour % 12 === 0 ? 12 : dt.hour % 12);
         case "hh":
@@ -14914,7 +14874,6 @@ var Formatter = class _Formatter {
           return this.num(dt.hour);
         case "HH":
           return this.num(dt.hour, 2);
-        // offset
         case "Z":
           return formatOffset2({ format: "narrow", allowZ: this.opts.allowZ });
         case "ZZ":
@@ -14925,18 +14884,14 @@ var Formatter = class _Formatter {
           return dt.zone.offsetName(dt.ts, { format: "short", locale: this.loc.locale });
         case "ZZZZZ":
           return dt.zone.offsetName(dt.ts, { format: "long", locale: this.loc.locale });
-        // zone
         case "z":
           return dt.zoneName;
-        // meridiems
         case "a":
           return meridiem();
-        // dates
         case "d":
           return useDateTimeFormatter ? string({ day: "numeric" }, "day") : this.num(dt.day);
         case "dd":
           return useDateTimeFormatter ? string({ day: "2-digit" }, "day") : this.num(dt.day, 2);
-        // weekdays - standalone
         case "c":
           return this.num(dt.weekday);
         case "ccc":
@@ -14945,7 +14900,6 @@ var Formatter = class _Formatter {
           return weekday("long", true);
         case "ccccc":
           return weekday("narrow", true);
-        // weekdays - format
         case "E":
           return this.num(dt.weekday);
         case "EEE":
@@ -14954,7 +14908,6 @@ var Formatter = class _Formatter {
           return weekday("long", false);
         case "EEEEE":
           return weekday("narrow", false);
-        // months - standalone
         case "L":
           return useDateTimeFormatter ? string({ month: "numeric", day: "numeric" }, "month") : this.num(dt.month);
         case "LL":
@@ -14965,7 +14918,6 @@ var Formatter = class _Formatter {
           return month("long", true);
         case "LLLLL":
           return month("narrow", true);
-        // months - format
         case "M":
           return useDateTimeFormatter ? string({ month: "numeric" }, "month") : this.num(dt.month);
         case "MM":
@@ -14976,7 +14928,6 @@ var Formatter = class _Formatter {
           return month("long", false);
         case "MMMMM":
           return month("narrow", false);
-        // years
         case "y":
           return useDateTimeFormatter ? string({ year: "numeric" }, "year") : this.num(dt.year);
         case "yy":
@@ -14985,7 +14936,6 @@ var Formatter = class _Formatter {
           return useDateTimeFormatter ? string({ year: "numeric" }, "year") : this.num(dt.year, 4);
         case "yyyyyy":
           return useDateTimeFormatter ? string({ year: "numeric" }, "year") : this.num(dt.year, 6);
-        // eras
         case "G":
           return era("short");
         case "GG":
@@ -15190,7 +15140,8 @@ function fromStrings(weekdayStr, yearStr, monthStr, dayStr, hourStr, minuteStr, 
     hour: parseInteger(hourStr),
     minute: parseInteger(minuteStr)
   };
-  if (secondStr) result.second = parseInteger(secondStr);
+  if (secondStr)
+    result.second = parseInteger(secondStr);
   if (weekdayStr) {
     result.weekday = weekdayStr.length > 3 ? weekdaysLong.indexOf(weekdayStr) + 1 : weekdaysShort.indexOf(weekdayStr) + 1;
   }
@@ -15406,23 +15357,23 @@ function clone(dur, alts, clear = false) {
   };
   return new Duration(conf);
 }
-function durationToMillis(matrix, vals) {
+function durationToMillis(matrix2, vals) {
   var _a2;
   let sum = (_a2 = vals.milliseconds) != null ? _a2 : 0;
   for (const unit of reverseUnits.slice(1)) {
     if (vals[unit]) {
-      sum += vals[unit] * matrix[unit]["milliseconds"];
+      sum += vals[unit] * matrix2[unit]["milliseconds"];
     }
   }
   return sum;
 }
-function normalizeValues(matrix, vals) {
-  const factor = durationToMillis(matrix, vals) < 0 ? -1 : 1;
+function normalizeValues(matrix2, vals) {
+  const factor = durationToMillis(matrix2, vals) < 0 ? -1 : 1;
   orderedUnits.reduceRight((previous, current) => {
     if (!isUndefined(vals[current])) {
       if (previous) {
         const previousVal = vals[previous] * factor;
-        const conv = matrix[current][previous];
+        const conv = matrix2[current][previous];
         const rollUp = Math.floor(previousVal / conv);
         vals[current] += rollUp * factor;
         vals[previous] -= rollUp * conv * factor;
@@ -15437,7 +15388,7 @@ function normalizeValues(matrix, vals) {
       if (previous) {
         const fraction = vals[previous] % 1;
         vals[previous] -= fraction;
-        vals[current] += fraction * matrix[previous][current];
+        vals[current] += fraction * matrix2[previous][current];
       }
       return current;
     } else {
@@ -15460,15 +15411,15 @@ var Duration = class _Duration {
    */
   constructor(config) {
     const accurate = config.conversionAccuracy === "longterm" || false;
-    let matrix = accurate ? accurateMatrix : casualMatrix;
+    let matrix2 = accurate ? accurateMatrix : casualMatrix;
     if (config.matrix) {
-      matrix = config.matrix;
+      matrix2 = config.matrix;
     }
     this.values = config.values;
     this.loc = config.loc || Locale.create();
     this.conversionAccuracy = accurate ? "longterm" : "casual";
     this.invalid = config.invalid || null;
-    this.matrix = matrix;
+    this.matrix = matrix2;
     this.isLuxonDuration = true;
   }
   /**
@@ -15626,7 +15577,8 @@ var Duration = class _Duration {
       millisecond: "milliseconds",
       milliseconds: "milliseconds"
     }[unit ? unit.toLowerCase() : unit];
-    if (!normalized) throw new InvalidUnitError(unit);
+    if (!normalized)
+      throw new InvalidUnitError(unit);
     return normalized;
   }
   /**
@@ -15694,7 +15646,8 @@ var Duration = class _Duration {
    * ```
    */
   toHuman(opts = {}) {
-    if (!this.isValid) return INVALID;
+    if (!this.isValid)
+      return INVALID;
     const l2 = orderedUnits.map((unit) => {
       const val = this.values[unit];
       if (isUndefined(val)) {
@@ -15710,7 +15663,8 @@ var Duration = class _Duration {
    * @return {Object}
    */
   toObject() {
-    if (!this.isValid) return {};
+    if (!this.isValid)
+      return {};
     return __spreadValues({}, this.values);
   }
   /**
@@ -15724,19 +15678,27 @@ var Duration = class _Duration {
    * @return {string}
    */
   toISO() {
-    if (!this.isValid) return null;
+    if (!this.isValid)
+      return null;
     let s2 = "P";
-    if (this.years !== 0) s2 += this.years + "Y";
-    if (this.months !== 0 || this.quarters !== 0) s2 += this.months + this.quarters * 3 + "M";
-    if (this.weeks !== 0) s2 += this.weeks + "W";
-    if (this.days !== 0) s2 += this.days + "D";
+    if (this.years !== 0)
+      s2 += this.years + "Y";
+    if (this.months !== 0 || this.quarters !== 0)
+      s2 += this.months + this.quarters * 3 + "M";
+    if (this.weeks !== 0)
+      s2 += this.weeks + "W";
+    if (this.days !== 0)
+      s2 += this.days + "D";
     if (this.hours !== 0 || this.minutes !== 0 || this.seconds !== 0 || this.milliseconds !== 0)
       s2 += "T";
-    if (this.hours !== 0) s2 += this.hours + "H";
-    if (this.minutes !== 0) s2 += this.minutes + "M";
+    if (this.hours !== 0)
+      s2 += this.hours + "H";
+    if (this.minutes !== 0)
+      s2 += this.minutes + "M";
     if (this.seconds !== 0 || this.milliseconds !== 0)
       s2 += roundTo(this.seconds + this.milliseconds / 1e3, 3) + "S";
-    if (s2 === "P") s2 += "T0S";
+    if (s2 === "P")
+      s2 += "T0S";
     return s2;
   }
   /**
@@ -15756,9 +15718,11 @@ var Duration = class _Duration {
    * @return {string}
    */
   toISOTime(opts = {}) {
-    if (!this.isValid) return null;
+    if (!this.isValid)
+      return null;
     const millis = this.toMillis();
-    if (millis < 0 || millis >= 864e5) return null;
+    if (millis < 0 || millis >= 864e5)
+      return null;
     opts = __spreadProps(__spreadValues({
       suppressMilliseconds: false,
       suppressSeconds: false,
@@ -15789,7 +15753,8 @@ var Duration = class _Duration {
    * @return {number}
    */
   toMillis() {
-    if (!this.isValid) return NaN;
+    if (!this.isValid)
+      return NaN;
     return durationToMillis(this.matrix, this.values);
   }
   /**
@@ -15805,7 +15770,8 @@ var Duration = class _Duration {
    * @return {Duration}
    */
   plus(duration) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const dur = _Duration.fromDurationLike(duration), result = {};
     for (const k of orderedUnits) {
       if (hasOwnProperty(dur.values, k) || hasOwnProperty(this.values, k)) {
@@ -15820,7 +15786,8 @@ var Duration = class _Duration {
    * @return {Duration}
    */
   minus(duration) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const dur = _Duration.fromDurationLike(duration);
     return this.plus(dur.negate());
   }
@@ -15832,7 +15799,8 @@ var Duration = class _Duration {
    * @return {Duration}
    */
   mapUnits(fn2) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const result = {};
     for (const k of Object.keys(this.values)) {
       result[k] = asNumber(fn2(this.values[k], k));
@@ -15858,7 +15826,8 @@ var Duration = class _Duration {
    * @return {Duration}
    */
   set(values) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const mixed = __spreadValues(__spreadValues({}, this.values), normalizeObject(values, _Duration.normalizeUnit));
     return clone(this, { values: mixed });
   }
@@ -15867,9 +15836,9 @@ var Duration = class _Duration {
    * @example dur.reconfigure({ locale: 'en-GB' })
    * @return {Duration}
    */
-  reconfigure({ locale, numberingSystem, conversionAccuracy, matrix } = {}) {
+  reconfigure({ locale, numberingSystem, conversionAccuracy, matrix: matrix2 } = {}) {
     const loc = this.loc.clone({ locale, numberingSystem });
-    const opts = { loc, matrix, conversionAccuracy };
+    const opts = { loc, matrix: matrix2, conversionAccuracy };
     return clone(this, opts);
   }
   /**
@@ -15899,7 +15868,8 @@ var Duration = class _Duration {
    * @return {Duration}
    */
   normalize() {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const vals = this.toObject();
     normalizeValues(this.matrix, vals);
     return clone(this, { values: vals }, true);
@@ -15910,7 +15880,8 @@ var Duration = class _Duration {
    * @return {Duration}
    */
   rescale() {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const vals = removeZeroes(this.normalize().shiftToAll().toObject());
     return clone(this, { values: vals }, true);
   }
@@ -15920,7 +15891,8 @@ var Duration = class _Duration {
    * @return {Duration}
    */
   shiftTo(...units) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     if (units.length === 0) {
       return this;
     }
@@ -15959,7 +15931,8 @@ var Duration = class _Duration {
    * @return {Duration}
    */
   shiftToAll() {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     return this.shiftTo(
       "years",
       "months",
@@ -15977,7 +15950,8 @@ var Duration = class _Duration {
    * @return {Duration}
    */
   negate() {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const negated = {};
     for (const k of Object.keys(this.values)) {
       negated[k] = this.values[k] === 0 ? 0 : -this.values[k];
@@ -16083,7 +16057,8 @@ var Duration = class _Duration {
       return false;
     }
     function eq(v1, v2) {
-      if (v1 === void 0 || v1 === 0) return v2 === void 0 || v2 === 0;
+      if (v1 === void 0 || v1 === 0)
+        return v2 === void 0 || v2 === 0;
       return v1 === v2;
     }
     for (const u of orderedUnits) {
@@ -16277,7 +16252,8 @@ var Interval = class _Interval {
    * @return {number}
    */
   count(unit = "milliseconds") {
-    if (!this.isValid) return NaN;
+    if (!this.isValid)
+      return NaN;
     const start2 = this.start.startOf(unit), end2 = this.end.startOf(unit);
     return Math.floor(end2.diff(start2, unit).get(unit)) + (end2.valueOf() !== this.end.valueOf());
   }
@@ -16302,7 +16278,8 @@ var Interval = class _Interval {
    * @return {boolean}
    */
   isAfter(dateTime) {
-    if (!this.isValid) return false;
+    if (!this.isValid)
+      return false;
     return this.s > dateTime;
   }
   /**
@@ -16311,7 +16288,8 @@ var Interval = class _Interval {
    * @return {boolean}
    */
   isBefore(dateTime) {
-    if (!this.isValid) return false;
+    if (!this.isValid)
+      return false;
     return this.e <= dateTime;
   }
   /**
@@ -16320,7 +16298,8 @@ var Interval = class _Interval {
    * @return {boolean}
    */
   contains(dateTime) {
-    if (!this.isValid) return false;
+    if (!this.isValid)
+      return false;
     return this.s <= dateTime && this.e > dateTime;
   }
   /**
@@ -16331,7 +16310,8 @@ var Interval = class _Interval {
    * @return {Interval}
    */
   set({ start: start2, end: end2 } = {}) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     return _Interval.fromDateTimes(start2 || this.s, end2 || this.e);
   }
   /**
@@ -16340,7 +16320,8 @@ var Interval = class _Interval {
    * @return {Array}
    */
   splitAt(...dateTimes) {
-    if (!this.isValid) return [];
+    if (!this.isValid)
+      return [];
     const sorted = dateTimes.map(friendlyDateTime).filter((d) => this.contains(d)).sort(), results = [];
     let { s: s2 } = this, i = 0;
     while (s2 < this.e) {
@@ -16379,7 +16360,8 @@ var Interval = class _Interval {
    * @return {Array}
    */
   divideEqually(numberOfParts) {
-    if (!this.isValid) return [];
+    if (!this.isValid)
+      return [];
     return this.splitBy(this.length() / numberOfParts).slice(0, numberOfParts);
   }
   /**
@@ -16396,7 +16378,8 @@ var Interval = class _Interval {
    * @return {boolean}
    */
   abutsStart(other) {
-    if (!this.isValid) return false;
+    if (!this.isValid)
+      return false;
     return +this.e === +other.s;
   }
   /**
@@ -16405,7 +16388,8 @@ var Interval = class _Interval {
    * @return {boolean}
    */
   abutsEnd(other) {
-    if (!this.isValid) return false;
+    if (!this.isValid)
+      return false;
     return +other.e === +this.s;
   }
   /**
@@ -16414,7 +16398,8 @@ var Interval = class _Interval {
    * @return {boolean}
    */
   engulfs(other) {
-    if (!this.isValid) return false;
+    if (!this.isValid)
+      return false;
     return this.s <= other.s && this.e >= other.e;
   }
   /**
@@ -16436,7 +16421,8 @@ var Interval = class _Interval {
    * @return {Interval}
    */
   intersection(other) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const s2 = this.s > other.s ? this.s : other.s, e = this.e < other.e ? this.e : other.e;
     if (s2 >= e) {
       return null;
@@ -16451,7 +16437,8 @@ var Interval = class _Interval {
    * @return {Interval}
    */
   union(other) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const s2 = this.s < other.s ? this.s : other.s, e = this.e > other.e ? this.e : other.e;
     return _Interval.fromDateTimes(s2, e);
   }
@@ -16516,7 +16503,8 @@ var Interval = class _Interval {
    * @return {string}
    */
   toString() {
-    if (!this.isValid) return INVALID2;
+    if (!this.isValid)
+      return INVALID2;
     return `[${this.s.toISO()} \u2013 ${this.e.toISO()})`;
   }
   /**
@@ -16547,7 +16535,8 @@ var Interval = class _Interval {
    * @return {string}
    */
   toISO(opts) {
-    if (!this.isValid) return INVALID2;
+    if (!this.isValid)
+      return INVALID2;
     return `${this.s.toISO(opts)}/${this.e.toISO(opts)}`;
   }
   /**
@@ -16557,7 +16546,8 @@ var Interval = class _Interval {
    * @return {string}
    */
   toISODate() {
-    if (!this.isValid) return INVALID2;
+    if (!this.isValid)
+      return INVALID2;
     return `${this.s.toISODate()}/${this.e.toISODate()}`;
   }
   /**
@@ -16568,7 +16558,8 @@ var Interval = class _Interval {
    * @return {string}
    */
   toISOTime(opts) {
-    if (!this.isValid) return INVALID2;
+    if (!this.isValid)
+      return INVALID2;
     return `${this.s.toISOTime(opts)}/${this.e.toISOTime(opts)}`;
   }
   /**
@@ -16583,7 +16574,8 @@ var Interval = class _Interval {
    * @return {string}
    */
   toFormat(dateFormat, { separator = " \u2013 " } = {}) {
-    if (!this.isValid) return INVALID2;
+    if (!this.isValid)
+      return INVALID2;
     return `${this.s.toFormat(dateFormat)}${separator}${this.e.toFormat(dateFormat)}`;
   }
   /**
@@ -16932,12 +16924,10 @@ function unitForToken(token, loc) {
       return literal(t);
     }
     switch (t.val) {
-      // era
       case "G":
         return oneOf(loc.eras("short"), 0);
       case "GG":
         return oneOf(loc.eras("long"), 0);
-      // years
       case "y":
         return intUnit(oneToSix);
       case "yy":
@@ -16948,7 +16938,6 @@ function unitForToken(token, loc) {
         return intUnit(fourToSix);
       case "yyyyyy":
         return intUnit(six);
-      // months
       case "M":
         return intUnit(oneOrTwo);
       case "MM":
@@ -16965,17 +16954,14 @@ function unitForToken(token, loc) {
         return oneOf(loc.months("short", false), 1);
       case "LLLL":
         return oneOf(loc.months("long", false), 1);
-      // dates
       case "d":
         return intUnit(oneOrTwo);
       case "dd":
         return intUnit(two);
-      // ordinals
       case "o":
         return intUnit(oneToThree);
       case "ooo":
         return intUnit(three);
-      // time
       case "HH":
         return intUnit(two);
       case "H":
@@ -17006,20 +16992,16 @@ function unitForToken(token, loc) {
         return simple(oneOrTwo);
       case "uuu":
         return intUnit(one);
-      // meridiem
       case "a":
         return oneOf(loc.meridiems(), 0);
-      // weekYear (k)
       case "kkkk":
         return intUnit(four);
       case "kk":
         return intUnit(twoToFour, untruncateYear);
-      // weekNumber (W)
       case "W":
         return intUnit(oneOrTwo);
       case "WW":
         return intUnit(two);
-      // weekdays
       case "E":
       case "c":
         return intUnit(one);
@@ -17031,18 +17013,13 @@ function unitForToken(token, loc) {
         return oneOf(loc.weekdays("short", true), 1);
       case "cccc":
         return oneOf(loc.weekdays("long", true), 1);
-      // offset/zone
       case "Z":
       case "ZZ":
         return offset(new RegExp(`([+-]${oneOrTwo.source})(?::(${two.source}))?`), 2);
       case "ZZZ":
         return offset(new RegExp(`([+-]${oneOrTwo.source})(${two.source})?`), 2);
-      // we don't support ZZZZ (PST) or ZZZZZ (Pacific Standard Time) in parsing
-      // because we don't have any way to figure out what they are
       case "z":
         return simple(/[a-z_+-/]{1,256}?/i);
-      // this special-case "token" represents a place where a macro-token expanded into a white-space literal
-      // in this case we accept any non-newline white-space
       case " ":
         return simple(/[^\S\n\r]/);
       default:
@@ -17138,25 +17115,25 @@ function buildRegex(units) {
   return [`^${re}$`, units];
 }
 function match(input, regex, handlers) {
-  const matches = input.match(regex);
-  if (matches) {
+  const matches2 = input.match(regex);
+  if (matches2) {
     const all3 = {};
     let matchIndex = 1;
     for (const i in handlers) {
       if (hasOwnProperty(handlers, i)) {
         const h = handlers[i], groups = h.groups ? h.groups + 1 : 1;
         if (!h.literal && h.token) {
-          all3[h.token.val[0]] = h.deser(matches.slice(matchIndex, matchIndex + groups));
+          all3[h.token.val[0]] = h.deser(matches2.slice(matchIndex, matchIndex + groups));
         }
         matchIndex += groups;
       }
     }
-    return [matches, all3];
+    return [matches2, all3];
   } else {
-    return [matches, {}];
+    return [matches2, {}];
   }
 }
-function dateTimeFromMatches(matches) {
+function dateTimeFromMatches(matches2) {
   const toField = (token) => {
     switch (token) {
       case "S":
@@ -17192,35 +17169,35 @@ function dateTimeFromMatches(matches) {
   };
   let zone = null;
   let specificOffset;
-  if (!isUndefined(matches.z)) {
-    zone = IANAZone.create(matches.z);
+  if (!isUndefined(matches2.z)) {
+    zone = IANAZone.create(matches2.z);
   }
-  if (!isUndefined(matches.Z)) {
+  if (!isUndefined(matches2.Z)) {
     if (!zone) {
-      zone = new FixedOffsetZone(matches.Z);
+      zone = new FixedOffsetZone(matches2.Z);
     }
-    specificOffset = matches.Z;
+    specificOffset = matches2.Z;
   }
-  if (!isUndefined(matches.q)) {
-    matches.M = (matches.q - 1) * 3 + 1;
+  if (!isUndefined(matches2.q)) {
+    matches2.M = (matches2.q - 1) * 3 + 1;
   }
-  if (!isUndefined(matches.h)) {
-    if (matches.h < 12 && matches.a === 1) {
-      matches.h += 12;
-    } else if (matches.h === 12 && matches.a === 0) {
-      matches.h = 0;
+  if (!isUndefined(matches2.h)) {
+    if (matches2.h < 12 && matches2.a === 1) {
+      matches2.h += 12;
+    } else if (matches2.h === 12 && matches2.a === 0) {
+      matches2.h = 0;
     }
   }
-  if (matches.G === 0 && matches.y) {
-    matches.y = -matches.y;
+  if (matches2.G === 0 && matches2.y) {
+    matches2.y = -matches2.y;
   }
-  if (!isUndefined(matches.u)) {
-    matches.S = parseMillis(matches.u);
+  if (!isUndefined(matches2.u)) {
+    matches2.S = parseMillis(matches2.u);
   }
-  const vals = Object.keys(matches).reduce((r, k) => {
+  const vals = Object.keys(matches2).reduce((r, k) => {
     const f = toField(k);
     if (f) {
-      r[f] = matches[k];
+      r[f] = matches2[k];
     }
     return r;
   }, {});
@@ -17252,13 +17229,13 @@ function explainFromTokens(locale, input, format) {
   if (disqualifyingUnit) {
     return { input, tokens, invalidReason: disqualifyingUnit.invalidReason };
   } else {
-    const [regexString, handlers] = buildRegex(units), regex = RegExp(regexString, "i"), [rawMatches, matches] = match(input, regex, handlers), [result, zone, specificOffset] = matches ? dateTimeFromMatches(matches) : [null, null, void 0];
-    if (hasOwnProperty(matches, "a") && hasOwnProperty(matches, "H")) {
+    const [regexString, handlers] = buildRegex(units), regex = RegExp(regexString, "i"), [rawMatches, matches2] = match(input, regex, handlers), [result, zone, specificOffset] = matches2 ? dateTimeFromMatches(matches2) : [null, null, void 0];
+    if (hasOwnProperty(matches2, "a") && hasOwnProperty(matches2, "H")) {
       throw new ConflictingSpecificationError(
         "Can't include meridiem when specifying 24-hour format"
       );
     }
-    return { input, tokens, regex, rawMatches, matches, result, zone, specificOffset };
+    return { input, tokens, regex, rawMatches, matches: matches2, result, zone, specificOffset };
   }
 }
 function parseFromTokens(locale, input, format) {
@@ -17347,7 +17324,8 @@ function hasInvalidWeekData(obj) {
     return unitOutOfRange("week", obj.week);
   } else if (!validWeekday) {
     return unitOutOfRange("weekday", obj.weekday);
-  } else return false;
+  } else
+    return false;
 }
 function hasInvalidOrdinalData(obj) {
   const validYear = isInteger(obj.year), validOrdinal = integerBetween(obj.ordinal, 1, daysInYear(obj.year));
@@ -17355,7 +17333,8 @@ function hasInvalidOrdinalData(obj) {
     return unitOutOfRange("year", obj.year);
   } else if (!validOrdinal) {
     return unitOutOfRange("ordinal", obj.ordinal);
-  } else return false;
+  } else
+    return false;
 }
 function hasInvalidGregorianData(obj) {
   const validYear = isInteger(obj.year), validMonth = integerBetween(obj.month, 1, 12), validDay = integerBetween(obj.day, 1, daysInMonth(obj.year, obj.month));
@@ -17365,7 +17344,8 @@ function hasInvalidGregorianData(obj) {
     return unitOutOfRange("month", obj.month);
   } else if (!validDay) {
     return unitOutOfRange("day", obj.day);
-  } else return false;
+  } else
+    return false;
 }
 function hasInvalidTimeData(obj) {
   const { hour, minute, second, millisecond } = obj;
@@ -17378,7 +17358,8 @@ function hasInvalidTimeData(obj) {
     return unitOutOfRange("second", second);
   } else if (!validMillisecond) {
     return unitOutOfRange("millisecond", millisecond);
-  } else return false;
+  } else
+    return false;
 }
 
 // node_modules/luxon/src/datetime.js
@@ -17479,7 +17460,8 @@ function toTechFormat(dt, format, allowZ = true) {
 function toISODate(o, extended) {
   const longFormat = o.c.year > 9999 || o.c.year < 0;
   let c = "";
-  if (longFormat && o.c.year >= 0) c += "+";
+  if (longFormat && o.c.year >= 0)
+    c += "+";
   c += padStart(o.c.year, longFormat ? 6 : 4);
   if (extended) {
     c += "-";
@@ -17591,7 +17573,8 @@ function normalizeUnit(unit) {
     weekyears: "weekYear",
     ordinal: "ordinal"
   }[unit.toLowerCase()];
-  if (!normalized) throw new InvalidUnitError(unit);
+  if (!normalized)
+    throw new InvalidUnitError(unit);
   return normalized;
 }
 function quickDT(obj, opts) {
@@ -17623,7 +17606,8 @@ function diffRelative(start2, end2, opts) {
     if (opts.calendary) {
       if (!end2.hasSame(start2, unit)) {
         return end2.startOf(unit).diff(start2.startOf(unit), unit).get(unit);
-      } else return 0;
+      } else
+        return 0;
     } else {
       return end2.diff(start2, unit).get(unit);
     }
@@ -18479,7 +18463,8 @@ var DateTime = class _DateTime {
    * @return {DateTime}
    */
   set(values) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const normalized = normalizeObject(values, normalizeUnit), settingWeekStuff = !isUndefined(normalized.weekYear) || !isUndefined(normalized.weekNumber) || !isUndefined(normalized.weekday), containsOrdinal = !isUndefined(normalized.ordinal), containsGregorYear = !isUndefined(normalized.year), containsGregorMD = !isUndefined(normalized.month) || !isUndefined(normalized.day), containsGregor = containsGregorYear || containsGregorMD, definiteWeekDef = normalized.weekYear || normalized.weekNumber;
     if ((containsGregor || containsOrdinal) && definiteWeekDef) {
       throw new ConflictingSpecificationError(
@@ -18517,7 +18502,8 @@ var DateTime = class _DateTime {
    * @return {DateTime}
    */
   plus(duration) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const dur = Duration.fromDurationLike(duration);
     return clone2(this, adjustTime(this, dur));
   }
@@ -18528,7 +18514,8 @@ var DateTime = class _DateTime {
    @return {DateTime}
    */
   minus(duration) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const dur = Duration.fromDurationLike(duration).negate();
     return clone2(this, adjustTime(this, dur));
   }
@@ -18543,26 +18530,22 @@ var DateTime = class _DateTime {
    * @return {DateTime}
    */
   startOf(unit) {
-    if (!this.isValid) return this;
+    if (!this.isValid)
+      return this;
     const o = {}, normalizedUnit = Duration.normalizeUnit(unit);
     switch (normalizedUnit) {
       case "years":
         o.month = 1;
-      // falls through
       case "quarters":
       case "months":
         o.day = 1;
-      // falls through
       case "weeks":
       case "days":
         o.hour = 0;
-      // falls through
       case "hours":
         o.minute = 0;
-      // falls through
       case "minutes":
         o.second = 0;
-      // falls through
       case "seconds":
         o.millisecond = 0;
         break;
@@ -18865,7 +18848,8 @@ var DateTime = class _DateTime {
    * @return {Object}
    */
   toObject(opts = {}) {
-    if (!this.isValid) return {};
+    if (!this.isValid)
+      return {};
     const base = __spreadValues({}, this.c);
     if (opts.includeConfig) {
       base.outputCalendar = this.outputCalendar;
@@ -18934,7 +18918,8 @@ var DateTime = class _DateTime {
    * @return {boolean}
    */
   hasSame(otherDateTime, unit) {
-    if (!this.isValid) return false;
+    if (!this.isValid)
+      return false;
     const inputMs = otherDateTime.valueOf();
     const adjustedToZone = this.setZone(otherDateTime.zone, { keepLocalTime: true });
     return adjustedToZone.startOf(unit) <= inputMs && inputMs <= adjustedToZone.endOf(unit);
@@ -18968,7 +18953,8 @@ var DateTime = class _DateTime {
    * @example DateTime.now().minus({ hours: 36 }).toRelative({ round: false }) //=> "1.5 days ago"
    */
   toRelative(options = {}) {
-    if (!this.isValid) return null;
+    if (!this.isValid)
+      return null;
     const base = options.base || _DateTime.fromObject({}, { zone: this.zone }), padding = options.padding ? this < base ? -options.padding : options.padding : 0;
     let units = ["years", "months", "days", "hours", "minutes", "seconds"];
     let unit = options.unit;
@@ -18996,7 +18982,8 @@ var DateTime = class _DateTime {
    * @example DateTime.now().minus({ days: 2 }).toRelativeCalendar() //=> "2 days ago"
    */
   toRelativeCalendar(options = {}) {
-    if (!this.isValid) return null;
+    if (!this.isValid)
+      return null;
     return diffRelative(options.base || _DateTime.fromObject({}, { zone: this.zone }), this, __spreadProps(__spreadValues({}, options), {
       numeric: "auto",
       units: ["years", "months", "days"],
@@ -19386,8 +19373,8 @@ function replaceBlockIDs(markdown) {
 { #${$1}}
 `;
   });
-  codeBlocks.forEach((block, index) => {
-    markdown = markdown.replace(`{{CODE_BLOCK_${index}}}`, block);
+  codeBlocks.forEach((block, index2) => {
+    markdown = markdown.replace(`{{CODE_BLOCK_${index2}}}`, block);
   });
   return markdown;
 }
@@ -19414,9 +19401,9 @@ var GardenPageCompiler = class {
       const [name] = wikilink.substring(start2, end2).split("|");
       return (0, import_obsidian5.getLinkpath)(name);
     };
-    this.runCompilerSteps = (file, compilerSteps) => (text2) => __async(null, null, function* () {
+    this.runCompilerSteps = (file, compilerSteps) => (text2) => __async(this, null, function* () {
       return yield compilerSteps.reduce(
-        (previousStep, compilerStep) => __async(null, null, function* () {
+        (previousStep, compilerStep) => __async(this, null, function* () {
           const previousStepText = yield previousStep;
           return compilerStep(file)(previousStepText);
         }),
@@ -19451,7 +19438,8 @@ var GardenPageCompiler = class {
       const codeFences = text2.match(CODE_FENCE_REGEX) || [];
       const excalidraw2 = text2.match(EXCALIDRAW_REGEX) || [];
       const matchesToSkip = [...codeBlocks, ...codeFences, ...excalidraw2];
-      if (!obsidianCommentsMatches) return text2;
+      if (!obsidianCommentsMatches)
+        return text2;
       for (const commentMatch of obsidianCommentsMatches) {
         if (matchesToSkip.findIndex((x) => x.contains(commentMatch)) > -1) {
           continue;
@@ -19464,7 +19452,7 @@ var GardenPageCompiler = class {
       const compiledFrontmatter = file.getCompiledFrontmatter();
       return text2.replace(FRONTMATTER_REGEX, () => compiledFrontmatter);
     };
-    this.convertDataViews = (file) => (text2) => __async(null, null, function* () {
+    this.convertDataViews = (file) => (text2) => __async(this, null, function* () {
       const dataviewCompiler = new DataviewCompiler();
       return yield dataviewCompiler.compile(file)(text2);
     });
@@ -19508,7 +19496,7 @@ var GardenPageCompiler = class {
                 0,
                 currentFilePath.lastIndexOf(".")
               );
-              convertedText = convertedText.replace(
+              convertedText = convertedText.replaceAll(
                 linkMatch,
                 `[[${currentExtensionlessPath}${headerPath}\\|${linkDisplayName}]]`
               );
@@ -19523,7 +19511,7 @@ var GardenPageCompiler = class {
               file.getPath()
             );
             if (!linkedFile) {
-              convertedText = convertedText.replace(
+              convertedText = convertedText.replaceAll(
                 linkMatch,
                 `[[${linkedFileName}${headerPath}\\|${linkDisplayName}]]`
               );
@@ -19535,7 +19523,7 @@ var GardenPageCompiler = class {
                 linkedFile.path.lastIndexOf(".")
               );
               const linkPath = linkedFile.extension === "canvas" ? `${extensionlessPath}.canvas` : extensionlessPath;
-              convertedText = convertedText.replace(
+              convertedText = convertedText.replaceAll(
                 linkMatch,
                 `[[${linkPath}${headerPath}\\|${linkDisplayName}]]`
               );
@@ -19607,6 +19595,13 @@ var GardenPageCompiler = class {
             transcludedText = transcludedText.replace(
               transclusionMatch,
               excaliDrawCode
+            );
+          } else if (linkedFile.extension === "base") {
+            const baseFileText = yield this.vault.read(linkedFile);
+            const baseCodeBlock = "\n```base\n" + baseFileText + "\n```\n";
+            transcludedText = transcludedText.replace(
+              transclusionMatch,
+              baseCodeBlock
             );
           } else if (linkedFile.extension === "md") {
             let fileText = yield publishLinkedFile.cachedRead();
@@ -19692,7 +19687,7 @@ ${headerSection}
             fileText = withDvCompiledText;
             transcludedText = transcludedText.replace(
               transclusionMatch,
-              fileText
+              () => fileText
             );
           }
         } catch (error) {
@@ -19716,7 +19711,7 @@ ${headerSection}
       if (transcludedSvgs) {
         for (const svg of transcludedSvgs) {
           try {
-            const [imageName, size] = svg.substring(svg.indexOf("[") + 2, svg.indexOf("]")).split("|");
+            const [imageName, size] = svg.substring(svg.indexOf("[") + 2, svg.indexOf("]")).split(/\\?\|/);
             const imagePath = (0, import_obsidian5.getLinkpath)(imageName);
             if (imagePath === "") {
               continue;
@@ -19746,7 +19741,7 @@ ${headerSection}
       if (linkedSvgMatches) {
         for (const svg of linkedSvgMatches) {
           try {
-            const [_imageName, size] = svg.substring(svg.indexOf("[") + 2, svg.indexOf("]")).split("|");
+            const [_imageName, size] = svg.substring(svg.indexOf("[") + 2, svg.indexOf("]")).split(/\\?\|/);
             const pathStart = svg.lastIndexOf("(") + 1;
             const pathEnd = svg.lastIndexOf(")");
             const imagePath = svg.substring(pathStart, pathEnd);
@@ -19779,7 +19774,7 @@ ${headerSection}
       var _a2;
       const text2 = yield file.cachedRead();
       const assets = [];
-      const transcludedImageRegex = /!\[\[(.*?)(\.(png|jpg|jpeg|gif|webp|pdf))\|(.*?)\]\]|!\[\[(.*?)(\.(png|jpg|jpeg|gif|webp|pdf))\]\]/g;
+      const transcludedImageRegex = /!\[\[(.*?)(\.(png|jpg|jpeg|gif|webp|pdf))\\?\|(.*?)\]\]|!\[\[(.*?)(\.(png|jpg|jpeg|gif|webp|pdf))\]\]/g;
       const transcludedImageMatches = text2.match(transcludedImageRegex);
       if (transcludedImageMatches) {
         for (let i = 0; i < transcludedImageMatches.length; i++) {
@@ -19788,7 +19783,7 @@ ${headerSection}
             const [imageName, _] = imageMatch.substring(
               imageMatch.indexOf("[") + 2,
               imageMatch.indexOf("]")
-            ).split("|");
+            ).split(/\\?\|/);
             const imagePath = (0, import_obsidian5.getLinkpath)(imageName);
             const linkedFile = this.resolveLinkedFile(
               imagePath,
@@ -19857,7 +19852,7 @@ ${headerSection}
       const filePath = file.getPath();
       const assets = [];
       let imageText = text2;
-      const transcludedImageRegex = /!\[\[(.*?)(\.(png|jpg|jpeg|gif|webp))\|(.*?)\]\]|!\[\[(.*?)(\.(png|jpg|jpeg|gif|webp))\]\]/g;
+      const transcludedImageRegex = /!\[\[(.*?)(\.(png|jpg|jpeg|gif|webp))\\?\|(.*?)\]\]|!\[\[(.*?)(\.(png|jpg|jpeg|gif|webp))\]\]/g;
       const transcludedImageMatches = text2.match(transcludedImageRegex);
       if (transcludedImageMatches) {
         for (let i = 0; i < transcludedImageMatches.length; i++) {
@@ -19866,7 +19861,7 @@ ${headerSection}
             const [imageName, ...metaDataAndSize] = imageMatch.substring(
               imageMatch.indexOf("[") + 2,
               imageMatch.indexOf("]")
-            ).split("|");
+            ).split(/\\?\|/);
             const lastValue = metaDataAndSize[metaDataAndSize.length - 1];
             const hasSeveralValues = metaDataAndSize.length > 0;
             const lastValueIsSize = hasSeveralValues && !isNaN(parseInt(lastValue));
@@ -19893,11 +19888,11 @@ ${headerSection}
             const cmsImgPath = `/img/user/${linkedFile.path}`;
             let name = "";
             if (metaData && size) {
-              name = `${imageName}|${metaData}|${size}`;
+              name = `${imageName}\\|${metaData}\\|${size}`;
             } else if (size) {
-              name = `${imageName}|${size}`;
+              name = `${imageName}\\|${size}`;
             } else if (metaData && metaData !== "") {
-              name = `${imageName}|${metaData}`;
+              name = `${imageName}\\|${metaData}`;
             } else {
               name = imageName;
             }
@@ -20278,7 +20273,55 @@ ${headerSection}
         COMPILE_STEPS
       )(vaultFileText);
       const [text2, images] = yield this.convertEmbeddedAssets(file)(compiledText);
+      const frontmatterImages = yield this.extractFrontmatterAssets(file);
+      images.push(...frontmatterImages);
       return [text2, { images }];
+    });
+  }
+  /**
+   * Scan frontmatter properties for values that look like image paths
+   * and include them as assets so they get published alongside the note.
+   */
+  extractFrontmatterAssets(file) {
+    return __async(this, null, function* () {
+      var _a2;
+      const assets = [];
+      const frontmatter = (_a2 = this.metadataCache.getFileCache(file.file)) == null ? void 0 : _a2.frontmatter;
+      if (!frontmatter)
+        return assets;
+      const imageExtensions = /\.(png|jpg|jpeg|gif|webp|svg)$/i;
+      const scanValue = (value) => __async(this, null, function* () {
+        if (typeof value === "string" && imageExtensions.test(value)) {
+          if (value.startsWith("http"))
+            return;
+          try {
+            const linkedFile = this.resolveLinkedFile(
+              value,
+              file.getPath()
+            );
+            if (!linkedFile)
+              return;
+            const image = yield this.vault.readBinary(linkedFile);
+            const imageBase64 = (0, import_obsidian5.arrayBufferToBase64)(image);
+            assets.push({
+              path: `/img/user/${linkedFile.path}`,
+              content: imageBase64,
+              localHash: generateBlobHashFromBase64(imageBase64)
+            });
+          } catch (e) {
+          }
+        } else if (Array.isArray(value)) {
+          for (const item of value) {
+            yield scanValue(item);
+          }
+        }
+      });
+      for (const [key, value] of Object.entries(frontmatter)) {
+        if (key === "position")
+          continue;
+        yield scanValue(value);
+      }
+      return assets;
     });
   }
   generateTransclusionHeader(headerName, transcludedFile) {
@@ -20439,18 +20482,18 @@ var Publisher = class {
   }
   deleteNote(vaultFilePath, sha) {
     return __async(this, null, function* () {
-      const path = `${NOTE_PATH_BASE2}${vaultFilePath}`;
-      return yield this.delete(path, sha);
+      const path2 = `${NOTE_PATH_BASE2}${vaultFilePath}`;
+      return yield this.delete(path2, sha);
     });
   }
   deleteImage(vaultFilePath, sha) {
     return __async(this, null, function* () {
-      const path = `${IMAGE_PATH_BASE2}${vaultFilePath}`;
-      return yield this.delete(path, sha);
+      const path2 = `${IMAGE_PATH_BASE2}${vaultFilePath}`;
+      return yield this.delete(path2, sha);
     });
   }
   /** If provided with sha, garden connection does not need to get it seperately! */
-  delete(path, sha) {
+  delete(path2, sha) {
     return __async(this, null, function* () {
       this.validateSettings();
       const userGardenConnection = new RepositoryConnection(
@@ -20458,7 +20501,7 @@ var Publisher = class {
           this.settings
         )
       );
-      const deleted = yield userGardenConnection.deleteFile(path, {
+      const deleted = yield userGardenConnection.deleteFile(path2, {
         sha
       });
       return !!deleted;
@@ -20550,27 +20593,27 @@ var Publisher = class {
       return siteManager.getImageHashes(contentTree);
     });
   }
-  uploadToGithub(path, content, remoteFileHash) {
+  uploadToGithub(path2, content, remoteFileHash) {
     return __async(this, null, function* () {
       this.validateSettings();
-      let message = `Update content ${path}`;
+      let message = `Update content ${path2}`;
       const userGardenConnection = new RepositoryConnection(
         yield PublishPlatformConnectionFactory.createPublishPlatformConnection(
           this.settings
         )
       );
       if (!remoteFileHash) {
-        const file = yield userGardenConnection.getFile(path).catch(() => {
-          import_js_logger7.default.info(`File ${path} does not exist, adding`);
+        const file = yield userGardenConnection.getFile(path2).catch(() => {
+          import_js_logger7.default.info(`File ${path2} does not exist, adding`);
         });
         remoteFileHash = file == null ? void 0 : file.sha;
         if (!remoteFileHash) {
-          message = `Add content ${path}`;
+          message = `Add content ${path2}`;
         }
       }
       return yield userGardenConnection.updateFile({
         content,
-        path,
+        path: path2,
         message,
         sha: remoteFileHash
       });
@@ -20579,14 +20622,14 @@ var Publisher = class {
   uploadText(filePath, content, sha) {
     return __async(this, null, function* () {
       content = gBase64.encode(content);
-      const path = `${NOTE_PATH_BASE2}${filePath}`;
-      yield this.uploadToGithub(path, content, sha);
+      const path2 = `${NOTE_PATH_BASE2}${filePath}`;
+      yield this.uploadToGithub(path2, content, sha);
     });
   }
   uploadImage(filePath, content, sha) {
     return __async(this, null, function* () {
-      const path = `src/site${filePath}`;
-      yield this.uploadToGithub(path, content, sha);
+      const path2 = `src/site${filePath}`;
+      yield this.uploadToGithub(path2, content, sha);
     });
   }
   uploadAssets(_0) {
@@ -20766,7 +20809,8 @@ function append_styles(target, style_sheet_id, styles) {
   }
 }
 function get_root_for_style(node) {
-  if (!node) return document;
+  if (!node)
+    return document;
   const root = node.getRootNode ? node.getRootNode() : node.ownerDocument;
   if (root && /** @type {ShadowRoot} */
   root.host) {
@@ -20795,7 +20839,8 @@ function detach(node) {
 }
 function destroy_each(iterations, detaching) {
   for (let i = 0; i < iterations.length; i += 1) {
-    if (iterations[i]) iterations[i].d(detaching);
+    if (iterations[i])
+      iterations[i].d(detaching);
   }
 }
 function element(name) {
@@ -20818,15 +20863,18 @@ function listen(node, event, handler, options) {
   return () => node.removeEventListener(event, handler, options);
 }
 function attr(node, attribute, value) {
-  if (value == null) node.removeAttribute(attribute);
-  else if (node.getAttribute(attribute) !== value) node.setAttribute(attribute, value);
+  if (value == null)
+    node.removeAttribute(attribute);
+  else if (node.getAttribute(attribute) !== value)
+    node.setAttribute(attribute, value);
 }
 function children(element2) {
   return Array.from(element2.childNodes);
 }
 function set_data(text2, data) {
   data = "" + data;
-  if (text2.data === data) return;
+  if (text2.data === data)
+    return;
   text2.data = /** @type {string} */
   data;
 }
@@ -20946,11 +20994,15 @@ function set_current_component(component) {
   current_component = component;
 }
 function get_current_component() {
-  if (!current_component) throw new Error("Function called outside component initialization");
+  if (!current_component)
+    throw new Error("Function called outside component initialization");
   return current_component;
 }
 function onMount(fn2) {
   get_current_component().$$.on_mount.push(fn2);
+}
+function onDestroy(fn2) {
+  get_current_component().$$.on_destroy.push(fn2);
 }
 function createEventDispatcher() {
   const component = get_current_component();
@@ -20988,6 +21040,9 @@ function schedule_update() {
 function add_render_callback(fn2) {
   render_callbacks.push(fn2);
 }
+function add_flush_callback(fn2) {
+  flush_callbacks.push(fn2);
+}
 var seen_callbacks = /* @__PURE__ */ new Set();
 var flushidx = 0;
 function flush() {
@@ -21011,7 +21066,8 @@ function flush() {
     set_current_component(null);
     dirty_components.length = 0;
     flushidx = 0;
-    while (binding_callbacks.length) binding_callbacks.pop()();
+    while (binding_callbacks.length)
+      binding_callbacks.pop()();
     for (let i = 0; i < render_callbacks.length; i += 1) {
       const callback = render_callbacks[i];
       if (!seen_callbacks.has(callback)) {
@@ -21071,12 +21127,14 @@ function transition_in(block, local) {
 }
 function transition_out(block, local, detach2, callback) {
   if (block && block.o) {
-    if (outroing.has(block)) return;
+    if (outroing.has(block))
+      return;
     outroing.add(block);
     outros.c.push(() => {
       outroing.delete(block);
       if (callback) {
-        if (detach2) block.d(1);
+        if (detach2)
+          block.d(1);
         callback();
       }
     });
@@ -21089,8 +21147,9 @@ function transition_out(block, local, detach2, callback) {
 // node_modules/svelte/src/runtime/internal/await_block.js
 function handle_promise(promise, info) {
   const token = info.token = {};
-  function update2(type, index, key, value) {
-    if (info.token !== token) return;
+  function update2(type, index2, key, value) {
+    if (info.token !== token)
+      return;
     info.resolved = value;
     let child_ctx = info.ctx;
     if (key !== void 0) {
@@ -21102,7 +21161,7 @@ function handle_promise(promise, info) {
     if (info.block) {
       if (info.blocks) {
         info.blocks.forEach((block2, i) => {
-          if (i !== index && block2) {
+          if (i !== index2 && block2) {
             group_outros();
             transition_out(block2, 1, 1, () => {
               if (info.blocks[i] === block2) {
@@ -21121,7 +21180,8 @@ function handle_promise(promise, info) {
       needs_flush = true;
     }
     info.block = block;
-    if (info.blocks) info.blocks[index] = block;
+    if (info.blocks)
+      info.blocks[index2] = block;
     if (needs_flush) {
       flush();
     }
@@ -21172,6 +21232,80 @@ function update_await_block_branch(info, ctx, dirty) {
 function ensure_array_like(array_like_or_iterator) {
   return (array_like_or_iterator == null ? void 0 : array_like_or_iterator.length) !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
 }
+function outro_and_destroy_block(block, lookup) {
+  transition_out(block, 1, 1, () => {
+    lookup.delete(block.key);
+  });
+}
+function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy2, create_each_block7, next, get_context) {
+  let o = old_blocks.length;
+  let n2 = list.length;
+  let i = o;
+  const old_indexes = {};
+  while (i--)
+    old_indexes[old_blocks[i].key] = i;
+  const new_blocks = [];
+  const new_lookup = /* @__PURE__ */ new Map();
+  const deltas = /* @__PURE__ */ new Map();
+  const updates = [];
+  i = n2;
+  while (i--) {
+    const child_ctx = get_context(ctx, list, i);
+    const key = get_key(child_ctx);
+    let block = lookup.get(key);
+    if (!block) {
+      block = create_each_block7(key, child_ctx);
+      block.c();
+    } else if (dynamic) {
+      updates.push(() => block.p(child_ctx, dirty));
+    }
+    new_lookup.set(key, new_blocks[i] = block);
+    if (key in old_indexes)
+      deltas.set(key, Math.abs(i - old_indexes[key]));
+  }
+  const will_move = /* @__PURE__ */ new Set();
+  const did_move = /* @__PURE__ */ new Set();
+  function insert2(block) {
+    transition_in(block, 1);
+    block.m(node, next);
+    lookup.set(block.key, block);
+    next = block.first;
+    n2--;
+  }
+  while (o && n2) {
+    const new_block = new_blocks[n2 - 1];
+    const old_block = old_blocks[o - 1];
+    const new_key = new_block.key;
+    const old_key = old_block.key;
+    if (new_block === old_block) {
+      next = new_block.first;
+      o--;
+      n2--;
+    } else if (!new_lookup.has(old_key)) {
+      destroy2(old_block, lookup);
+      o--;
+    } else if (!lookup.has(new_key) || will_move.has(new_key)) {
+      insert2(new_block);
+    } else if (did_move.has(old_key)) {
+      o--;
+    } else if (deltas.get(new_key) > deltas.get(old_key)) {
+      did_move.add(new_key);
+      insert2(new_block);
+    } else {
+      will_move.add(old_key);
+      o--;
+    }
+  }
+  while (o--) {
+    const old_block = old_blocks[o];
+    if (!new_lookup.has(old_block.key))
+      destroy2(old_block, lookup);
+  }
+  while (n2)
+    insert2(new_blocks[n2 - 1]);
+  run_all(updates);
+  return new_blocks;
+}
 
 // node_modules/svelte/src/shared/boolean_attributes.js
 var _boolean_attributes = (
@@ -21207,6 +21341,13 @@ var _boolean_attributes = (
 var boolean_attributes = /* @__PURE__ */ new Set([..._boolean_attributes]);
 
 // node_modules/svelte/src/runtime/internal/Component.js
+function bind(component, name, callback) {
+  const index2 = component.$$.props[name];
+  if (index2 !== void 0) {
+    component.$$.bound[index2] = callback;
+    callback(component.$$.ctx[index2]);
+  }
+}
 function create_component(block) {
   block && block.c();
 }
@@ -21242,7 +21383,7 @@ function make_dirty(component, i) {
   }
   component.$$.dirty[i / 31 | 0] |= 1 << i % 31;
 }
-function init(component, options, instance9, create_fragment9, not_equal, props, append_styles2 = null, dirty = [-1]) {
+function init(component, options, instance11, create_fragment11, not_equal, props, append_styles2, dirty = [-1]) {
   const parent_component = current_component;
   set_current_component(component);
   const $$ = component.$$ = {
@@ -21268,18 +21409,20 @@ function init(component, options, instance9, create_fragment9, not_equal, props,
   };
   append_styles2 && append_styles2($$.root);
   let ready = false;
-  $$.ctx = instance9 ? instance9(component, options.props || {}, (i, ret, ...rest) => {
+  $$.ctx = instance11 ? instance11(component, options.props || {}, (i, ret, ...rest) => {
     const value = rest.length ? rest[0] : ret;
     if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-      if (!$$.skip_bound && $$.bound[i]) $$.bound[i](value);
-      if (ready) make_dirty(component, i);
+      if (!$$.skip_bound && $$.bound[i])
+        $$.bound[i](value);
+      if (ready)
+        make_dirty(component, i);
     }
     return ret;
   }) : [];
   $$.update();
   ready = true;
   run_all($$.before_update);
-  $$.fragment = create_fragment9 ? create_fragment9($$.ctx) : false;
+  $$.fragment = create_fragment11 ? create_fragment11($$.ctx) : false;
   if (options.target) {
     if (options.hydrate) {
       start_hydrating();
@@ -21289,7 +21432,8 @@ function init(component, options, instance9, create_fragment9, not_equal, props,
     } else {
       $$.fragment && $$.fragment.c();
     }
-    if (options.intro) transition_in(component.$$.fragment);
+    if (options.intro)
+      transition_in(component.$$.fragment);
     mount_component(component, options.target, options.anchor);
     end_hydrating();
     flush();
@@ -21343,12 +21487,6 @@ if (typeof HTMLElement === "function") {
           this.$$l_u.delete(listener);
         }
       }
-      if (this.$$l[type]) {
-        const idx = this.$$l[type].indexOf(listener);
-        if (idx >= 0) {
-          this.$$l[type].splice(idx, 1);
-        }
-      }
     }
     connectedCallback() {
       return __async(this, null, function* () {
@@ -21368,10 +21506,10 @@ if (typeof HTMLElement === "function") {
                  * @param {HTMLElement} target
                  * @param {HTMLElement} [anchor]
                  */
-                m: function mount(target, anchor) {
+                m: function mount2(target, anchor) {
                   insert(target, node, anchor);
                 },
-                d: function destroy(detaching) {
+                d: function destroy2(detaching) {
                   if (detaching) {
                     detach(node);
                   }
@@ -21381,7 +21519,7 @@ if (typeof HTMLElement === "function") {
             };
           };
           yield Promise.resolve();
-          if (!this.$$cn || this.$$c) {
+          if (!this.$$cn) {
             return;
           }
           const $$slots = {};
@@ -21395,12 +21533,6 @@ if (typeof HTMLElement === "function") {
             const name = this.$$g_p(attribute.name);
             if (!(name in this.$$d)) {
               this.$$d[name] = get_custom_element_value(name, attribute.value, this.$$p_d, "toProp");
-            }
-          }
-          for (const key in this.$$p_d) {
-            if (!(key in this.$$d) && this[key] !== void 0) {
-              this.$$d[key] = this[key];
-              delete this[key];
             }
           }
           this.$$c = new this.$$ctor({
@@ -21424,7 +21556,7 @@ if (typeof HTMLElement === "function") {
                   "toAttribute"
                 );
                 if (attribute_value == null) {
-                  this.removeAttribute(this.$$p_d[key].attribute || key);
+                  this.removeAttribute(key);
                 } else {
                   this.setAttribute(this.$$p_d[key].attribute || key, attribute_value);
                 }
@@ -21448,7 +21580,8 @@ if (typeof HTMLElement === "function") {
     // and setting attributes through setAttribute etc, this is helpful
     attributeChangedCallback(attr2, _oldValue, newValue) {
       var _a2;
-      if (this.$$r) return;
+      if (this.$$r)
+        return;
       attr2 = this.$$g_p(attr2);
       this.$$d[attr2] = get_custom_element_value(attr2, newValue, this.$$p_d, "toProp");
       (_a2 = this.$$c) == null ? void 0 : _a2.$set({ [attr2]: this.$$d[attr2] });
@@ -21456,7 +21589,7 @@ if (typeof HTMLElement === "function") {
     disconnectedCallback() {
       this.$$cn = false;
       Promise.resolve().then(() => {
-        if (!this.$$cn && this.$$c) {
+        if (!this.$$cn) {
           this.$$c.$destroy();
           this.$$c = void 0;
         }
@@ -21494,7 +21627,6 @@ function get_custom_element_value(prop, value, props_definition, transform) {
         return value && JSON.parse(value);
       case "Boolean":
         return value;
-      // conversion already handled above
       case "Number":
         return value != null ? +value : value;
       default:
@@ -21539,8 +21671,9 @@ var SvelteComponent = class {
     const callbacks = this.$$.callbacks[type] || (this.$$.callbacks[type] = []);
     callbacks.push(callback);
     return () => {
-      const index = callbacks.indexOf(callback);
-      if (index !== -1) callbacks.splice(index, 1);
+      const index2 = callbacks.indexOf(callback);
+      if (index2 !== -1)
+        callbacks.splice(index2, 1);
     };
   }
   /**
@@ -21621,7 +21754,8 @@ function create_fragment(ctx) {
       1 && raw_value !== (raw_value = ((_a3 = (0, import_obsidian7.getIcon)(
         /*name*/
         ctx2[0]
-      )) == null ? void 0 : _a3.outerHTML) + "")) html_tag.p(raw_value);
+      )) == null ? void 0 : _a3.outerHTML) + ""))
+        html_tag.p(raw_value);
     },
     i: noop,
     o: noop,
@@ -21636,7 +21770,8 @@ function create_fragment(ctx) {
 function instance($$self, $$props, $$invalidate) {
   let { name = "" } = $$props;
   $$self.$$set = ($$props2) => {
-    if ("name" in $$props2) $$invalidate(0, name = $$props2.name);
+    if ("name" in $$props2)
+      $$invalidate(0, name = $$props2.name);
   };
   return [name];
 }
@@ -21690,12 +21825,14 @@ function create_if_block_5(ctx) {
       t0 = space();
       create_component(icon.$$.fragment);
       t1 = space();
-      if (if_block0) if_block0.c();
+      if (if_block0)
+        if_block0.c();
       t2 = space();
       span1 = element("span");
       t3 = text(t3_value);
       t4 = space();
-      if (if_block1) if_block1.c();
+      if (if_block1)
+        if_block1.c();
       attr(span0, "class", "no-arrow svelte-gsbdto");
     },
     m(target, anchor) {
@@ -21704,12 +21841,14 @@ function create_if_block_5(ctx) {
       append(span2, t0);
       mount_component(icon, span2, null);
       append(span2, t1);
-      if (if_block0) if_block0.m(span2, null);
+      if (if_block0)
+        if_block0.m(span2, null);
       append(span2, t2);
       append(span2, span1);
       append(span1, t3);
       append(span2, t4);
-      if (if_block1) if_block1.m(span2, null);
+      if (if_block1)
+        if_block1.m(span2, null);
       current = true;
       if (!mounted) {
         dispose = listen(
@@ -21737,11 +21876,13 @@ function create_if_block_5(ctx) {
       }
       if ((!current || dirty & /*tree*/
       1) && t3_value !== (t3_value = /*tree*/
-      ctx2[0].name + "")) set_data(t3, t3_value);
+      ctx2[0].name + ""))
+        set_data(t3, t3_value);
       if (dirty & /*enableShowDiff, tree*/
-      5) show_if = /*enableShowDiff*/
-      ctx2[2] && !/*tree*/
-      ctx2[0].path.endsWith(".canvas");
+      5)
+        show_if = /*enableShowDiff*/
+        ctx2[2] && !/*tree*/
+        ctx2[0].path.endsWith(".canvas");
       if (show_if) {
         if (if_block1) {
           if_block1.p(ctx2, dirty);
@@ -21764,7 +21905,8 @@ function create_if_block_5(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       transition_in(if_block1);
       current = true;
@@ -21779,8 +21921,10 @@ function create_if_block_5(ctx) {
         detach(span2);
       }
       destroy_component(icon);
-      if (if_block0) if_block0.d();
-      if (if_block1) if_block1.d();
+      if (if_block0)
+        if_block0.d();
+      if (if_block1)
+        if_block1.d();
       mounted = false;
       dispose();
     }
@@ -21803,7 +21947,8 @@ function create_if_block(ctx) {
   const if_blocks = [];
   function select_block_type_1(ctx2, dirty) {
     if (!/*isRoot*/
-    ctx2[5]) return 0;
+    ctx2[5])
+      return 0;
     return 1;
   }
   current_block_type_index = select_block_type_1(ctx, -1);
@@ -21820,7 +21965,8 @@ function create_if_block(ctx) {
       t0 = space();
       if_block0.c();
       t1 = space();
-      if (if_block1) if_block1.c();
+      if (if_block1)
+        if_block1.c();
       if_block1_anchor = empty();
       attr(span0, "class", "arrow svelte-gsbdto");
       toggle_class(
@@ -21837,7 +21983,8 @@ function create_if_block(ctx) {
       append(span1, t0);
       if_blocks[current_block_type_index].m(span1, null);
       insert(target, t1, anchor);
-      if (if_block1) if_block1.m(target, anchor);
+      if (if_block1)
+        if_block1.m(target, anchor);
       insert(target, if_block1_anchor, anchor);
       current = true;
       if (!mounted) {
@@ -21886,7 +22033,8 @@ function create_if_block(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       transition_in(if_block0);
       transition_in(if_block1);
@@ -21906,7 +22054,8 @@ function create_if_block(ctx) {
       }
       destroy_component(icon);
       if_blocks[current_block_type_index].d();
-      if (if_block1) if_block1.d(detaching);
+      if (if_block1)
+        if_block1.d(detaching);
       mounted = false;
       dispose();
     }
@@ -21962,12 +22111,13 @@ function create_if_block_7(ctx) {
         input.checked = input_checked_value;
       }
       if (setIndeterminate_action && is_function(setIndeterminate_action.update) && dirty & /*tree*/
-      1) setIndeterminate_action.update.call(null, {
-        indeterminate: (
-          /*tree*/
-          ctx2[0].indeterminate
-        )
-      });
+      1)
+        setIndeterminate_action.update.call(null, {
+          indeterminate: (
+            /*tree*/
+            ctx2[0].indeterminate
+          )
+        });
     },
     d(detaching) {
       if (detaching) {
@@ -22008,7 +22158,8 @@ function create_if_block_6(ctx) {
     },
     p: noop,
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       current = true;
     },
@@ -22040,14 +22191,16 @@ function create_else_block(ctx) {
   ctx[1] && create_if_block_4(ctx);
   return {
     c() {
-      if (if_block) if_block.c();
+      if (if_block)
+        if_block.c();
       t0 = space();
       span = element("span");
       t1 = text(t1_value);
       attr(span, "class", "root-header svelte-gsbdto");
     },
     m(target, anchor) {
-      if (if_block) if_block.m(target, anchor);
+      if (if_block)
+        if_block.m(target, anchor);
       insert(target, t0, anchor);
       insert(target, span, anchor);
       append(span, t1);
@@ -22077,7 +22230,8 @@ function create_else_block(ctx) {
       }
       if (dirty & /*tree*/
       1 && t1_value !== (t1_value = /*tree*/
-      ctx2[0].name + "")) set_data(t1, t1_value);
+      ctx2[0].name + ""))
+        set_data(t1, t1_value);
     },
     i: noop,
     o: noop,
@@ -22086,7 +22240,8 @@ function create_else_block(ctx) {
         detach(t0);
         detach(span);
       }
-      if (if_block) if_block.d(detaching);
+      if (if_block)
+        if_block.d(detaching);
       mounted = false;
       dispose();
     }
@@ -22112,7 +22267,8 @@ function create_if_block_2(ctx) {
     c() {
       create_component(icon.$$.fragment);
       t0 = space();
-      if (if_block) if_block.c();
+      if (if_block)
+        if_block.c();
       t1 = space();
       span = element("span");
       t2 = text(t2_value);
@@ -22120,7 +22276,8 @@ function create_if_block_2(ctx) {
     m(target, anchor) {
       mount_component(icon, target, anchor);
       insert(target, t0, anchor);
-      if (if_block) if_block.m(target, anchor);
+      if (if_block)
+        if_block.m(target, anchor);
       insert(target, t1, anchor);
       insert(target, span, anchor);
       append(span, t2);
@@ -22151,10 +22308,12 @@ function create_if_block_2(ctx) {
       }
       if ((!current || dirty & /*tree*/
       1) && t2_value !== (t2_value = /*tree*/
-      ctx2[0].name + "")) set_data(t2, t2_value);
+      ctx2[0].name + ""))
+        set_data(t2, t2_value);
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       current = true;
     },
@@ -22169,7 +22328,8 @@ function create_if_block_2(ctx) {
         detach(span);
       }
       destroy_component(icon, detaching);
-      if (if_block) if_block.d(detaching);
+      if (if_block)
+        if_block.d(detaching);
       mounted = false;
       dispose();
     }
@@ -22225,12 +22385,13 @@ function create_if_block_4(ctx) {
         input.checked = input_checked_value;
       }
       if (setIndeterminate_action && is_function(setIndeterminate_action.update) && dirty & /*tree*/
-      1) setIndeterminate_action.update.call(null, {
-        indeterminate: (
-          /*tree*/
-          ctx2[0].indeterminate
-        )
-      });
+      1)
+        setIndeterminate_action.update.call(null, {
+          indeterminate: (
+            /*tree*/
+            ctx2[0].indeterminate
+          )
+        });
     },
     d(detaching) {
       if (detaching) {
@@ -22291,12 +22452,13 @@ function create_if_block_3(ctx) {
         input.checked = input_checked_value;
       }
       if (setIndeterminate_action && is_function(setIndeterminate_action.update) && dirty & /*tree*/
-      1) setIndeterminate_action.update.call(null, {
-        indeterminate: (
-          /*tree*/
-          ctx2[0].indeterminate
-        )
-      });
+      1)
+        setIndeterminate_action.update.call(null, {
+          indeterminate: (
+            /*tree*/
+            ctx2[0].indeterminate
+          )
+        });
     },
     d(detaching) {
       if (detaching) {
@@ -22365,7 +22527,8 @@ function create_if_block_1(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       for (let i = 0; i < each_value.length; i += 1) {
         transition_in(each_blocks[i]);
       }
@@ -22426,18 +22589,22 @@ function create_each_block(ctx) {
     p(ctx2, dirty) {
       const treenode_changes = {};
       if (dirty & /*enableShowDiff*/
-      4) treenode_changes.enableShowDiff = /*enableShowDiff*/
-      ctx2[2];
+      4)
+        treenode_changes.enableShowDiff = /*enableShowDiff*/
+        ctx2[2];
       if (dirty & /*readOnly*/
-      2) treenode_changes.readOnly = /*readOnly*/
-      ctx2[1];
+      2)
+        treenode_changes.readOnly = /*readOnly*/
+        ctx2[1];
       if (dirty & /*tree*/
-      1) treenode_changes.tree = /*child*/
-      ctx2[14];
+      1)
+        treenode_changes.tree = /*child*/
+        ctx2[14];
       treenode.$set(treenode_changes);
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(treenode.$$.fragment, local);
       current = true;
     },
@@ -22462,9 +22629,11 @@ function create_fragment2(ctx) {
     if (
       /*tree*/
       ctx2[0].children
-    ) return 0;
+    )
+      return 0;
     if (!/*isRoot*/
-    ctx2[5]) return 1;
+    ctx2[5])
+      return 1;
     return -1;
   }
   if (~(current_block_type_index = select_block_type(ctx, -1))) {
@@ -22474,7 +22643,8 @@ function create_fragment2(ctx) {
     c() {
       ul = element("ul");
       li = element("li");
-      if (if_block) if_block.c();
+      if (if_block)
+        if_block.c();
       attr(li, "class", "svelte-gsbdto");
       attr(ul, "class", "svelte-gsbdto");
       toggle_class(
@@ -22523,7 +22693,8 @@ function create_fragment2(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(if_block);
       current = true;
     },
@@ -22572,14 +22743,18 @@ function instance2($$self, $$props, $$invalidate) {
   };
   const showDiff_handler = (e) => dispatchShowDiff(e.detail.node);
   $$self.$$set = ($$props2) => {
-    if ("tree" in $$props2) $$invalidate(0, tree = $$props2.tree);
-    if ("readOnly" in $$props2) $$invalidate(1, readOnly = $$props2.readOnly);
-    if ("enableShowDiff" in $$props2) $$invalidate(2, enableShowDiff = $$props2.enableShowDiff);
+    if ("tree" in $$props2)
+      $$invalidate(0, tree = $$props2.tree);
+    if ("readOnly" in $$props2)
+      $$invalidate(1, readOnly = $$props2.readOnly);
+    if ("enableShowDiff" in $$props2)
+      $$invalidate(2, enableShowDiff = $$props2.enableShowDiff);
   };
   $$self.$$.update = () => {
     if ($$self.$$.dirty & /*expanded*/
     8) {
-      $: $$invalidate(4, arrowDown = expanded);
+      $:
+        $$invalidate(4, arrowDown = expanded);
     }
   };
   return [
@@ -22650,18 +22825,22 @@ function create_fragment3(ctx) {
     p(ctx2, [dirty]) {
       const node_changes = {};
       if (dirty & /*tree*/
-      1) node_changes.tree = /*tree*/
-      ctx2[0];
+      1)
+        node_changes.tree = /*tree*/
+        ctx2[0];
       if (dirty & /*readOnly*/
-      2) node_changes.readOnly = /*readOnly*/
-      ctx2[1];
+      2)
+        node_changes.readOnly = /*readOnly*/
+        ctx2[1];
       if (dirty & /*enableShowDiff*/
-      4) node_changes.enableShowDiff = /*enableShowDiff*/
-      ctx2[2];
+      4)
+        node_changes.enableShowDiff = /*enableShowDiff*/
+        ctx2[2];
       node.$set(node_changes);
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(node.$$.fragment, local);
       current = true;
     },
@@ -22680,7 +22859,8 @@ function create_fragment3(ctx) {
 function rebuildChildren(node, checkAsParent = true) {
   if (node.children) {
     for (const child of node.children) {
-      if (checkAsParent) child.checked = !!node.checked;
+      if (checkAsParent)
+        child.checked = !!node.checked;
       rebuildChildren(child, checkAsParent);
     }
     node.indeterminate = node.children.some((c) => c.indeterminate) || node.children.some((c) => !!c.checked) && node.children.some((c) => !c.checked);
@@ -22727,10 +22907,14 @@ function instance3($$self, $$props, $$invalidate) {
   rebuildTree({ detail: { node: tree } }, false);
   const showDiff_handler = (e) => showDiff(e.detail.node.path);
   $$self.$$set = ($$props2) => {
-    if ("tree" in $$props2) $$invalidate(0, tree = $$props2.tree);
-    if ("readOnly" in $$props2) $$invalidate(1, readOnly = $$props2.readOnly);
-    if ("enableShowDiff" in $$props2) $$invalidate(2, enableShowDiff = $$props2.enableShowDiff);
-    if ("showDiff" in $$props2) $$invalidate(3, showDiff = $$props2.showDiff);
+    if ("tree" in $$props2)
+      $$invalidate(0, tree = $$props2.tree);
+    if ("readOnly" in $$props2)
+      $$invalidate(1, readOnly = $$props2.readOnly);
+    if ("enableShowDiff" in $$props2)
+      $$invalidate(2, enableShowDiff = $$props2.enableShowDiff);
+    if ("showDiff" in $$props2)
+      $$invalidate(3, showDiff = $$props2.showDiff);
   };
   return [tree, readOnly, enableShowDiff, showDiff, rebuildTree, showDiff_handler];
 }
@@ -22749,21 +22933,21 @@ var TreeView_default = TreeView;
 
 // src/views/PublicationCenter/PublicationCenter.svelte
 function add_css2(target) {
-  append_styles(target, "svelte-ghd9h6", ".title-separator.svelte-ghd9h6{margin-top:0px;margin-bottom:15px}.footer-separator.svelte-ghd9h6{margin-top:15px;margin-bottom:15px}.footer.svelte-ghd9h6{display:flex;justify-content:flex-end}.loading-msg.svelte-ghd9h6{font-size:1.2rem;display:flex;align-items:center;flex-direction:column}button.svelte-ghd9h6{background-color:var(--interactive-accent);color:var(--text-on-accent);cursor:pointer;font-weight:bold}.loading-container.svelte-ghd9h6{width:100%;height:5px;margin-top:10px}.loading-bar.svelte-ghd9h6{background-color:var(--interactive-accent);height:100%;transition:all 0.5s ease-in-out}.published.svelte-ghd9h6{color:#8bff8b}.deleted.svelte-ghd9h6{color:#ff5757}.warning.svelte-ghd9h6{background-color:rgba(255, 150, 0, 0.1);border:1px solid rgba(255, 150, 0, 0.2);border-radius:4px;padding:10px;margin-bottom:15px}.callout-title.svelte-ghd9h6{font-weight:bold;margin-bottom:8px}.problematic-file.svelte-ghd9h6{display:flex;flex-direction:column;margin:5px 0;padding:5px 0;border-bottom:1px solid rgba(255, 150, 0, 0.1)}.file-path.svelte-ghd9h6{font-family:monospace;color:var(--text-muted)}.file-issue.svelte-ghd9h6{font-size:0.9em;margin-top:2px}");
+  append_styles(target, "svelte-1eqmrov", ".title-separator.svelte-1eqmrov{margin-top:0px;margin-bottom:15px}.footer-separator.svelte-1eqmrov{margin-top:15px;margin-bottom:15px}.footer.svelte-1eqmrov{display:flex;justify-content:flex-end}.loading-msg.svelte-1eqmrov{font-size:1.2rem;display:flex;align-items:center;flex-direction:column}button.svelte-1eqmrov{background-color:var(--interactive-accent);color:var(--text-on-accent);cursor:pointer;font-weight:bold}.loading-container.svelte-1eqmrov{width:100%;height:5px;margin-top:10px}.loading-bar.svelte-1eqmrov{background-color:var(--interactive-accent);height:100%;transition:all 0.5s ease-in-out}.published.svelte-1eqmrov{color:#8bff8b}.deleted.svelte-1eqmrov{color:#ff5757}.warning.svelte-1eqmrov{background-color:rgba(255, 150, 0, 0.1);border:1px solid rgba(255, 150, 0, 0.2);border-radius:4px;padding:10px;margin-bottom:15px}.info.svelte-1eqmrov{background-color:rgba(0, 150, 255, 0.1);border:1px solid rgba(0, 150, 255, 0.2);border-radius:4px;padding:10px;margin-bottom:15px}.callout-header.svelte-1eqmrov{display:flex;justify-content:space-between;align-items:center}.dismiss-btn.svelte-1eqmrov{background:none;border:none;cursor:pointer;color:var(--text-muted);padding:2px;display:flex;align-items:center}.dismiss-btn.svelte-1eqmrov:hover{color:var(--text-normal)}.callout-title.svelte-1eqmrov{font-weight:bold;margin-bottom:8px}.problematic-file.svelte-1eqmrov{display:flex;flex-direction:column;margin:5px 0;padding:5px 0;border-bottom:1px solid rgba(255, 150, 0, 0.1)}.file-path.svelte-1eqmrov{font-family:monospace;color:var(--text-muted)}.file-issue.svelte-1eqmrov{font-size:0.9em;margin-top:2px}");
 }
 function get_each_context_1(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[28] = list[i];
+  child_ctx[32] = list[i];
   return child_ctx;
 }
 function get_each_context_2(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[31] = list[i];
+  child_ctx[35] = list[i];
   return child_ctx;
 }
 function get_each_context2(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[25] = list[i];
+  child_ctx[29] = list[i];
   return child_ctx;
 }
 function create_else_block2(ctx) {
@@ -22794,7 +22978,7 @@ function create_else_block2(ctx) {
   let dispose;
   let if_block = (
     /*failedPublish*/
-    ctx[17].length > 0 && create_if_block_10(ctx)
+    ctx[21].length > 0 && create_if_block_122(ctx)
   );
   let each_value_2 = ensure_array_like(
     /*unpublishedToPublish*/
@@ -22831,7 +23015,8 @@ function create_else_block2(ctx) {
       div1 = element("div");
       t2 = text(t2_value);
       t3 = space();
-      if (if_block) if_block.c();
+      if (if_block)
+        if_block.c();
       t4 = space();
       div3 = element("div");
       div2 = element("div");
@@ -22850,18 +23035,18 @@ function create_else_block2(ctx) {
       button = element("button");
       button.textContent = "DONE";
       attr(div0, "class", "callout-title-inner");
-      attr(div2, "class", "loading-bar svelte-ghd9h6");
+      attr(div2, "class", "loading-bar svelte-1eqmrov");
       set_style(
         div2,
         "width",
         /*publishProgress*/
-        ctx[13] + "%"
+        ctx[15] + "%"
       );
-      attr(div3, "class", "loading-container svelte-ghd9h6");
+      attr(div3, "class", "loading-container svelte-1eqmrov");
       attr(div4, "class", "callout");
-      attr(hr, "class", "footer-separator svelte-ghd9h6");
-      attr(button, "class", "svelte-ghd9h6");
-      attr(div5, "class", "footer svelte-ghd9h6");
+      attr(hr, "class", "footer-separator svelte-1eqmrov");
+      attr(button, "class", "svelte-1eqmrov");
+      attr(div5, "class", "footer svelte-1eqmrov");
     },
     m(target, anchor) {
       insert(target, div6, anchor);
@@ -22871,7 +23056,8 @@ function create_else_block2(ctx) {
       append(div4, div1);
       append(div1, t2);
       append(div4, t3);
-      if (if_block) if_block.m(div4, null);
+      if (if_block)
+        if_block.m(div4, null);
       append(div4, t4);
       append(div4, div3);
       append(div3, div2);
@@ -22898,7 +23084,8 @@ function create_else_block2(ctx) {
           if (is_function(
             /*close*/
             ctx[1]
-          )) ctx[1].apply(this, arguments);
+          ))
+            ctx[1].apply(this, arguments);
         });
         mounted = true;
       }
@@ -22910,22 +23097,24 @@ function create_else_block2(ctx) {
       ctx[6].length} of ${/*unpublishedToPublish*/
       ctx[3].length + /*changedToPublish*/
       ctx[4].length + /*pathsToDelete*/
-      ctx[5].length} notes published`)) set_data(t2, t2_value);
+      ctx[5].length} notes published`))
+        set_data(t2, t2_value);
       if (
         /*failedPublish*/
-        ctx[17].length > 0
-      ) if_block.p(ctx, dirty);
+        ctx[21].length > 0
+      )
+        if_block.p(ctx, dirty);
       if (!current || dirty[0] & /*publishProgress*/
-      8192) {
+      32768) {
         set_style(
           div2,
           "width",
           /*publishProgress*/
-          ctx[13] + "%"
+          ctx[15] + "%"
         );
       }
       if (dirty[0] & /*publishedPaths, unpublishedToPublish, changedToPublish, rotatingCog, processingPaths, failedPublish*/
-      164440) {
+      2623576) {
         each_value_2 = ensure_array_like(
           /*unpublishedToPublish*/
           ctx[3].concat(
@@ -22953,7 +23142,7 @@ function create_else_block2(ctx) {
         check_outros();
       }
       if (dirty[0] & /*publishedPaths, pathsToDelete, rotatingCog, processingPaths*/
-      33376) {
+      526432) {
         each_value_1 = ensure_array_like(
           /*pathsToDelete*/
           ctx[5]
@@ -22979,7 +23168,8 @@ function create_else_block2(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       for (let i = 0; i < each_value_2.length; i += 1) {
         transition_in(each_blocks_1[i]);
       }
@@ -23003,7 +23193,8 @@ function create_else_block2(ctx) {
       if (detaching) {
         detach(div6);
       }
-      if (if_block) if_block.d();
+      if (if_block)
+        if_block.d();
       destroy_each(each_blocks_1, detaching);
       destroy_each(each_blocks, detaching);
       mounted = false;
@@ -23014,32 +23205,42 @@ function create_else_block2(ctx) {
 function create_if_block_12(ctx) {
   var _a2, _b, _c, _d;
   let t0;
-  let treeview0;
   let t1;
-  let treeview1;
   let t2;
-  let treeview2;
+  let treeview0;
   let t3;
-  let treeview3;
+  let treeview1;
   let t4;
-  let hr;
+  let treeview2;
   let t5;
+  let treeview3;
+  let t6;
+  let hr;
+  let t7;
   let div;
   let button;
   let current;
   let mounted;
   let dispose;
-  let if_block = (
+  let if_block0 = (
     /*problematicFiles*/
-    ctx[8].length > 0 && create_if_block_22(ctx)
+    ctx[8].length > 0 && create_if_block_42(ctx)
+  );
+  let if_block1 = (
+    /*showImageFixNotice*/
+    ctx[9] && create_if_block_32(ctx)
+  );
+  let if_block2 = (
+    /*showBasesNotice*/
+    ctx[10] && create_if_block_22(ctx)
   );
   treeview0 = new TreeView_default({
     props: {
       tree: (
         /*unpublishedNoteTree*/
-        (_a2 = ctx[12]) != null ? _a2 : (
+        (_a2 = ctx[14]) != null ? _a2 : (
           /*emptyNode*/
-          ctx[19]
+          ctx[23]
         )
       ),
       showDiff: (
@@ -23052,9 +23253,9 @@ function create_if_block_12(ctx) {
     props: {
       tree: (
         /*changedNotesTree*/
-        (_b = ctx[11]) != null ? _b : (
+        (_b = ctx[13]) != null ? _b : (
           /*emptyNode*/
-          ctx[19]
+          ctx[23]
         )
       ),
       showDiff: (
@@ -23068,9 +23269,9 @@ function create_if_block_12(ctx) {
     props: {
       tree: (
         /*deletedNoteTree*/
-        (_c = ctx[10]) != null ? _c : (
+        (_c = ctx[12]) != null ? _c : (
           /*emptyNode*/
-          ctx[19]
+          ctx[23]
         )
       ),
       showDiff: (
@@ -23084,9 +23285,9 @@ function create_if_block_12(ctx) {
       readOnly: true,
       tree: (
         /*publishedNotesTree*/
-        (_d = ctx[14]) != null ? _d : (
+        (_d = ctx[16]) != null ? _d : (
           /*emptyNode*/
-          ctx[19]
+          ctx[23]
         )
       ),
       showDiff: (
@@ -23097,38 +23298,52 @@ function create_if_block_12(ctx) {
   });
   return {
     c() {
-      if (if_block) if_block.c();
+      if (if_block0)
+        if_block0.c();
       t0 = space();
-      create_component(treeview0.$$.fragment);
+      if (if_block1)
+        if_block1.c();
       t1 = space();
-      create_component(treeview1.$$.fragment);
+      if (if_block2)
+        if_block2.c();
       t2 = space();
-      create_component(treeview2.$$.fragment);
+      create_component(treeview0.$$.fragment);
       t3 = space();
-      create_component(treeview3.$$.fragment);
+      create_component(treeview1.$$.fragment);
       t4 = space();
-      hr = element("hr");
+      create_component(treeview2.$$.fragment);
       t5 = space();
+      create_component(treeview3.$$.fragment);
+      t6 = space();
+      hr = element("hr");
+      t7 = space();
       div = element("div");
       button = element("button");
       button.textContent = "PUBLISH SELECTED";
-      attr(hr, "class", "footer-separator svelte-ghd9h6");
-      attr(button, "class", "svelte-ghd9h6");
-      attr(div, "class", "footer svelte-ghd9h6");
+      attr(hr, "class", "footer-separator svelte-1eqmrov");
+      attr(button, "class", "svelte-1eqmrov");
+      attr(div, "class", "footer svelte-1eqmrov");
     },
     m(target, anchor) {
-      if (if_block) if_block.m(target, anchor);
+      if (if_block0)
+        if_block0.m(target, anchor);
       insert(target, t0, anchor);
-      mount_component(treeview0, target, anchor);
+      if (if_block1)
+        if_block1.m(target, anchor);
       insert(target, t1, anchor);
-      mount_component(treeview1, target, anchor);
+      if (if_block2)
+        if_block2.m(target, anchor);
       insert(target, t2, anchor);
-      mount_component(treeview2, target, anchor);
+      mount_component(treeview0, target, anchor);
       insert(target, t3, anchor);
-      mount_component(treeview3, target, anchor);
+      mount_component(treeview1, target, anchor);
       insert(target, t4, anchor);
-      insert(target, hr, anchor);
+      mount_component(treeview2, target, anchor);
       insert(target, t5, anchor);
+      mount_component(treeview3, target, anchor);
+      insert(target, t6, anchor);
+      insert(target, hr, anchor);
+      insert(target, t7, anchor);
       insert(target, div, anchor);
       append(div, button);
       current = true;
@@ -23137,7 +23352,7 @@ function create_if_block_12(ctx) {
           button,
           "click",
           /*publishMarkedNotes*/
-          ctx[18]
+          ctx[22]
         );
         mounted = true;
       }
@@ -23148,64 +23363,121 @@ function create_if_block_12(ctx) {
         /*problematicFiles*/
         ctx2[8].length > 0
       ) {
-        if (if_block) {
-          if_block.p(ctx2, dirty);
+        if (if_block0) {
+          if_block0.p(ctx2, dirty);
         } else {
-          if_block = create_if_block_22(ctx2);
-          if_block.c();
-          if_block.m(t0.parentNode, t0);
+          if_block0 = create_if_block_42(ctx2);
+          if_block0.c();
+          if_block0.m(t0.parentNode, t0);
         }
-      } else if (if_block) {
-        if_block.d(1);
-        if_block = null;
+      } else if (if_block0) {
+        if_block0.d(1);
+        if_block0 = null;
+      }
+      if (
+        /*showImageFixNotice*/
+        ctx2[9]
+      ) {
+        if (if_block1) {
+          if_block1.p(ctx2, dirty);
+          if (dirty[0] & /*showImageFixNotice*/
+          512) {
+            transition_in(if_block1, 1);
+          }
+        } else {
+          if_block1 = create_if_block_32(ctx2);
+          if_block1.c();
+          transition_in(if_block1, 1);
+          if_block1.m(t1.parentNode, t1);
+        }
+      } else if (if_block1) {
+        group_outros();
+        transition_out(if_block1, 1, 1, () => {
+          if_block1 = null;
+        });
+        check_outros();
+      }
+      if (
+        /*showBasesNotice*/
+        ctx2[10]
+      ) {
+        if (if_block2) {
+          if_block2.p(ctx2, dirty);
+          if (dirty[0] & /*showBasesNotice*/
+          1024) {
+            transition_in(if_block2, 1);
+          }
+        } else {
+          if_block2 = create_if_block_22(ctx2);
+          if_block2.c();
+          transition_in(if_block2, 1);
+          if_block2.m(t2.parentNode, t2);
+        }
+      } else if (if_block2) {
+        group_outros();
+        transition_out(if_block2, 1, 1, () => {
+          if_block2 = null;
+        });
+        check_outros();
       }
       const treeview0_changes = {};
       if (dirty[0] & /*unpublishedNoteTree*/
-      4096) treeview0_changes.tree = /*unpublishedNoteTree*/
-      (_a3 = ctx2[12]) != null ? _a3 : (
-        /*emptyNode*/
-        ctx2[19]
-      );
+      16384)
+        treeview0_changes.tree = /*unpublishedNoteTree*/
+        (_a3 = ctx2[14]) != null ? _a3 : (
+          /*emptyNode*/
+          ctx2[23]
+        );
       if (dirty[0] & /*showDiff*/
-      1) treeview0_changes.showDiff = /*showDiff*/
-      ctx2[0];
+      1)
+        treeview0_changes.showDiff = /*showDiff*/
+        ctx2[0];
       treeview0.$set(treeview0_changes);
       const treeview1_changes = {};
       if (dirty[0] & /*changedNotesTree*/
-      2048) treeview1_changes.tree = /*changedNotesTree*/
-      (_b2 = ctx2[11]) != null ? _b2 : (
-        /*emptyNode*/
-        ctx2[19]
-      );
+      8192)
+        treeview1_changes.tree = /*changedNotesTree*/
+        (_b2 = ctx2[13]) != null ? _b2 : (
+          /*emptyNode*/
+          ctx2[23]
+        );
       if (dirty[0] & /*showDiff*/
-      1) treeview1_changes.showDiff = /*showDiff*/
-      ctx2[0];
+      1)
+        treeview1_changes.showDiff = /*showDiff*/
+        ctx2[0];
       treeview1.$set(treeview1_changes);
       const treeview2_changes = {};
       if (dirty[0] & /*deletedNoteTree*/
-      1024) treeview2_changes.tree = /*deletedNoteTree*/
-      (_c2 = ctx2[10]) != null ? _c2 : (
-        /*emptyNode*/
-        ctx2[19]
-      );
+      4096)
+        treeview2_changes.tree = /*deletedNoteTree*/
+        (_c2 = ctx2[12]) != null ? _c2 : (
+          /*emptyNode*/
+          ctx2[23]
+        );
       if (dirty[0] & /*showDiff*/
-      1) treeview2_changes.showDiff = /*showDiff*/
-      ctx2[0];
+      1)
+        treeview2_changes.showDiff = /*showDiff*/
+        ctx2[0];
       treeview2.$set(treeview2_changes);
       const treeview3_changes = {};
       if (dirty[0] & /*publishedNotesTree*/
-      16384) treeview3_changes.tree = /*publishedNotesTree*/
-      (_d2 = ctx2[14]) != null ? _d2 : (
-        /*emptyNode*/
-        ctx2[19]
-      );
+      65536)
+        treeview3_changes.tree = /*publishedNotesTree*/
+        (_d2 = ctx2[16]) != null ? _d2 : (
+          /*emptyNode*/
+          ctx2[23]
+        );
       if (dirty[0] & /*showDiff*/
-      1) treeview3_changes.showDiff = /*showDiff*/
-      ctx2[0];
+      1)
+        treeview3_changes.showDiff = /*showDiff*/
+        ctx2[0];
       treeview3.$set(treeview3_changes);
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
+      transition_in(if_block1);
+      transition_in(if_block2);
       transition_in(treeview0.$$.fragment, local);
       transition_in(treeview1.$$.fragment, local);
       transition_in(treeview2.$$.fragment, local);
@@ -23213,6 +23485,8 @@ function create_if_block_12(ctx) {
       current = true;
     },
     o(local) {
+      transition_out(if_block1);
+      transition_out(if_block2);
       transition_out(treeview0.$$.fragment, local);
       transition_out(treeview1.$$.fragment, local);
       transition_out(treeview2.$$.fragment, local);
@@ -23226,11 +23500,18 @@ function create_if_block_12(ctx) {
         detach(t2);
         detach(t3);
         detach(t4);
-        detach(hr);
         detach(t5);
+        detach(t6);
+        detach(hr);
+        detach(t7);
         detach(div);
       }
-      if (if_block) if_block.d(detaching);
+      if (if_block0)
+        if_block0.d(detaching);
+      if (if_block1)
+        if_block1.d(detaching);
+      if (if_block2)
+        if_block2.d(detaching);
       destroy_component(treeview0, detaching);
       destroy_component(treeview1, detaching);
       destroy_component(treeview2, detaching);
@@ -23246,7 +23527,7 @@ function create_if_block2(ctx) {
   let html_tag;
   let raw_value = (
     /*bigRotatingCog*/
-    ((_a2 = ctx[16]()) == null ? void 0 : _a2.outerHTML) + ""
+    ((_a2 = ctx[20]()) == null ? void 0 : _a2.outerHTML) + ""
   );
   let t0;
   let div0;
@@ -23258,7 +23539,7 @@ function create_if_block2(ctx) {
       div0 = element("div");
       div0.textContent = "Calculating publication status";
       html_tag.a = t0;
-      attr(div1, "class", "loading-msg svelte-ghd9h6");
+      attr(div1, "class", "loading-msg svelte-1eqmrov");
     },
     m(target, anchor) {
       insert(target, div1, anchor);
@@ -23276,13 +23557,13 @@ function create_if_block2(ctx) {
     }
   };
 }
-function create_if_block_10(ctx) {
+function create_if_block_122(ctx) {
   let div;
   return {
     c() {
       div = element("div");
       div.textContent = `${`(${/*failedPublish*/
-      ctx[17].length} failed)`}`;
+      ctx[21].length} failed)`}`;
     },
     m(target, anchor) {
       insert(target, div, anchor);
@@ -23309,7 +23590,8 @@ function create_else_block_2(ctx) {
     },
     p: noop,
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       current = true;
     },
@@ -23322,7 +23604,7 @@ function create_else_block_2(ctx) {
     }
   };
 }
-function create_if_block_9(ctx) {
+function create_if_block_11(ctx) {
   let icon;
   let current;
   icon = new Icon_default({ props: { name: "cross" } });
@@ -23336,7 +23618,8 @@ function create_if_block_9(ctx) {
     },
     p: noop,
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       current = true;
     },
@@ -23349,7 +23632,7 @@ function create_if_block_9(ctx) {
     }
   };
 }
-function create_if_block_8(ctx) {
+function create_if_block_10(ctx) {
   let icon;
   let current;
   icon = new Icon_default({ props: { name: "check" } });
@@ -23363,7 +23646,8 @@ function create_if_block_8(ctx) {
     },
     p: noop,
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       current = true;
     },
@@ -23376,12 +23660,12 @@ function create_if_block_8(ctx) {
     }
   };
 }
-function create_if_block_72(ctx) {
+function create_if_block_9(ctx) {
   var _a2;
   let html_tag;
   let raw_value = (
     /*rotatingCog*/
-    ((_a2 = ctx[15]()) == null ? void 0 : _a2.outerHTML) + ""
+    ((_a2 = ctx[19]()) == null ? void 0 : _a2.outerHTML) + ""
   );
   let html_anchor;
   return {
@@ -23405,13 +23689,13 @@ function create_if_block_72(ctx) {
     }
   };
 }
-function create_if_block_62(ctx) {
+function create_if_block_8(ctx) {
   let span;
   return {
     c() {
       span = element("span");
       span.textContent = "- PUBLISHED";
-      attr(span, "class", "published svelte-ghd9h6");
+      attr(span, "class", "published svelte-1eqmrov");
     },
     m(target, anchor) {
       insert(target, span, anchor);
@@ -23433,7 +23717,7 @@ function create_each_block_2(ctx) {
   let t0;
   let t1_value = (
     /*note*/
-    ctx[31].file.name + ""
+    ctx[35].file.name + ""
   );
   let t1;
   let t2;
@@ -23441,42 +23725,51 @@ function create_each_block_2(ctx) {
     /*publishedPaths*/
     ctx[6].includes(
       /*note*/
-      ctx[31].getPath()
+      ctx[35].getPath()
     )
   );
   let current;
-  const if_block_creators = [create_if_block_72, create_if_block_8, create_if_block_9, create_else_block_2];
+  const if_block_creators = [create_if_block_9, create_if_block_10, create_if_block_11, create_else_block_2];
   const if_blocks = [];
   function select_block_type_1(ctx2, dirty) {
     if (dirty[0] & /*processingPaths, unpublishedToPublish, changedToPublish*/
-    536) show_if_1 = null;
+    2072)
+      show_if_1 = null;
     if (dirty[0] & /*publishedPaths, unpublishedToPublish, changedToPublish*/
-    88) show_if_2 = null;
+    88)
+      show_if_2 = null;
     if (dirty[0] & /*unpublishedToPublish, changedToPublish*/
-    24) show_if_3 = null;
-    if (show_if_1 == null) show_if_1 = !!/*processingPaths*/
-    ctx2[9].includes(
-      /*note*/
-      ctx2[31].getPath()
-    );
-    if (show_if_1) return 0;
-    if (show_if_2 == null) show_if_2 = !!/*publishedPaths*/
-    ctx2[6].includes(
-      /*note*/
-      ctx2[31].getPath()
-    );
-    if (show_if_2) return 1;
-    if (show_if_3 == null) show_if_3 = !!/*failedPublish*/
-    ctx2[17].includes(
-      /*note*/
-      ctx2[31].getPath()
-    );
-    if (show_if_3) return 2;
+    24)
+      show_if_3 = null;
+    if (show_if_1 == null)
+      show_if_1 = !!/*processingPaths*/
+      ctx2[11].includes(
+        /*note*/
+        ctx2[35].getPath()
+      );
+    if (show_if_1)
+      return 0;
+    if (show_if_2 == null)
+      show_if_2 = !!/*publishedPaths*/
+      ctx2[6].includes(
+        /*note*/
+        ctx2[35].getPath()
+      );
+    if (show_if_2)
+      return 1;
+    if (show_if_3 == null)
+      show_if_3 = !!/*failedPublish*/
+      ctx2[21].includes(
+        /*note*/
+        ctx2[35].getPath()
+      );
+    if (show_if_3)
+      return 2;
     return 3;
   }
   current_block_type_index = select_block_type_1(ctx, [-1, -1]);
   if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-  let if_block1 = show_if && create_if_block_62(ctx);
+  let if_block1 = show_if && create_if_block_8(ctx);
   return {
     c() {
       div = element("div");
@@ -23484,7 +23777,8 @@ function create_each_block_2(ctx) {
       t0 = space();
       t1 = text(t1_value);
       t2 = space();
-      if (if_block1) if_block1.c();
+      if (if_block1)
+        if_block1.c();
       attr(div, "class", "note-list");
     },
     m(target, anchor) {
@@ -23493,7 +23787,8 @@ function create_each_block_2(ctx) {
       append(div, t0);
       append(div, t1);
       append(div, t2);
-      if (if_block1) if_block1.m(div, null);
+      if (if_block1)
+        if_block1.m(div, null);
       current = true;
     },
     p(ctx2, dirty) {
@@ -23519,17 +23814,19 @@ function create_each_block_2(ctx) {
       }
       if ((!current || dirty[0] & /*unpublishedToPublish, changedToPublish*/
       24) && t1_value !== (t1_value = /*note*/
-      ctx2[31].file.name + "")) set_data(t1, t1_value);
+      ctx2[35].file.name + ""))
+        set_data(t1, t1_value);
       if (dirty[0] & /*publishedPaths, unpublishedToPublish, changedToPublish*/
-      88) show_if = /*publishedPaths*/
-      ctx2[6].includes(
-        /*note*/
-        ctx2[31].getPath()
-      );
+      88)
+        show_if = /*publishedPaths*/
+        ctx2[6].includes(
+          /*note*/
+          ctx2[35].getPath()
+        );
       if (show_if) {
         if (if_block1) {
         } else {
-          if_block1 = create_if_block_62(ctx2);
+          if_block1 = create_if_block_8(ctx2);
           if_block1.c();
           if_block1.m(div, null);
         }
@@ -23539,7 +23836,8 @@ function create_each_block_2(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(if_block0);
       current = true;
     },
@@ -23552,7 +23850,8 @@ function create_each_block_2(ctx) {
         detach(div);
       }
       if_blocks[current_block_type_index].d();
-      if (if_block1) if_block1.d();
+      if (if_block1)
+        if_block1.d();
     }
   };
 }
@@ -23570,7 +23869,8 @@ function create_else_block_1(ctx) {
     },
     p: noop,
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       current = true;
     },
@@ -23583,7 +23883,7 @@ function create_else_block_1(ctx) {
     }
   };
 }
-function create_if_block_52(ctx) {
+function create_if_block_72(ctx) {
   let icon;
   let current;
   icon = new Icon_default({ props: { name: "check" } });
@@ -23597,7 +23897,8 @@ function create_if_block_52(ctx) {
     },
     p: noop,
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       current = true;
     },
@@ -23610,12 +23911,12 @@ function create_if_block_52(ctx) {
     }
   };
 }
-function create_if_block_42(ctx) {
+function create_if_block_62(ctx) {
   var _a2;
   let html_tag;
   let raw_value = (
     /*rotatingCog*/
-    ((_a2 = ctx[15]()) == null ? void 0 : _a2.outerHTML) + ""
+    ((_a2 = ctx[19]()) == null ? void 0 : _a2.outerHTML) + ""
   );
   let html_anchor;
   return {
@@ -23639,13 +23940,13 @@ function create_if_block_42(ctx) {
     }
   };
 }
-function create_if_block_32(ctx) {
+function create_if_block_52(ctx) {
   let span;
   return {
     c() {
       span = element("span");
       span.textContent = "- DELETED";
-      attr(span, "class", "deleted svelte-ghd9h6");
+      attr(span, "class", "deleted svelte-1eqmrov");
     },
     m(target, anchor) {
       insert(target, span, anchor);
@@ -23666,7 +23967,7 @@ function create_each_block_1(ctx) {
   let t0;
   let t1_value = (
     /*path*/
-    ctx[28].split("/").last() + ""
+    ctx[32].split("/").last() + ""
   );
   let t1;
   let t2;
@@ -23674,34 +23975,40 @@ function create_each_block_1(ctx) {
     /*publishedPaths*/
     ctx[6].includes(
       /*path*/
-      ctx[28]
+      ctx[32]
     )
   );
   let current;
-  const if_block_creators = [create_if_block_42, create_if_block_52, create_else_block_1];
+  const if_block_creators = [create_if_block_62, create_if_block_72, create_else_block_1];
   const if_blocks = [];
   function select_block_type_2(ctx2, dirty) {
     if (dirty[0] & /*processingPaths, pathsToDelete*/
-    544) show_if_1 = null;
+    2080)
+      show_if_1 = null;
     if (dirty[0] & /*publishedPaths, pathsToDelete*/
-    96) show_if_2 = null;
-    if (show_if_1 == null) show_if_1 = !!/*processingPaths*/
-    ctx2[9].includes(
-      /*path*/
-      ctx2[28]
-    );
-    if (show_if_1) return 0;
-    if (show_if_2 == null) show_if_2 = !!/*publishedPaths*/
-    ctx2[6].includes(
-      /*path*/
-      ctx2[28]
-    );
-    if (show_if_2) return 1;
+    96)
+      show_if_2 = null;
+    if (show_if_1 == null)
+      show_if_1 = !!/*processingPaths*/
+      ctx2[11].includes(
+        /*path*/
+        ctx2[32]
+      );
+    if (show_if_1)
+      return 0;
+    if (show_if_2 == null)
+      show_if_2 = !!/*publishedPaths*/
+      ctx2[6].includes(
+        /*path*/
+        ctx2[32]
+      );
+    if (show_if_2)
+      return 1;
     return 2;
   }
   current_block_type_index = select_block_type_2(ctx, [-1, -1]);
   if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-  let if_block1 = show_if && create_if_block_32(ctx);
+  let if_block1 = show_if && create_if_block_52(ctx);
   return {
     c() {
       div = element("div");
@@ -23709,7 +24016,8 @@ function create_each_block_1(ctx) {
       t0 = space();
       t1 = text(t1_value);
       t2 = space();
-      if (if_block1) if_block1.c();
+      if (if_block1)
+        if_block1.c();
       attr(div, "class", "note-list");
     },
     m(target, anchor) {
@@ -23718,7 +24026,8 @@ function create_each_block_1(ctx) {
       append(div, t0);
       append(div, t1);
       append(div, t2);
-      if (if_block1) if_block1.m(div, null);
+      if (if_block1)
+        if_block1.m(div, null);
       current = true;
     },
     p(ctx2, dirty) {
@@ -23744,17 +24053,19 @@ function create_each_block_1(ctx) {
       }
       if ((!current || dirty[0] & /*pathsToDelete*/
       32) && t1_value !== (t1_value = /*path*/
-      ctx2[28].split("/").last() + "")) set_data(t1, t1_value);
+      ctx2[32].split("/").last() + ""))
+        set_data(t1, t1_value);
       if (dirty[0] & /*publishedPaths, pathsToDelete*/
-      96) show_if = /*publishedPaths*/
-      ctx2[6].includes(
-        /*path*/
-        ctx2[28]
-      );
+      96)
+        show_if = /*publishedPaths*/
+        ctx2[6].includes(
+          /*path*/
+          ctx2[32]
+        );
       if (show_if) {
         if (if_block1) {
         } else {
-          if_block1 = create_if_block_32(ctx2);
+          if_block1 = create_if_block_52(ctx2);
           if_block1.c();
           if_block1.m(div, null);
         }
@@ -23764,7 +24075,8 @@ function create_each_block_1(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(if_block0);
       current = true;
     },
@@ -23777,11 +24089,12 @@ function create_each_block_1(ctx) {
         detach(div);
       }
       if_blocks[current_block_type_index].d();
-      if (if_block1) if_block1.d();
+      if (if_block1)
+        if_block1.d();
     }
   };
 }
-function create_if_block_22(ctx) {
+function create_if_block_42(ctx) {
   let div2;
   let div0;
   let t1;
@@ -23804,9 +24117,9 @@ function create_if_block_22(ctx) {
       for (let i = 0; i < each_blocks.length; i += 1) {
         each_blocks[i].c();
       }
-      attr(div0, "class", "callout-title svelte-ghd9h6");
+      attr(div0, "class", "callout-title svelte-1eqmrov");
       attr(div1, "class", "callout-content");
-      attr(div2, "class", "callout warning svelte-ghd9h6");
+      attr(div2, "class", "callout warning svelte-1eqmrov");
     },
     m(target, anchor) {
       insert(target, div2, anchor);
@@ -23856,14 +24169,14 @@ function create_each_block2(ctx) {
   let span0;
   let t0_value = (
     /*file*/
-    ctx[25].path + ""
+    ctx[29].path + ""
   );
   let t0;
   let t1;
   let span1;
   let t2_value = (
     /*file*/
-    ctx[25].issue + ""
+    ctx[29].issue + ""
   );
   let t2;
   let t3;
@@ -23876,9 +24189,9 @@ function create_each_block2(ctx) {
       span1 = element("span");
       t2 = text(t2_value);
       t3 = space();
-      attr(span0, "class", "file-path svelte-ghd9h6");
-      attr(span1, "class", "file-issue svelte-ghd9h6");
-      attr(div, "class", "problematic-file svelte-ghd9h6");
+      attr(span0, "class", "file-path svelte-1eqmrov");
+      attr(span1, "class", "file-issue svelte-1eqmrov");
+      attr(div, "class", "problematic-file svelte-1eqmrov");
     },
     m(target, anchor) {
       insert(target, div, anchor);
@@ -23892,15 +24205,165 @@ function create_each_block2(ctx) {
     p(ctx2, dirty) {
       if (dirty[0] & /*problematicFiles*/
       256 && t0_value !== (t0_value = /*file*/
-      ctx2[25].path + "")) set_data(t0, t0_value);
+      ctx2[29].path + ""))
+        set_data(t0, t0_value);
       if (dirty[0] & /*problematicFiles*/
       256 && t2_value !== (t2_value = /*file*/
-      ctx2[25].issue + "")) set_data(t2, t2_value);
+      ctx2[29].issue + ""))
+        set_data(t2, t2_value);
     },
     d(detaching) {
       if (detaching) {
         detach(div);
       }
+    }
+  };
+}
+function create_if_block_32(ctx) {
+  let div3;
+  let div1;
+  let div0;
+  let t1;
+  let button;
+  let icon;
+  let t2;
+  let div2;
+  let current;
+  let mounted;
+  let dispose;
+  icon = new Icon_default({ props: { name: "x" } });
+  return {
+    c() {
+      div3 = element("div");
+      div1 = element("div");
+      div0 = element("div");
+      div0.textContent = "Image handling improved";
+      t1 = space();
+      button = element("button");
+      create_component(icon.$$.fragment);
+      t2 = space();
+      div2 = element("div");
+      div2.innerHTML = `Images with size parameters (e.g. <code>![[image.png|200]]</code>) are now handled differently to fix rendering in tables.
+					This may cause notes with images to show up as changed. This
+					is expected and safe to publish.`;
+      attr(div0, "class", "callout-title svelte-1eqmrov");
+      attr(button, "class", "dismiss-btn svelte-1eqmrov");
+      attr(button, "aria-label", "Dismiss notice");
+      attr(div1, "class", "callout-header svelte-1eqmrov");
+      attr(div2, "class", "callout-content");
+      attr(div3, "class", "callout info svelte-1eqmrov");
+    },
+    m(target, anchor) {
+      insert(target, div3, anchor);
+      append(div3, div1);
+      append(div1, div0);
+      append(div1, t1);
+      append(div1, button);
+      mount_component(icon, button, null);
+      append(div3, t2);
+      append(div3, div2);
+      current = true;
+      if (!mounted) {
+        dispose = listen(
+          button,
+          "click",
+          /*dismissImageFixNotice*/
+          ctx[17]
+        );
+        mounted = true;
+      }
+    },
+    p: noop,
+    i(local) {
+      if (current)
+        return;
+      transition_in(icon.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(icon.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div3);
+      }
+      destroy_component(icon);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_if_block_22(ctx) {
+  let div3;
+  let div1;
+  let div0;
+  let t1;
+  let button;
+  let icon;
+  let t2;
+  let div2;
+  let current;
+  let mounted;
+  let dispose;
+  icon = new Icon_default({ props: { name: "x" } });
+  return {
+    c() {
+      div3 = element("div");
+      div1 = element("div");
+      div0 = element("div");
+      div0.textContent = "Bases support added";
+      t1 = space();
+      button = element("button");
+      create_component(icon.$$.fragment);
+      t2 = space();
+      div2 = element("div");
+      div2.textContent = "Frontmatter properties are now nested differently to support\n					Obsidian Bases. This may cause notes to show up as changed.\n					This is expected and safe to publish. You must update your\n					site template to use Bases.";
+      attr(div0, "class", "callout-title svelte-1eqmrov");
+      attr(button, "class", "dismiss-btn svelte-1eqmrov");
+      attr(button, "aria-label", "Dismiss notice");
+      attr(div1, "class", "callout-header svelte-1eqmrov");
+      attr(div2, "class", "callout-content");
+      attr(div3, "class", "callout info svelte-1eqmrov");
+    },
+    m(target, anchor) {
+      insert(target, div3, anchor);
+      append(div3, div1);
+      append(div1, div0);
+      append(div1, t1);
+      append(div1, button);
+      mount_component(icon, button, null);
+      append(div3, t2);
+      append(div3, div2);
+      current = true;
+      if (!mounted) {
+        dispose = listen(
+          button,
+          "click",
+          /*dismissBasesNotice*/
+          ctx[18]
+        );
+        mounted = true;
+      }
+    },
+    p: noop,
+    i(local) {
+      if (current)
+        return;
+      transition_in(icon.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(icon.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div3);
+      }
+      destroy_component(icon);
+      mounted = false;
+      dispose();
     }
   };
 }
@@ -23915,9 +24378,11 @@ function create_fragment4(ctx) {
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (!/*publishStatus*/
-    ctx2[2]) return 0;
+    ctx2[2])
+      return 0;
     if (!/*showPublishingView*/
-    ctx2[7]) return 1;
+    ctx2[7])
+      return 1;
     return 2;
   }
   current_block_type_index = select_block_type(ctx, [-1, -1]);
@@ -23928,7 +24393,7 @@ function create_fragment4(ctx) {
       hr = element("hr");
       t = space();
       if_block.c();
-      attr(hr, "class", "title-separator svelte-ghd9h6");
+      attr(hr, "class", "title-separator svelte-1eqmrov");
     },
     m(target, anchor) {
       insert(target, div, anchor);
@@ -23960,7 +24425,8 @@ function create_fragment4(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(if_block);
       current = true;
     },
@@ -23976,6 +24442,8 @@ function create_fragment4(ctx) {
     }
   };
 }
+var IMAGE_FIX_NOTICE_KEY = "dg-dismissed-image-fix-notice";
+var BASES_NOTICE_KEY = "dg-dismissed-bases-support-notice";
 function insertIntoTree(tree, pathComponents) {
   let currentNode = tree;
   for (let i = 0; i < pathComponents.length; i++) {
@@ -24024,6 +24492,16 @@ function instance4($$self, $$props, $$invalidate) {
   let publishStatus;
   let showPublishingView = false;
   let problematicFiles = [];
+  let showImageFixNotice = !localStorage.getItem(IMAGE_FIX_NOTICE_KEY);
+  let showBasesNotice = !localStorage.getItem(BASES_NOTICE_KEY);
+  function dismissImageFixNotice() {
+    $$invalidate(9, showImageFixNotice = false);
+    localStorage.setItem(IMAGE_FIX_NOTICE_KEY, "true");
+  }
+  function dismissBasesNotice() {
+    $$invalidate(10, showBasesNotice = false);
+    localStorage.setItem(BASES_NOTICE_KEY, "true");
+  }
   function getPublishStatus() {
     return __awaiter(this, void 0, void 0, function* () {
       $$invalidate(2, publishStatus = yield publishStatusManager.getPublishStatus());
@@ -24032,7 +24510,8 @@ function instance4($$self, $$props, $$invalidate) {
   }
   function validateFiles() {
     $$invalidate(8, problematicFiles = []);
-    if (!publishStatus) return;
+    if (!publishStatus)
+      return;
     const homeFiles = [
       ...publishStatus.publishedNotes,
       ...publishStatus.unpublishedNotes,
@@ -24083,37 +24562,38 @@ function instance4($$self, $$props, $$invalidate) {
   let failedPublish = [];
   const publishMarkedNotes = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a2, _b;
-    if (!unpublishedNoteTree || !changedNotesTree) return;
+    if (!unpublishedNoteTree || !changedNotesTree)
+      return;
     if (!publishStatus) {
       throw new Error("Publish status is undefined");
     }
     const unpublishedPaths = traverseTree(unpublishedNoteTree);
     const changedPaths = traverseTree(changedNotesTree);
     $$invalidate(5, pathsToDelete = traverseTree(deletedNoteTree));
-    const notesToDelete = pathsToDelete.filter((path) => publishStatus.deletedNotePaths.some((p) => p.path === path));
-    const imagesToDelete = pathsToDelete.filter((path) => publishStatus.deletedImagePaths.some((p) => p.path === path));
+    const notesToDelete = pathsToDelete.filter((path2) => publishStatus.deletedNotePaths.some((p) => p.path === path2));
+    const imagesToDelete = pathsToDelete.filter((path2) => publishStatus.deletedImagePaths.some((p) => p.path === path2));
     $$invalidate(3, unpublishedToPublish = (_a2 = publishStatus.unpublishedNotes.filter((note) => unpublishedPaths.includes(note.getPath()))) !== null && _a2 !== void 0 ? _a2 : []);
     $$invalidate(4, changedToPublish = (_b = publishStatus === null || publishStatus === void 0 ? void 0 : publishStatus.changedNotes.filter((note) => changedPaths.includes(note.getPath()))) !== null && _b !== void 0 ? _b : []);
     $$invalidate(7, showPublishingView = true);
     const allNotesToPublish = unpublishedToPublish.concat(changedToPublish);
-    $$invalidate(9, processingPaths = [...allNotesToPublish.map((note) => note.getPath())]);
+    $$invalidate(11, processingPaths = [...allNotesToPublish.map((note) => note.getPath())]);
     yield publisher.publishBatch(allNotesToPublish);
     $$invalidate(6, publishedPaths = [...processingPaths]);
-    $$invalidate(9, processingPaths = []);
-    for (const path of notesToDelete) {
-      $$invalidate(9, processingPaths = [...processingPaths, path]);
-      yield publisher.deleteNote(path);
-      $$invalidate(9, processingPaths = processingPaths.filter((p) => p !== path));
-      $$invalidate(6, publishedPaths = [...publishedPaths, path]);
+    $$invalidate(11, processingPaths = []);
+    for (const path2 of notesToDelete) {
+      $$invalidate(11, processingPaths = [...processingPaths, path2]);
+      yield publisher.deleteNote(path2);
+      $$invalidate(11, processingPaths = processingPaths.filter((p) => p !== path2));
+      $$invalidate(6, publishedPaths = [...publishedPaths, path2]);
     }
-    for (const path of imagesToDelete) {
-      $$invalidate(9, processingPaths = [...processingPaths, path]);
-      yield publisher.deleteImage(path);
-      $$invalidate(9, processingPaths = processingPaths.filter((p) => p !== path));
-      $$invalidate(6, publishedPaths = [...publishedPaths, path]);
+    for (const path2 of imagesToDelete) {
+      $$invalidate(11, processingPaths = [...processingPaths, path2]);
+      yield publisher.deleteImage(path2);
+      $$invalidate(11, processingPaths = processingPaths.filter((p) => p !== path2));
+      $$invalidate(6, publishedPaths = [...publishedPaths, path2]);
     }
     $$invalidate(6, publishedPaths = [...publishedPaths, ...processingPaths]);
-    $$invalidate(9, processingPaths = []);
+    $$invalidate(11, processingPaths = []);
   });
   const emptyNode = {
     name: "",
@@ -24123,31 +24603,40 @@ function instance4($$self, $$props, $$invalidate) {
     checked: false
   };
   $$self.$$set = ($$props2) => {
-    if ("publishStatusManager" in $$props2) $$invalidate(20, publishStatusManager = $$props2.publishStatusManager);
-    if ("publisher" in $$props2) $$invalidate(21, publisher = $$props2.publisher);
-    if ("showDiff" in $$props2) $$invalidate(0, showDiff = $$props2.showDiff);
-    if ("close" in $$props2) $$invalidate(1, close = $$props2.close);
+    if ("publishStatusManager" in $$props2)
+      $$invalidate(24, publishStatusManager = $$props2.publishStatusManager);
+    if ("publisher" in $$props2)
+      $$invalidate(25, publisher = $$props2.publisher);
+    if ("showDiff" in $$props2)
+      $$invalidate(0, showDiff = $$props2.showDiff);
+    if ("close" in $$props2)
+      $$invalidate(1, close = $$props2.close);
   };
   $$self.$$.update = () => {
     if ($$self.$$.dirty[0] & /*publishStatus*/
     4) {
-      $: $$invalidate(14, publishedNotesTree = publishStatus && filePathsToTree(publishStatus.publishedNotes.map((note) => note.getPath()), "Published Notes"));
+      $:
+        $$invalidate(16, publishedNotesTree = publishStatus && filePathsToTree(publishStatus.publishedNotes.map((note) => note.getPath()), "Published Notes"));
     }
     if ($$self.$$.dirty[0] & /*publishStatus*/
     4) {
-      $: $$invalidate(11, changedNotesTree = publishStatus && filePathsToTree(publishStatus.changedNotes.map((note) => note.getPath()), "Changed Notes"));
+      $:
+        $$invalidate(13, changedNotesTree = publishStatus && filePathsToTree(publishStatus.changedNotes.map((note) => note.getPath()), "Changed Notes"));
     }
     if ($$self.$$.dirty[0] & /*publishStatus*/
     4) {
-      $: $$invalidate(10, deletedNoteTree = publishStatus && filePathsToTree([...publishStatus.deletedNotePaths, ...publishStatus.deletedImagePaths].map((path) => path.path), "Deleted Notes"));
+      $:
+        $$invalidate(12, deletedNoteTree = publishStatus && filePathsToTree([...publishStatus.deletedNotePaths, ...publishStatus.deletedImagePaths].map((path2) => path2.path), "Deleted Notes"));
     }
     if ($$self.$$.dirty[0] & /*publishStatus*/
     4) {
-      $: $$invalidate(12, unpublishedNoteTree = publishStatus && filePathsToTree(publishStatus.unpublishedNotes.map((note) => note.getPath()), "Unpublished Notes"));
+      $:
+        $$invalidate(14, unpublishedNoteTree = publishStatus && filePathsToTree(publishStatus.unpublishedNotes.map((note) => note.getPath()), "Unpublished Notes"));
     }
     if ($$self.$$.dirty[0] & /*publishedPaths, unpublishedToPublish, changedToPublish, pathsToDelete*/
     120) {
-      $: $$invalidate(13, publishProgress = (publishedPaths.length + failedPublish.length) / (unpublishedToPublish.length + changedToPublish.length + pathsToDelete.length) * 100);
+      $:
+        $$invalidate(15, publishProgress = (publishedPaths.length + failedPublish.length) / (unpublishedToPublish.length + changedToPublish.length + pathsToDelete.length) * 100);
     }
   };
   return [
@@ -24160,12 +24649,16 @@ function instance4($$self, $$props, $$invalidate) {
     publishedPaths,
     showPublishingView,
     problematicFiles,
+    showImageFixNotice,
+    showBasesNotice,
     processingPaths,
     deletedNoteTree,
     changedNotesTree,
     unpublishedNoteTree,
     publishProgress,
     publishedNotesTree,
+    dismissImageFixNotice,
+    dismissBasesNotice,
     rotatingCog,
     bigRotatingCog,
     failedPublish,
@@ -24185,8 +24678,8 @@ var PublicationCenter = class extends SvelteComponent {
       create_fragment4,
       safe_not_equal,
       {
-        publishStatusManager: 20,
-        publisher: 21,
+        publishStatusManager: 24,
+        publisher: 25,
         showDiff: 0,
         close: 1
       },
@@ -24283,7 +24776,8 @@ function create_else_block3(ctx) {
     p(ctx2, dirty) {
       if (dirty & /*diff*/
       1 && t_value !== (t_value = /*part*/
-      ctx2[1].value + "")) set_data(t, t_value);
+      ctx2[1].value + ""))
+        set_data(t, t_value);
     },
     d(detaching) {
       if (detaching) {
@@ -24305,7 +24799,7 @@ function create_if_block_23(ctx) {
       t = text(t_value);
       set_style(pre, "display", "block");
       set_style(pre, "background-color", "rgba(255, 170, 170, 0.5)");
-      set_style(pre, "color", "var(--text-on-accent)");
+      set_style(pre, "color", "var(--text-normal)");
       attr(pre, "class", "svelte-vhnwb7");
     },
     m(target, anchor) {
@@ -24315,7 +24809,8 @@ function create_if_block_23(ctx) {
     p(ctx2, dirty) {
       if (dirty & /*diff*/
       1 && t_value !== (t_value = /*part*/
-      ctx2[1].value + "")) set_data(t, t_value);
+      ctx2[1].value + ""))
+        set_data(t, t_value);
     },
     d(detaching) {
       if (detaching) {
@@ -24337,7 +24832,7 @@ function create_if_block_13(ctx) {
       t = text(t_value);
       set_style(pre, "display", "block");
       set_style(pre, "background-color", "rgba(170, 255, 170, 0.5)");
-      set_style(pre, "color", "var(--text-on-accent)");
+      set_style(pre, "color", "var(--text-normal)");
       attr(pre, "class", "svelte-vhnwb7");
     },
     m(target, anchor) {
@@ -24347,7 +24842,8 @@ function create_if_block_13(ctx) {
     p(ctx2, dirty) {
       if (dirty & /*diff*/
       1 && t_value !== (t_value = /*part*/
-      ctx2[1].value + "")) set_data(t, t_value);
+      ctx2[1].value + ""))
+        set_data(t, t_value);
     },
     d(detaching) {
       if (detaching) {
@@ -24362,11 +24858,13 @@ function create_each_block3(ctx) {
     if (
       /*part*/
       ctx2[1].added
-    ) return create_if_block_13;
+    )
+      return create_if_block_13;
     if (
       /*part*/
       ctx2[1].removed
-    ) return create_if_block_23;
+    )
+      return create_if_block_23;
     return create_else_block3;
   }
   let current_block_type = select_block_type(ctx, -1);
@@ -24421,7 +24919,8 @@ function create_fragment5(ctx) {
       t2 = space();
       hr = element("hr");
       t3 = space();
-      if (if_block) if_block.c();
+      if (if_block)
+        if_block.c();
       attr(div0, "class", "info callout");
     },
     m(target, anchor) {
@@ -24430,7 +24929,8 @@ function create_fragment5(ctx) {
       append(div1, t2);
       append(div1, hr);
       append(div1, t3);
-      if (if_block) if_block.m(div1, null);
+      if (if_block)
+        if_block.m(div1, null);
     },
     p(ctx2, [dirty]) {
       if (
@@ -24455,14 +24955,16 @@ function create_fragment5(ctx) {
       if (detaching) {
         detach(div1);
       }
-      if (if_block) if_block.d();
+      if (if_block)
+        if_block.d();
     }
   };
 }
 function instance5($$self, $$props, $$invalidate) {
   let { diff: diff2 } = $$props;
   $$self.$$set = ($$props2) => {
-    if ("diff" in $$props2) $$invalidate(0, diff2 = $$props2.diff);
+    if ("diff" in $$props2)
+      $$invalidate(0, diff2 = $$props2.diff);
   };
   return [diff2];
 }
@@ -24660,10 +25162,10 @@ function buildValues(diff2, components, newString, oldString, useLongestToken) {
   }
   return components;
 }
-function clonePath(path) {
+function clonePath(path2) {
   return {
-    newPos: path.newPos,
-    components: path.components.slice(0)
+    newPos: path2.newPos,
+    components: path2.components.slice(0)
   };
 }
 var characterDiff = new Diff();
@@ -24871,7 +25373,8 @@ var PublicationCenter2 = class {
   }
   addPlatformLink() {
     const linkInfo = this.getPlatformLinkInfo();
-    if (!linkInfo) return;
+    if (!linkInfo)
+      return;
     const repoLink = this.modal.titleEl.createEl("a", {
       cls: "publication-center-repo-link",
       href: linkInfo.url,
@@ -24928,10 +25431,10 @@ var PublishStatusManager = class {
     const deletedPaths = Object.keys(remoteNoteHashes).filter(
       (key) => !isJsFile(key) && !isMarkedForPublish(key)
     );
-    const pathsWithSha = deletedPaths.map((path) => {
+    const pathsWithSha = deletedPaths.map((path2) => {
       return {
-        path,
-        sha: remoteNoteHashes[path]
+        path: path2,
+        sha: remoteNoteHashes[path2]
       };
     });
     return pathsWithSha;
@@ -24987,10 +25490,10 @@ var PublishStatusManager = class {
 };
 
 // src/views/DigitalGardenSettingTab.ts
-var import_obsidian17 = require("obsidian");
+var import_obsidian19 = require("obsidian");
 
 // node_modules/axios/lib/helpers/bind.js
-function bind(fn2, thisArg) {
+function bind2(fn2, thisArg) {
   return function wrap() {
     return fn2.apply(thisArg, arguments);
   };
@@ -24999,8 +25502,7 @@ function bind(fn2, thisArg) {
 // node_modules/axios/lib/utils.js
 var { toString } = Object.prototype;
 var { getPrototypeOf } = Object;
-var { iterator, toStringTag } = Symbol;
-var kindOf = /* @__PURE__ */ ((cache) => (thing) => {
+var kindOf = ((cache) => (thing) => {
   const str = toString.call(thing);
   return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
 })(/* @__PURE__ */ Object.create(null));
@@ -25027,37 +25529,26 @@ function isArrayBufferView(val) {
 var isString2 = typeOfTest("string");
 var isFunction = typeOfTest("function");
 var isNumber2 = typeOfTest("number");
-var isObject = (thing) => thing !== null && typeof thing === "object";
+var isObject2 = (thing) => thing !== null && typeof thing === "object";
 var isBoolean = (thing) => thing === true || thing === false;
-var isPlainObject3 = (val) => {
+var isPlainObject2 = (val) => {
   if (kindOf(val) !== "object") {
     return false;
   }
   const prototype3 = getPrototypeOf(val);
-  return (prototype3 === null || prototype3 === Object.prototype || Object.getPrototypeOf(prototype3) === null) && !(toStringTag in val) && !(iterator in val);
-};
-var isEmptyObject = (val) => {
-  if (!isObject(val) || isBuffer(val)) {
-    return false;
-  }
-  try {
-    return Object.keys(val).length === 0 && Object.getPrototypeOf(val) === Object.prototype;
-  } catch (e) {
-    return false;
-  }
+  return (prototype3 === null || prototype3 === Object.prototype || Object.getPrototypeOf(prototype3) === null) && !(Symbol.toStringTag in val) && !(Symbol.iterator in val);
 };
 var isDate2 = kindOfTest("Date");
 var isFile = kindOfTest("File");
 var isBlob = kindOfTest("Blob");
 var isFileList = kindOfTest("FileList");
-var isStream = (val) => isObject(val) && isFunction(val.pipe);
+var isStream = (val) => isObject2(val) && isFunction(val.pipe);
 var isFormData = (thing) => {
   let kind;
   return thing && (typeof FormData === "function" && thing instanceof FormData || isFunction(thing.append) && ((kind = kindOf(thing)) === "formdata" || // detect form-data instance
   kind === "object" && isFunction(thing.toString) && thing.toString() === "[object FormData]"));
 };
 var isURLSearchParams = kindOfTest("URLSearchParams");
-var [isReadableStream, isRequest, isResponse, isHeaders] = ["ReadableStream", "Request", "Response", "Headers"].map(kindOfTest);
 var trim = (str) => str.trim ? str.trim() : str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
 function forEach(obj, fn2, { allOwnKeys = false } = {}) {
   if (obj === null || typeof obj === "undefined") {
@@ -25073,9 +25564,6 @@ function forEach(obj, fn2, { allOwnKeys = false } = {}) {
       fn2.call(null, obj[i], i, obj);
     }
   } else {
-    if (isBuffer(obj)) {
-      return;
-    }
     const keys = allOwnKeys ? Object.getOwnPropertyNames(obj) : Object.keys(obj);
     const len = keys.length;
     let key;
@@ -25086,9 +25574,6 @@ function forEach(obj, fn2, { allOwnKeys = false } = {}) {
   }
 }
 function findKey(obj, key) {
-  if (isBuffer(obj)) {
-    return null;
-  }
   key = key.toLowerCase();
   const keys = Object.keys(obj);
   let i = keys.length;
@@ -25102,22 +25587,23 @@ function findKey(obj, key) {
   return null;
 }
 var _global = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof globalThis !== "undefined")
+    return globalThis;
   return typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : global;
 })();
 var isContextDefined = (context) => !isUndefined2(context) && context !== _global;
 function merge2() {
-  const { caseless, skipUndefined } = isContextDefined(this) && this || {};
+  const { caseless } = isContextDefined(this) && this || {};
   const result = {};
   const assignValue = (val, key) => {
     const targetKey = caseless && findKey(result, key) || key;
-    if (isPlainObject3(result[targetKey]) && isPlainObject3(val)) {
+    if (isPlainObject2(result[targetKey]) && isPlainObject2(val)) {
       result[targetKey] = merge2(result[targetKey], val);
-    } else if (isPlainObject3(val)) {
+    } else if (isPlainObject2(val)) {
       result[targetKey] = merge2({}, val);
     } else if (isArray(val)) {
       result[targetKey] = val.slice();
-    } else if (!skipUndefined || !isUndefined2(val)) {
+    } else {
       result[targetKey] = val;
     }
   };
@@ -25129,7 +25615,7 @@ function merge2() {
 var extend = (a, b, thisArg, { allOwnKeys } = {}) => {
   forEach(b, (val, key) => {
     if (thisArg && isFunction(val)) {
-      a[key] = bind(val, thisArg);
+      a[key] = bind2(val, thisArg);
     } else {
       a[key] = val;
     }
@@ -25156,7 +25642,8 @@ var toFlatObject = (sourceObj, destObj, filter2, propFilter) => {
   let prop;
   const merged = {};
   destObj = destObj || {};
-  if (sourceObj == null) return destObj;
+  if (sourceObj == null)
+    return destObj;
   do {
     props = Object.getOwnPropertyNames(sourceObj);
     i = props.length;
@@ -25181,35 +25668,38 @@ var endsWith = (str, searchString, position) => {
   return lastIndex !== -1 && lastIndex === position;
 };
 var toArray = (thing) => {
-  if (!thing) return null;
-  if (isArray(thing)) return thing;
+  if (!thing)
+    return null;
+  if (isArray(thing))
+    return thing;
   let i = thing.length;
-  if (!isNumber2(i)) return null;
+  if (!isNumber2(i))
+    return null;
   const arr = new Array(i);
   while (i-- > 0) {
     arr[i] = thing[i];
   }
   return arr;
 };
-var isTypedArray = /* @__PURE__ */ ((TypedArray) => {
+var isTypedArray = ((TypedArray) => {
   return (thing) => {
     return TypedArray && thing instanceof TypedArray;
   };
 })(typeof Uint8Array !== "undefined" && getPrototypeOf(Uint8Array));
 var forEachEntry = (obj, fn2) => {
-  const generator = obj && obj[iterator];
-  const _iterator = generator.call(obj);
+  const generator = obj && obj[Symbol.iterator];
+  const iterator = generator.call(obj);
   let result;
-  while ((result = _iterator.next()) && !result.done) {
+  while ((result = iterator.next()) && !result.done) {
     const pair = result.value;
     fn2.call(obj, pair[0], pair[1]);
   }
 };
 var matchAll = (regExp, str) => {
-  let matches;
+  let matches2;
   const arr = [];
-  while ((matches = regExp.exec(str)) !== null) {
-    arr.push(matches);
+  while ((matches2 = regExp.exec(str)) !== null) {
+    arr.push(matches2);
   }
   return arr;
 };
@@ -25241,7 +25731,8 @@ var freezeMethods = (obj) => {
       return false;
     }
     const value = obj[name];
-    if (!isFunction(value)) return;
+    if (!isFunction(value))
+      return;
     descriptor.enumerable = false;
     if ("writable" in descriptor) {
       descriptor.writable = false;
@@ -25267,20 +25758,33 @@ var toObjectSet = (arrayOrString, delimiter) => {
 var noop2 = () => {
 };
 var toFiniteNumber = (value, defaultValue) => {
-  return value != null && Number.isFinite(value = +value) ? value : defaultValue;
+  value = +value;
+  return Number.isFinite(value) ? value : defaultValue;
+};
+var ALPHA = "abcdefghijklmnopqrstuvwxyz";
+var DIGIT = "0123456789";
+var ALPHABET = {
+  DIGIT,
+  ALPHA,
+  ALPHA_DIGIT: ALPHA + ALPHA.toUpperCase() + DIGIT
+};
+var generateString = (size = 16, alphabet = ALPHABET.ALPHA_DIGIT) => {
+  let str = "";
+  const { length } = alphabet;
+  while (size--) {
+    str += alphabet[Math.random() * length | 0];
+  }
+  return str;
 };
 function isSpecCompliantForm(thing) {
-  return !!(thing && isFunction(thing.append) && thing[toStringTag] === "FormData" && thing[iterator]);
+  return !!(thing && isFunction(thing.append) && thing[Symbol.toStringTag] === "FormData" && thing[Symbol.iterator]);
 }
 var toJSONObject = (obj) => {
   const stack = new Array(10);
   const visit = (source, i) => {
-    if (isObject(source)) {
+    if (isObject2(source)) {
       if (stack.indexOf(source) >= 0) {
         return;
-      }
-      if (isBuffer(source)) {
-        return source;
       }
       if (!("toJSON" in source)) {
         stack[i] = source;
@@ -25298,28 +25802,7 @@ var toJSONObject = (obj) => {
   return visit(obj, 0);
 };
 var isAsyncFn = kindOfTest("AsyncFunction");
-var isThenable = (thing) => thing && (isObject(thing) || isFunction(thing)) && isFunction(thing.then) && isFunction(thing.catch);
-var _setImmediate = ((setImmediateSupported, postMessageSupported) => {
-  if (setImmediateSupported) {
-    return setImmediate;
-  }
-  return postMessageSupported ? ((token, callbacks) => {
-    _global.addEventListener("message", ({ source, data }) => {
-      if (source === _global && data === token) {
-        callbacks.length && callbacks.shift()();
-      }
-    }, false);
-    return (cb) => {
-      callbacks.push(cb);
-      _global.postMessage(token, "*");
-    };
-  })(`axios@${Math.random()}`, []) : (cb) => setTimeout(cb);
-})(
-  typeof setImmediate === "function",
-  isFunction(_global.postMessage)
-);
-var asap = typeof queueMicrotask !== "undefined" ? queueMicrotask.bind(_global) : typeof process !== "undefined" && process.nextTick || _setImmediate;
-var isIterable = (thing) => thing != null && isFunction(thing[iterator]);
+var isThenable = (thing) => thing && (isObject2(thing) || isFunction(thing)) && isFunction(thing.then) && isFunction(thing.catch);
 var utils_default = {
   isArray,
   isArrayBuffer,
@@ -25329,13 +25812,8 @@ var utils_default = {
   isString: isString2,
   isNumber: isNumber2,
   isBoolean,
-  isObject,
-  isPlainObject: isPlainObject3,
-  isEmptyObject,
-  isReadableStream,
-  isRequest,
-  isResponse,
-  isHeaders,
+  isObject: isObject2,
+  isPlainObject: isPlainObject2,
   isUndefined: isUndefined2,
   isDate: isDate2,
   isFile,
@@ -25372,13 +25850,12 @@ var utils_default = {
   findKey,
   global: _global,
   isContextDefined,
+  ALPHABET,
+  generateString,
   isSpecCompliantForm,
   toJSONObject,
   isAsyncFn,
-  isThenable,
-  setImmediate: _setImmediate,
-  asap,
-  isIterable
+  isThenable
 };
 
 // node_modules/axios/lib/core/AxiosError.js
@@ -25394,10 +25871,7 @@ function AxiosError(message, code, config, request2, response) {
   code && (this.code = code);
   config && (this.config = config);
   request2 && (this.request = request2);
-  if (response) {
-    this.response = response;
-    this.status = response.status ? response.status : null;
-  }
+  response && (this.response = response);
 }
 utils_default.inherits(AxiosError, Error, {
   toJSON: function toJSON() {
@@ -25416,7 +25890,7 @@ utils_default.inherits(AxiosError, Error, {
       // Axios
       config: utils_default.toJSONObject(this.config),
       code: this.code,
-      status: this.status
+      status: this.response && this.response.status ? this.response.status : null
     };
   }
 });
@@ -25448,13 +25922,9 @@ AxiosError.from = (error, code, config, request2, response, customProps) => {
   }, (prop) => {
     return prop !== "isAxiosError";
   });
-  const msg = error && error.message ? error.message : "Error";
-  const errCode = code == null && error ? error.code : code;
-  AxiosError.call(axiosError, msg, errCode, config, request2, response);
-  if (error && axiosError.cause == null) {
-    Object.defineProperty(axiosError, "cause", { value: error, configurable: true });
-  }
-  axiosError.name = error && error.name || "Error";
+  AxiosError.call(axiosError, error.message, code, config, request2, response);
+  axiosError.cause = error;
+  axiosError.name = error.name;
   customProps && Object.assign(axiosError, customProps);
   return axiosError;
 };
@@ -25470,9 +25940,10 @@ function isVisitable(thing) {
 function removeBrackets(key) {
   return utils_default.endsWith(key, "[]") ? key.slice(0, -2) : key;
 }
-function renderKey(path, key, dots) {
-  if (!path) return key;
-  return path.concat(key).map(function each(token, i) {
+function renderKey(path2, key, dots) {
+  if (!path2)
+    return key;
+  return path2.concat(key).map(function each(token, i) {
     token = removeBrackets(token);
     return !dots && i ? "[" + token + "]" : token;
   }).join(dots ? "." : "");
@@ -25492,8 +25963,8 @@ function toFormData(obj, formData, options) {
     metaTokens: true,
     dots: false,
     indexes: false
-  }, false, function defined(option, source) {
-    return !utils_default.isUndefined(source[option]);
+  }, false, function defined(option2, source) {
+    return !utils_default.isUndefined(source[option2]);
   });
   const metaTokens = options.metaTokens;
   const visitor = options.visitor || defaultVisitor;
@@ -25505,12 +25976,10 @@ function toFormData(obj, formData, options) {
     throw new TypeError("visitor must be a function");
   }
   function convertValue(value) {
-    if (value === null) return "";
+    if (value === null)
+      return "";
     if (utils_default.isDate(value)) {
       return value.toISOString();
-    }
-    if (utils_default.isBoolean(value)) {
-      return value.toString();
     }
     if (!useBlob && utils_default.isBlob(value)) {
       throw new AxiosError_default("Blob is not supported. Use a Buffer instead.");
@@ -25520,18 +25989,18 @@ function toFormData(obj, formData, options) {
     }
     return value;
   }
-  function defaultVisitor(value, key, path) {
+  function defaultVisitor(value, key, path2) {
     let arr = value;
-    if (value && !path && typeof value === "object") {
+    if (value && !path2 && typeof value === "object") {
       if (utils_default.endsWith(key, "{}")) {
         key = metaTokens ? key : key.slice(0, -2);
         value = JSON.stringify(value);
       } else if (utils_default.isArray(value) && isFlatArray(value) || (utils_default.isFileList(value) || utils_default.endsWith(key, "[]")) && (arr = utils_default.toArray(value))) {
         key = removeBrackets(key);
-        arr.forEach(function each(el, index) {
+        arr.forEach(function each(el, index2) {
           !(utils_default.isUndefined(el) || el === null) && formData.append(
             // eslint-disable-next-line no-nested-ternary
-            indexes === true ? renderKey([key], index, dots) : indexes === null ? key : key + "[]",
+            indexes === true ? renderKey([key], index2, dots) : indexes === null ? key : key + "[]",
             convertValue(el)
           );
         });
@@ -25541,7 +26010,7 @@ function toFormData(obj, formData, options) {
     if (isVisitable(value)) {
       return true;
     }
-    formData.append(renderKey(path, key, dots), convertValue(value));
+    formData.append(renderKey(path2, key, dots), convertValue(value));
     return false;
   }
   const stack = [];
@@ -25550,10 +26019,11 @@ function toFormData(obj, formData, options) {
     convertValue,
     isVisitable
   });
-  function build(value, path) {
-    if (utils_default.isUndefined(value)) return;
+  function build(value, path2) {
+    if (utils_default.isUndefined(value))
+      return;
     if (stack.indexOf(value) !== -1) {
-      throw Error("Circular reference detected in " + path.join("."));
+      throw Error("Circular reference detected in " + path2.join("."));
     }
     stack.push(value);
     utils_default.forEach(value, function each(el, key) {
@@ -25561,11 +26031,11 @@ function toFormData(obj, formData, options) {
         formData,
         el,
         utils_default.isString(key) ? key.trim() : key,
-        path,
+        path2,
         exposedHelpers
       );
       if (result === true) {
-        build(el, path ? path.concat(key) : [key]);
+        build(el, path2 ? path2.concat(key) : [key]);
       }
     });
     stack.pop();
@@ -25613,18 +26083,13 @@ var AxiosURLSearchParams_default = AxiosURLSearchParams;
 
 // node_modules/axios/lib/helpers/buildURL.js
 function encode3(val) {
-  return encodeURIComponent(val).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+");
+  return encodeURIComponent(val).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+").replace(/%5B/gi, "[").replace(/%5D/gi, "]");
 }
 function buildURL(url, params, options) {
   if (!params) {
     return url;
   }
   const _encode2 = options && options.encode || encode3;
-  if (utils_default.isFunction(options)) {
-    options = {
-      serialize: options
-    };
-  }
   const serializeFn = options && options.serialize;
   let serializedParams;
   if (serializeFn) {
@@ -25669,7 +26134,7 @@ var InterceptorManager = class {
    *
    * @param {Number} id The ID that was returned by `use`
    *
-   * @returns {void}
+   * @returns {Boolean} `true` if the interceptor was removed, `false` otherwise
    */
   eject(id) {
     if (this.handlers[id]) {
@@ -25723,6 +26188,17 @@ var FormData_default = typeof FormData !== "undefined" ? FormData : null;
 var Blob_default = typeof Blob !== "undefined" ? Blob : null;
 
 // node_modules/axios/lib/platform/browser/index.js
+var isStandardBrowserEnv = (() => {
+  let product;
+  if (typeof navigator !== "undefined" && ((product = navigator.product) === "ReactNative" || product === "NativeScript" || product === "NS")) {
+    return false;
+  }
+  return typeof window !== "undefined" && typeof document !== "undefined";
+})();
+var isStandardBrowserWebWorkerEnv = (() => {
+  return typeof WorkerGlobalScope !== "undefined" && // eslint-disable-next-line no-undef
+  self instanceof WorkerGlobalScope && typeof self.importScripts === "function";
+})();
 var browser_default = {
   isBrowser: true,
   classes: {
@@ -25730,35 +26206,16 @@ var browser_default = {
     FormData: FormData_default,
     Blob: Blob_default
   },
+  isStandardBrowserEnv,
+  isStandardBrowserWebWorkerEnv,
   protocols: ["http", "https", "file", "blob", "url", "data"]
 };
 
-// node_modules/axios/lib/platform/common/utils.js
-var utils_exports = {};
-__export(utils_exports, {
-  hasBrowserEnv: () => hasBrowserEnv,
-  hasStandardBrowserEnv: () => hasStandardBrowserEnv,
-  hasStandardBrowserWebWorkerEnv: () => hasStandardBrowserWebWorkerEnv,
-  navigator: () => _navigator,
-  origin: () => origin
-});
-var hasBrowserEnv = typeof window !== "undefined" && typeof document !== "undefined";
-var _navigator = typeof navigator === "object" && navigator || void 0;
-var hasStandardBrowserEnv = hasBrowserEnv && (!_navigator || ["ReactNative", "NativeScript", "NS"].indexOf(_navigator.product) < 0);
-var hasStandardBrowserWebWorkerEnv = (() => {
-  return typeof WorkerGlobalScope !== "undefined" && // eslint-disable-next-line no-undef
-  self instanceof WorkerGlobalScope && typeof self.importScripts === "function";
-})();
-var origin = hasBrowserEnv && window.location.href || "http://localhost";
-
-// node_modules/axios/lib/platform/index.js
-var platform_default = __spreadValues(__spreadValues({}, utils_exports), browser_default);
-
 // node_modules/axios/lib/helpers/toURLEncodedForm.js
 function toURLEncodedForm(data, options) {
-  return toFormData_default(data, new platform_default.classes.URLSearchParams(), __spreadValues({
-    visitor: function(value, key, path, helpers) {
-      if (platform_default.isNode && utils_default.isBuffer(value)) {
+  return toFormData_default(data, new browser_default.classes.URLSearchParams(), Object.assign({
+    visitor: function(value, key, path2, helpers) {
+      if (browser_default.isNode && utils_default.isBuffer(value)) {
         this.append(key, value.toString("base64"));
         return false;
       }
@@ -25786,11 +26243,10 @@ function arrayToObject(arr) {
   return obj;
 }
 function formDataToJSON(formData) {
-  function buildPath(path, value, target, index) {
-    let name = path[index++];
-    if (name === "__proto__") return true;
+  function buildPath(path2, value, target, index2) {
+    let name = path2[index2++];
     const isNumericKey = Number.isFinite(+name);
-    const isLast = index >= path.length;
+    const isLast = index2 >= path2.length;
     name = !name && utils_default.isArray(target) ? target.length : name;
     if (isLast) {
       if (utils_default.hasOwnProp(target, name)) {
@@ -25803,7 +26259,7 @@ function formDataToJSON(formData) {
     if (!target[name] || !utils_default.isObject(target[name])) {
       target[name] = [];
     }
-    const result = buildPath(path, value, target[name], index);
+    const result = buildPath(path2, value, target[name], index2);
     if (result && utils_default.isArray(target[name])) {
       target[name] = arrayToObject(target[name]);
     }
@@ -25836,7 +26292,7 @@ function stringifySafely(rawValue, parser, encoder) {
 }
 var defaults = {
   transitional: transitional_default,
-  adapter: ["xhr", "http", "fetch"],
+  adapter: browser_default.isNode ? "http" : "xhr",
   transformRequest: [function transformRequest(data, headers) {
     const contentType = headers.getContentType() || "";
     const hasJSONContentType = contentType.indexOf("application/json") > -1;
@@ -25846,9 +26302,12 @@ var defaults = {
     }
     const isFormData2 = utils_default.isFormData(data);
     if (isFormData2) {
+      if (!hasJSONContentType) {
+        return data;
+      }
       return hasJSONContentType ? JSON.stringify(formDataToJSON_default(data)) : data;
     }
-    if (utils_default.isArrayBuffer(data) || utils_default.isBuffer(data) || utils_default.isStream(data) || utils_default.isFile(data) || utils_default.isBlob(data) || utils_default.isReadableStream(data)) {
+    if (utils_default.isArrayBuffer(data) || utils_default.isBuffer(data) || utils_default.isStream(data) || utils_default.isFile(data) || utils_default.isBlob(data)) {
       return data;
     }
     if (utils_default.isArrayBufferView(data)) {
@@ -25882,14 +26341,11 @@ var defaults = {
     const transitional2 = this.transitional || defaults.transitional;
     const forcedJSONParsing = transitional2 && transitional2.forcedJSONParsing;
     const JSONRequested = this.responseType === "json";
-    if (utils_default.isResponse(data) || utils_default.isReadableStream(data)) {
-      return data;
-    }
     if (data && utils_default.isString(data) && (forcedJSONParsing && !this.responseType || JSONRequested)) {
       const silentJSONParsing = transitional2 && transitional2.silentJSONParsing;
       const strictJSONParsing = !silentJSONParsing && JSONRequested;
       try {
-        return JSON.parse(data, this.parseReviver);
+        return JSON.parse(data);
       } catch (e) {
         if (strictJSONParsing) {
           if (e.name === "SyntaxError") {
@@ -25911,8 +26367,8 @@ var defaults = {
   maxContentLength: -1,
   maxBodyLength: -1,
   env: {
-    FormData: platform_default.classes.FormData,
-    Blob: platform_default.classes.Blob
+    FormData: browser_default.classes.FormData,
+    Blob: browser_default.classes.Blob
   },
   validateStatus: function validateStatus(status) {
     return status >= 200 && status < 300;
@@ -26002,7 +26458,8 @@ function matchHeaderValue(context, value, header, filter2, isHeaderNameFilter) {
   if (isHeaderNameFilter) {
     value = header;
   }
-  if (!utils_default.isString(value)) return;
+  if (!utils_default.isString(value))
+    return;
   if (utils_default.isString(filter2)) {
     return value.indexOf(filter2) !== -1;
   }
@@ -26047,15 +26504,6 @@ var AxiosHeaders = class {
       setHeaders(header, valueOrRewrite);
     } else if (utils_default.isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
       setHeaders(parseHeaders_default(header), valueOrRewrite);
-    } else if (utils_default.isObject(header) && utils_default.isIterable(header)) {
-      let obj = {}, dest, key;
-      for (const entry of header) {
-        if (!utils_default.isArray(entry)) {
-          throw TypeError("Object iterator must return a key-value pair");
-        }
-        obj[key = entry[0]] = (dest = obj[key]) ? utils_default.isArray(dest) ? [...dest, entry[1]] : [dest, entry[1]] : entry[1];
-      }
-      setHeaders(obj, valueOrRewrite);
     } else {
       header != null && setHeader(valueOrRewrite, header, rewrite);
     }
@@ -26159,9 +26607,6 @@ var AxiosHeaders = class {
   toString() {
     return Object.entries(this.toJSON()).map(([header, value]) => header + ": " + value).join("\n");
   }
-  getSetCookie() {
-    return this.get("set-cookie") || [];
-  }
   get [Symbol.toStringTag]() {
     return "AxiosHeaders";
   }
@@ -26247,6 +26692,111 @@ function settle(resolve, reject, response) {
   }
 }
 
+// node_modules/axios/lib/helpers/cookies.js
+var cookies_default = browser_default.isStandardBrowserEnv ? (
+  // Standard browser envs support document.cookie
+  function standardBrowserEnv() {
+    return {
+      write: function write2(name, value, expires, path2, domain, secure) {
+        const cookie = [];
+        cookie.push(name + "=" + encodeURIComponent(value));
+        if (utils_default.isNumber(expires)) {
+          cookie.push("expires=" + new Date(expires).toGMTString());
+        }
+        if (utils_default.isString(path2)) {
+          cookie.push("path=" + path2);
+        }
+        if (utils_default.isString(domain)) {
+          cookie.push("domain=" + domain);
+        }
+        if (secure === true) {
+          cookie.push("secure");
+        }
+        document.cookie = cookie.join("; ");
+      },
+      read: function read2(name) {
+        const match2 = document.cookie.match(new RegExp("(^|;\\s*)(" + name + ")=([^;]*)"));
+        return match2 ? decodeURIComponent(match2[3]) : null;
+      },
+      remove: function remove(name) {
+        this.write(name, "", Date.now() - 864e5);
+      }
+    };
+  }()
+) : (
+  // Non standard browser env (web workers, react-native) lack needed support.
+  function nonStandardBrowserEnv() {
+    return {
+      write: function write2() {
+      },
+      read: function read2() {
+        return null;
+      },
+      remove: function remove() {
+      }
+    };
+  }()
+);
+
+// node_modules/axios/lib/helpers/isAbsoluteURL.js
+function isAbsoluteURL(url) {
+  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
+}
+
+// node_modules/axios/lib/helpers/combineURLs.js
+function combineURLs(baseURL, relativeURL) {
+  return relativeURL ? baseURL.replace(/\/+$/, "") + "/" + relativeURL.replace(/^\/+/, "") : baseURL;
+}
+
+// node_modules/axios/lib/core/buildFullPath.js
+function buildFullPath(baseURL, requestedURL) {
+  if (baseURL && !isAbsoluteURL(requestedURL)) {
+    return combineURLs(baseURL, requestedURL);
+  }
+  return requestedURL;
+}
+
+// node_modules/axios/lib/helpers/isURLSameOrigin.js
+var isURLSameOrigin_default = browser_default.isStandardBrowserEnv ? (
+  // Standard browser envs have full support of the APIs needed to test
+  // whether the request URL is of the same origin as current location.
+  function standardBrowserEnv2() {
+    const msie = /(msie|trident)/i.test(navigator.userAgent);
+    const urlParsingNode = document.createElement("a");
+    let originURL;
+    function resolveURL(url) {
+      let href = url;
+      if (msie) {
+        urlParsingNode.setAttribute("href", href);
+        href = urlParsingNode.href;
+      }
+      urlParsingNode.setAttribute("href", href);
+      return {
+        href: urlParsingNode.href,
+        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, "") : "",
+        host: urlParsingNode.host,
+        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, "") : "",
+        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, "") : "",
+        hostname: urlParsingNode.hostname,
+        port: urlParsingNode.port,
+        pathname: urlParsingNode.pathname.charAt(0) === "/" ? urlParsingNode.pathname : "/" + urlParsingNode.pathname
+      };
+    }
+    originURL = resolveURL(window.location.href);
+    return function isURLSameOrigin(requestURL) {
+      const parsed = utils_default.isString(requestURL) ? resolveURL(requestURL) : requestURL;
+      return parsed.protocol === originURL.protocol && parsed.host === originURL.host;
+    };
+  }()
+) : (
+  // Non standard browser envs (web workers, react-native) lack needed support.
+  function nonStandardBrowserEnv2() {
+    return function isURLSameOrigin() {
+      return true;
+    };
+  }()
+);
+
 // node_modules/axios/lib/helpers/parseProtocol.js
 function parseProtocol(url) {
   const match2 = /^([-+\w]{1,25})(:?\/\/|:)/.exec(url);
@@ -26289,46 +26839,11 @@ function speedometer(samplesCount, min2) {
 }
 var speedometer_default = speedometer;
 
-// node_modules/axios/lib/helpers/throttle.js
-function throttle(fn2, freq) {
-  let timestamp = 0;
-  let threshold = 1e3 / freq;
-  let lastArgs;
-  let timer;
-  const invoke = (args, now3 = Date.now()) => {
-    timestamp = now3;
-    lastArgs = null;
-    if (timer) {
-      clearTimeout(timer);
-      timer = null;
-    }
-    fn2(...args);
-  };
-  const throttled = (...args) => {
-    const now3 = Date.now();
-    const passed = now3 - timestamp;
-    if (passed >= threshold) {
-      invoke(args, now3);
-    } else {
-      lastArgs = args;
-      if (!timer) {
-        timer = setTimeout(() => {
-          timer = null;
-          invoke(lastArgs);
-        }, threshold - passed);
-      }
-    }
-  };
-  const flush2 = () => lastArgs && invoke(lastArgs);
-  return [throttled, flush2];
-}
-var throttle_default = throttle;
-
-// node_modules/axios/lib/helpers/progressEventReducer.js
-var progressEventReducer = (listener, isDownloadStream, freq = 3) => {
+// node_modules/axios/lib/adapters/xhr.js
+function progressEventReducer(listener, isDownloadStream) {
   let bytesNotified = 0;
   const _speedometer = speedometer_default(50, 250);
-  return throttle_default((e) => {
+  return (e) => {
     const loaded = e.loaded;
     const total = e.lengthComputable ? e.total : void 0;
     const progressBytes = loaded - bytesNotified;
@@ -26342,234 +26857,43 @@ var progressEventReducer = (listener, isDownloadStream, freq = 3) => {
       bytes: progressBytes,
       rate: rate ? rate : void 0,
       estimated: rate && total && inRange ? (total - loaded) / rate : void 0,
-      event: e,
-      lengthComputable: total != null,
-      [isDownloadStream ? "download" : "upload"]: true
+      event: e
     };
+    data[isDownloadStream ? "download" : "upload"] = true;
     listener(data);
-  }, freq);
-};
-var progressEventDecorator = (total, throttled) => {
-  const lengthComputable = total != null;
-  return [(loaded) => throttled[0]({
-    lengthComputable,
-    total,
-    loaded
-  }), throttled[1]];
-};
-var asyncDecorator = (fn2) => (...args) => utils_default.asap(() => fn2(...args));
-
-// node_modules/axios/lib/helpers/isURLSameOrigin.js
-var isURLSameOrigin_default = platform_default.hasStandardBrowserEnv ? /* @__PURE__ */ ((origin2, isMSIE) => (url) => {
-  url = new URL(url, platform_default.origin);
-  return origin2.protocol === url.protocol && origin2.host === url.host && (isMSIE || origin2.port === url.port);
-})(
-  new URL(platform_default.origin),
-  platform_default.navigator && /(msie|trident)/i.test(platform_default.navigator.userAgent)
-) : () => true;
-
-// node_modules/axios/lib/helpers/cookies.js
-var cookies_default = platform_default.hasStandardBrowserEnv ? (
-  // Standard browser envs support document.cookie
-  {
-    write(name, value, expires, path, domain, secure, sameSite) {
-      if (typeof document === "undefined") return;
-      const cookie = [`${name}=${encodeURIComponent(value)}`];
-      if (utils_default.isNumber(expires)) {
-        cookie.push(`expires=${new Date(expires).toUTCString()}`);
-      }
-      if (utils_default.isString(path)) {
-        cookie.push(`path=${path}`);
-      }
-      if (utils_default.isString(domain)) {
-        cookie.push(`domain=${domain}`);
-      }
-      if (secure === true) {
-        cookie.push("secure");
-      }
-      if (utils_default.isString(sameSite)) {
-        cookie.push(`SameSite=${sameSite}`);
-      }
-      document.cookie = cookie.join("; ");
-    },
-    read(name) {
-      if (typeof document === "undefined") return null;
-      const match2 = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
-      return match2 ? decodeURIComponent(match2[1]) : null;
-    },
-    remove(name) {
-      this.write(name, "", Date.now() - 864e5, "/");
-    }
-  }
-) : (
-  // Non-standard browser env (web workers, react-native) lack needed support.
-  {
-    write() {
-    },
-    read() {
-      return null;
-    },
-    remove() {
-    }
-  }
-);
-
-// node_modules/axios/lib/helpers/isAbsoluteURL.js
-function isAbsoluteURL(url) {
-  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
-}
-
-// node_modules/axios/lib/helpers/combineURLs.js
-function combineURLs(baseURL, relativeURL) {
-  return relativeURL ? baseURL.replace(/\/?\/$/, "") + "/" + relativeURL.replace(/^\/+/, "") : baseURL;
-}
-
-// node_modules/axios/lib/core/buildFullPath.js
-function buildFullPath(baseURL, requestedURL, allowAbsoluteUrls) {
-  let isRelativeUrl = !isAbsoluteURL(requestedURL);
-  if (baseURL && (isRelativeUrl || allowAbsoluteUrls == false)) {
-    return combineURLs(baseURL, requestedURL);
-  }
-  return requestedURL;
-}
-
-// node_modules/axios/lib/core/mergeConfig.js
-var headersToObject = (thing) => thing instanceof AxiosHeaders_default ? __spreadValues({}, thing) : thing;
-function mergeConfig(config1, config2) {
-  config2 = config2 || {};
-  const config = {};
-  function getMergedValue(target, source, prop, caseless) {
-    if (utils_default.isPlainObject(target) && utils_default.isPlainObject(source)) {
-      return utils_default.merge.call({ caseless }, target, source);
-    } else if (utils_default.isPlainObject(source)) {
-      return utils_default.merge({}, source);
-    } else if (utils_default.isArray(source)) {
-      return source.slice();
-    }
-    return source;
-  }
-  function mergeDeepProperties(a, b, prop, caseless) {
-    if (!utils_default.isUndefined(b)) {
-      return getMergedValue(a, b, prop, caseless);
-    } else if (!utils_default.isUndefined(a)) {
-      return getMergedValue(void 0, a, prop, caseless);
-    }
-  }
-  function valueFromConfig2(a, b) {
-    if (!utils_default.isUndefined(b)) {
-      return getMergedValue(void 0, b);
-    }
-  }
-  function defaultToConfig2(a, b) {
-    if (!utils_default.isUndefined(b)) {
-      return getMergedValue(void 0, b);
-    } else if (!utils_default.isUndefined(a)) {
-      return getMergedValue(void 0, a);
-    }
-  }
-  function mergeDirectKeys(a, b, prop) {
-    if (prop in config2) {
-      return getMergedValue(a, b);
-    } else if (prop in config1) {
-      return getMergedValue(void 0, a);
-    }
-  }
-  const mergeMap = {
-    url: valueFromConfig2,
-    method: valueFromConfig2,
-    data: valueFromConfig2,
-    baseURL: defaultToConfig2,
-    transformRequest: defaultToConfig2,
-    transformResponse: defaultToConfig2,
-    paramsSerializer: defaultToConfig2,
-    timeout: defaultToConfig2,
-    timeoutMessage: defaultToConfig2,
-    withCredentials: defaultToConfig2,
-    withXSRFToken: defaultToConfig2,
-    adapter: defaultToConfig2,
-    responseType: defaultToConfig2,
-    xsrfCookieName: defaultToConfig2,
-    xsrfHeaderName: defaultToConfig2,
-    onUploadProgress: defaultToConfig2,
-    onDownloadProgress: defaultToConfig2,
-    decompress: defaultToConfig2,
-    maxContentLength: defaultToConfig2,
-    maxBodyLength: defaultToConfig2,
-    beforeRedirect: defaultToConfig2,
-    transport: defaultToConfig2,
-    httpAgent: defaultToConfig2,
-    httpsAgent: defaultToConfig2,
-    cancelToken: defaultToConfig2,
-    socketPath: defaultToConfig2,
-    responseEncoding: defaultToConfig2,
-    validateStatus: mergeDirectKeys,
-    headers: (a, b, prop) => mergeDeepProperties(headersToObject(a), headersToObject(b), prop, true)
   };
-  utils_default.forEach(Object.keys(__spreadValues(__spreadValues({}, config1), config2)), function computeConfigValue(prop) {
-    const merge3 = mergeMap[prop] || mergeDeepProperties;
-    const configValue = merge3(config1[prop], config2[prop], prop);
-    utils_default.isUndefined(configValue) && merge3 !== mergeDirectKeys || (config[prop] = configValue);
-  });
-  return config;
 }
-
-// node_modules/axios/lib/helpers/resolveConfig.js
-var resolveConfig_default = (config) => {
-  const newConfig = mergeConfig({}, config);
-  let { data, withXSRFToken, xsrfHeaderName, xsrfCookieName, headers, auth: auth2 } = newConfig;
-  newConfig.headers = headers = AxiosHeaders_default.from(headers);
-  newConfig.url = buildURL(buildFullPath(newConfig.baseURL, newConfig.url, newConfig.allowAbsoluteUrls), config.params, config.paramsSerializer);
-  if (auth2) {
-    headers.set(
-      "Authorization",
-      "Basic " + btoa((auth2.username || "") + ":" + (auth2.password ? unescape(encodeURIComponent(auth2.password)) : ""))
-    );
-  }
-  if (utils_default.isFormData(data)) {
-    if (platform_default.hasStandardBrowserEnv || platform_default.hasStandardBrowserWebWorkerEnv) {
-      headers.setContentType(void 0);
-    } else if (utils_default.isFunction(data.getHeaders)) {
-      const formHeaders = data.getHeaders();
-      const allowedHeaders = ["content-type", "content-length"];
-      Object.entries(formHeaders).forEach(([key, val]) => {
-        if (allowedHeaders.includes(key.toLowerCase())) {
-          headers.set(key, val);
-        }
-      });
-    }
-  }
-  if (platform_default.hasStandardBrowserEnv) {
-    withXSRFToken && utils_default.isFunction(withXSRFToken) && (withXSRFToken = withXSRFToken(newConfig));
-    if (withXSRFToken || withXSRFToken !== false && isURLSameOrigin_default(newConfig.url)) {
-      const xsrfValue = xsrfHeaderName && xsrfCookieName && cookies_default.read(xsrfCookieName);
-      if (xsrfValue) {
-        headers.set(xsrfHeaderName, xsrfValue);
-      }
-    }
-  }
-  return newConfig;
-};
-
-// node_modules/axios/lib/adapters/xhr.js
 var isXHRAdapterSupported = typeof XMLHttpRequest !== "undefined";
 var xhr_default = isXHRAdapterSupported && function(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
-    const _config = resolveConfig_default(config);
-    let requestData = _config.data;
-    const requestHeaders = AxiosHeaders_default.from(_config.headers).normalize();
-    let { responseType, onUploadProgress, onDownloadProgress } = _config;
+    let requestData = config.data;
+    const requestHeaders = AxiosHeaders_default.from(config.headers).normalize();
+    const responseType = config.responseType;
     let onCanceled;
-    let uploadThrottled, downloadThrottled;
-    let flushUpload, flushDownload;
     function done() {
-      flushUpload && flushUpload();
-      flushDownload && flushDownload();
-      _config.cancelToken && _config.cancelToken.unsubscribe(onCanceled);
-      _config.signal && _config.signal.removeEventListener("abort", onCanceled);
+      if (config.cancelToken) {
+        config.cancelToken.unsubscribe(onCanceled);
+      }
+      if (config.signal) {
+        config.signal.removeEventListener("abort", onCanceled);
+      }
+    }
+    if (utils_default.isFormData(requestData)) {
+      if (browser_default.isStandardBrowserEnv || browser_default.isStandardBrowserWebWorkerEnv) {
+        requestHeaders.setContentType(false);
+      } else {
+        requestHeaders.setContentType("multipart/form-data;", false);
+      }
     }
     let request2 = new XMLHttpRequest();
-    request2.open(_config.method.toUpperCase(), _config.url, true);
-    request2.timeout = _config.timeout;
+    if (config.auth) {
+      const username = config.auth.username || "";
+      const password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : "";
+      requestHeaders.set("Authorization", "Basic " + btoa(username + ":" + password));
+    }
+    const fullPath = buildFullPath(config.baseURL, config.url);
+    request2.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+    request2.timeout = config.timeout;
     function onloadend() {
       if (!request2) {
         return;
@@ -26615,18 +26939,15 @@ var xhr_default = isXHRAdapterSupported && function(config) {
       reject(new AxiosError_default("Request aborted", AxiosError_default.ECONNABORTED, config, request2));
       request2 = null;
     };
-    request2.onerror = function handleError(event) {
-      const msg = event && event.message ? event.message : "Network Error";
-      const err = new AxiosError_default(msg, AxiosError_default.ERR_NETWORK, config, request2);
-      err.event = event || null;
-      reject(err);
+    request2.onerror = function handleError() {
+      reject(new AxiosError_default("Network Error", AxiosError_default.ERR_NETWORK, config, request2));
       request2 = null;
     };
     request2.ontimeout = function handleTimeout() {
-      let timeoutErrorMessage = _config.timeout ? "timeout of " + _config.timeout + "ms exceeded" : "timeout exceeded";
-      const transitional2 = _config.transitional || transitional_default;
-      if (_config.timeoutErrorMessage) {
-        timeoutErrorMessage = _config.timeoutErrorMessage;
+      let timeoutErrorMessage = config.timeout ? "timeout of " + config.timeout + "ms exceeded" : "timeout exceeded";
+      const transitional2 = config.transitional || transitional_default;
+      if (config.timeoutErrorMessage) {
+        timeoutErrorMessage = config.timeoutErrorMessage;
       }
       reject(new AxiosError_default(
         timeoutErrorMessage,
@@ -26636,28 +26957,31 @@ var xhr_default = isXHRAdapterSupported && function(config) {
       ));
       request2 = null;
     };
+    if (browser_default.isStandardBrowserEnv) {
+      const xsrfValue = (config.withCredentials || isURLSameOrigin_default(fullPath)) && config.xsrfCookieName && cookies_default.read(config.xsrfCookieName);
+      if (xsrfValue) {
+        requestHeaders.set(config.xsrfHeaderName, xsrfValue);
+      }
+    }
     requestData === void 0 && requestHeaders.setContentType(null);
     if ("setRequestHeader" in request2) {
       utils_default.forEach(requestHeaders.toJSON(), function setRequestHeader(val, key) {
         request2.setRequestHeader(key, val);
       });
     }
-    if (!utils_default.isUndefined(_config.withCredentials)) {
-      request2.withCredentials = !!_config.withCredentials;
+    if (!utils_default.isUndefined(config.withCredentials)) {
+      request2.withCredentials = !!config.withCredentials;
     }
     if (responseType && responseType !== "json") {
-      request2.responseType = _config.responseType;
+      request2.responseType = config.responseType;
     }
-    if (onDownloadProgress) {
-      [downloadThrottled, flushDownload] = progressEventReducer(onDownloadProgress, true);
-      request2.addEventListener("progress", downloadThrottled);
+    if (typeof config.onDownloadProgress === "function") {
+      request2.addEventListener("progress", progressEventReducer(config.onDownloadProgress, true));
     }
-    if (onUploadProgress && request2.upload) {
-      [uploadThrottled, flushUpload] = progressEventReducer(onUploadProgress);
-      request2.upload.addEventListener("progress", uploadThrottled);
-      request2.upload.addEventListener("loadend", flushUpload);
+    if (typeof config.onUploadProgress === "function" && request2.upload) {
+      request2.upload.addEventListener("progress", progressEventReducer(config.onUploadProgress));
     }
-    if (_config.cancelToken || _config.signal) {
+    if (config.cancelToken || config.signal) {
       onCanceled = (cancel) => {
         if (!request2) {
           return;
@@ -26666,13 +26990,13 @@ var xhr_default = isXHRAdapterSupported && function(config) {
         request2.abort();
         request2 = null;
       };
-      _config.cancelToken && _config.cancelToken.subscribe(onCanceled);
-      if (_config.signal) {
-        _config.signal.aborted ? onCanceled() : _config.signal.addEventListener("abort", onCanceled);
+      config.cancelToken && config.cancelToken.subscribe(onCanceled);
+      if (config.signal) {
+        config.signal.aborted ? onCanceled() : config.signal.addEventListener("abort", onCanceled);
       }
     }
-    const protocol = parseProtocol(_config.url);
-    if (protocol && platform_default.protocols.indexOf(protocol) === -1) {
+    const protocol = parseProtocol(fullPath);
+    if (protocol && browser_default.protocols.indexOf(protocol) === -1) {
       reject(new AxiosError_default("Unsupported protocol " + protocol + ":", AxiosError_default.ERR_BAD_REQUEST, config));
       return;
     }
@@ -26680,354 +27004,10 @@ var xhr_default = isXHRAdapterSupported && function(config) {
   });
 };
 
-// node_modules/axios/lib/helpers/composeSignals.js
-var composeSignals = (signals, timeout) => {
-  const { length } = signals = signals ? signals.filter(Boolean) : [];
-  if (timeout || length) {
-    let controller = new AbortController();
-    let aborted;
-    const onabort = function(reason) {
-      if (!aborted) {
-        aborted = true;
-        unsubscribe();
-        const err = reason instanceof Error ? reason : this.reason;
-        controller.abort(err instanceof AxiosError_default ? err : new CanceledError_default(err instanceof Error ? err.message : err));
-      }
-    };
-    let timer = timeout && setTimeout(() => {
-      timer = null;
-      onabort(new AxiosError_default(`timeout ${timeout} of ms exceeded`, AxiosError_default.ETIMEDOUT));
-    }, timeout);
-    const unsubscribe = () => {
-      if (signals) {
-        timer && clearTimeout(timer);
-        timer = null;
-        signals.forEach((signal2) => {
-          signal2.unsubscribe ? signal2.unsubscribe(onabort) : signal2.removeEventListener("abort", onabort);
-        });
-        signals = null;
-      }
-    };
-    signals.forEach((signal2) => signal2.addEventListener("abort", onabort));
-    const { signal } = controller;
-    signal.unsubscribe = () => utils_default.asap(unsubscribe);
-    return signal;
-  }
-};
-var composeSignals_default = composeSignals;
-
-// node_modules/axios/lib/helpers/trackStream.js
-var streamChunk = function* (chunk, chunkSize) {
-  let len = chunk.byteLength;
-  if (!chunkSize || len < chunkSize) {
-    yield chunk;
-    return;
-  }
-  let pos = 0;
-  let end2;
-  while (pos < len) {
-    end2 = pos + chunkSize;
-    yield chunk.slice(pos, end2);
-    pos = end2;
-  }
-};
-var readBytes = function(iterable, chunkSize) {
-  return __asyncGenerator(this, null, function* () {
-    try {
-      for (var iter = __forAwait(readStream(iterable)), more, temp, error; more = !(temp = yield new __await(iter.next())).done; more = false) {
-        const chunk = temp.value;
-        yield* __yieldStar(streamChunk(chunk, chunkSize));
-      }
-    } catch (temp) {
-      error = [temp];
-    } finally {
-      try {
-        more && (temp = iter.return) && (yield new __await(temp.call(iter)));
-      } finally {
-        if (error)
-          throw error[0];
-      }
-    }
-  });
-};
-var readStream = function(stream) {
-  return __asyncGenerator(this, null, function* () {
-    if (stream[Symbol.asyncIterator]) {
-      yield* __yieldStar(stream);
-      return;
-    }
-    const reader = stream.getReader();
-    try {
-      for (; ; ) {
-        const { done, value } = yield new __await(reader.read());
-        if (done) {
-          break;
-        }
-        yield value;
-      }
-    } finally {
-      yield new __await(reader.cancel());
-    }
-  });
-};
-var trackStream = (stream, chunkSize, onProgress, onFinish) => {
-  const iterator2 = readBytes(stream, chunkSize);
-  let bytes = 0;
-  let done;
-  let _onFinish = (e) => {
-    if (!done) {
-      done = true;
-      onFinish && onFinish(e);
-    }
-  };
-  return new ReadableStream({
-    pull(controller) {
-      return __async(this, null, function* () {
-        try {
-          const { done: done2, value } = yield iterator2.next();
-          if (done2) {
-            _onFinish();
-            controller.close();
-            return;
-          }
-          let len = value.byteLength;
-          if (onProgress) {
-            let loadedBytes = bytes += len;
-            onProgress(loadedBytes);
-          }
-          controller.enqueue(new Uint8Array(value));
-        } catch (err) {
-          _onFinish(err);
-          throw err;
-        }
-      });
-    },
-    cancel(reason) {
-      _onFinish(reason);
-      return iterator2.return();
-    }
-  }, {
-    highWaterMark: 2
-  });
-};
-
-// node_modules/axios/lib/adapters/fetch.js
-var DEFAULT_CHUNK_SIZE = 64 * 1024;
-var { isFunction: isFunction2 } = utils_default;
-var globalFetchAPI = (({ Request, Response }) => ({
-  Request,
-  Response
-}))(utils_default.global);
-var {
-  ReadableStream: ReadableStream2,
-  TextEncoder: TextEncoder2
-} = utils_default.global;
-var test = (fn2, ...args) => {
-  try {
-    return !!fn2(...args);
-  } catch (e) {
-    return false;
-  }
-};
-var factory = (env) => {
-  env = utils_default.merge.call({
-    skipUndefined: true
-  }, globalFetchAPI, env);
-  const { fetch: envFetch, Request, Response } = env;
-  const isFetchSupported = envFetch ? isFunction2(envFetch) : typeof fetch === "function";
-  const isRequestSupported = isFunction2(Request);
-  const isResponseSupported = isFunction2(Response);
-  if (!isFetchSupported) {
-    return false;
-  }
-  const isReadableStreamSupported = isFetchSupported && isFunction2(ReadableStream2);
-  const encodeText = isFetchSupported && (typeof TextEncoder2 === "function" ? /* @__PURE__ */ ((encoder) => (str) => encoder.encode(str))(new TextEncoder2()) : (str) => __async(null, null, function* () {
-    return new Uint8Array(yield new Request(str).arrayBuffer());
-  }));
-  const supportsRequestStream = isRequestSupported && isReadableStreamSupported && test(() => {
-    let duplexAccessed = false;
-    const hasContentType = new Request(platform_default.origin, {
-      body: new ReadableStream2(),
-      method: "POST",
-      get duplex() {
-        duplexAccessed = true;
-        return "half";
-      }
-    }).headers.has("Content-Type");
-    return duplexAccessed && !hasContentType;
-  });
-  const supportsResponseStream = isResponseSupported && isReadableStreamSupported && test(() => utils_default.isReadableStream(new Response("").body));
-  const resolvers = {
-    stream: supportsResponseStream && ((res) => res.body)
-  };
-  isFetchSupported && (() => {
-    ["text", "arrayBuffer", "blob", "formData", "stream"].forEach((type) => {
-      !resolvers[type] && (resolvers[type] = (res, config) => {
-        let method = res && res[type];
-        if (method) {
-          return method.call(res);
-        }
-        throw new AxiosError_default(`Response type '${type}' is not supported`, AxiosError_default.ERR_NOT_SUPPORT, config);
-      });
-    });
-  })();
-  const getBodyLength = (body) => __async(null, null, function* () {
-    if (body == null) {
-      return 0;
-    }
-    if (utils_default.isBlob(body)) {
-      return body.size;
-    }
-    if (utils_default.isSpecCompliantForm(body)) {
-      const _request = new Request(platform_default.origin, {
-        method: "POST",
-        body
-      });
-      return (yield _request.arrayBuffer()).byteLength;
-    }
-    if (utils_default.isArrayBufferView(body) || utils_default.isArrayBuffer(body)) {
-      return body.byteLength;
-    }
-    if (utils_default.isURLSearchParams(body)) {
-      body = body + "";
-    }
-    if (utils_default.isString(body)) {
-      return (yield encodeText(body)).byteLength;
-    }
-  });
-  const resolveBodyLength = (headers, body) => __async(null, null, function* () {
-    const length = utils_default.toFiniteNumber(headers.getContentLength());
-    return length == null ? getBodyLength(body) : length;
-  });
-  return (config) => __async(null, null, function* () {
-    let {
-      url,
-      method,
-      data,
-      signal,
-      cancelToken,
-      timeout,
-      onDownloadProgress,
-      onUploadProgress,
-      responseType,
-      headers,
-      withCredentials = "same-origin",
-      fetchOptions
-    } = resolveConfig_default(config);
-    let _fetch = envFetch || fetch;
-    responseType = responseType ? (responseType + "").toLowerCase() : "text";
-    let composedSignal = composeSignals_default([signal, cancelToken && cancelToken.toAbortSignal()], timeout);
-    let request2 = null;
-    const unsubscribe = composedSignal && composedSignal.unsubscribe && (() => {
-      composedSignal.unsubscribe();
-    });
-    let requestContentLength;
-    try {
-      if (onUploadProgress && supportsRequestStream && method !== "get" && method !== "head" && (requestContentLength = yield resolveBodyLength(headers, data)) !== 0) {
-        let _request = new Request(url, {
-          method: "POST",
-          body: data,
-          duplex: "half"
-        });
-        let contentTypeHeader;
-        if (utils_default.isFormData(data) && (contentTypeHeader = _request.headers.get("content-type"))) {
-          headers.setContentType(contentTypeHeader);
-        }
-        if (_request.body) {
-          const [onProgress, flush2] = progressEventDecorator(
-            requestContentLength,
-            progressEventReducer(asyncDecorator(onUploadProgress))
-          );
-          data = trackStream(_request.body, DEFAULT_CHUNK_SIZE, onProgress, flush2);
-        }
-      }
-      if (!utils_default.isString(withCredentials)) {
-        withCredentials = withCredentials ? "include" : "omit";
-      }
-      const isCredentialsSupported = isRequestSupported && "credentials" in Request.prototype;
-      const resolvedOptions = __spreadProps(__spreadValues({}, fetchOptions), {
-        signal: composedSignal,
-        method: method.toUpperCase(),
-        headers: headers.normalize().toJSON(),
-        body: data,
-        duplex: "half",
-        credentials: isCredentialsSupported ? withCredentials : void 0
-      });
-      request2 = isRequestSupported && new Request(url, resolvedOptions);
-      let response = yield isRequestSupported ? _fetch(request2, fetchOptions) : _fetch(url, resolvedOptions);
-      const isStreamResponse = supportsResponseStream && (responseType === "stream" || responseType === "response");
-      if (supportsResponseStream && (onDownloadProgress || isStreamResponse && unsubscribe)) {
-        const options = {};
-        ["status", "statusText", "headers"].forEach((prop) => {
-          options[prop] = response[prop];
-        });
-        const responseContentLength = utils_default.toFiniteNumber(response.headers.get("content-length"));
-        const [onProgress, flush2] = onDownloadProgress && progressEventDecorator(
-          responseContentLength,
-          progressEventReducer(asyncDecorator(onDownloadProgress), true)
-        ) || [];
-        response = new Response(
-          trackStream(response.body, DEFAULT_CHUNK_SIZE, onProgress, () => {
-            flush2 && flush2();
-            unsubscribe && unsubscribe();
-          }),
-          options
-        );
-      }
-      responseType = responseType || "text";
-      let responseData = yield resolvers[utils_default.findKey(resolvers, responseType) || "text"](response, config);
-      !isStreamResponse && unsubscribe && unsubscribe();
-      return yield new Promise((resolve, reject) => {
-        settle(resolve, reject, {
-          data: responseData,
-          headers: AxiosHeaders_default.from(response.headers),
-          status: response.status,
-          statusText: response.statusText,
-          config,
-          request: request2
-        });
-      });
-    } catch (err) {
-      unsubscribe && unsubscribe();
-      if (err && err.name === "TypeError" && /Load failed|fetch/i.test(err.message)) {
-        throw Object.assign(
-          new AxiosError_default("Network Error", AxiosError_default.ERR_NETWORK, config, request2),
-          {
-            cause: err.cause || err
-          }
-        );
-      }
-      throw AxiosError_default.from(err, err && err.code, config, request2);
-    }
-  });
-};
-var seedCache = /* @__PURE__ */ new Map();
-var getFetch = (config) => {
-  let env = config && config.env || {};
-  const { fetch: fetch2, Request, Response } = env;
-  const seeds = [
-    Request,
-    Response,
-    fetch2
-  ];
-  let len = seeds.length, i = len, seed, target, map = seedCache;
-  while (i--) {
-    seed = seeds[i];
-    target = map.get(seed);
-    target === void 0 && map.set(seed, target = i ? /* @__PURE__ */ new Map() : factory(env));
-    map = target;
-  }
-  return target;
-};
-var adapter = getFetch();
-
 // node_modules/axios/lib/adapters/adapters.js
 var knownAdapters = {
   http: null_default,
-  xhr: xhr_default,
-  fetch: {
-    get: getFetch
-  }
+  xhr: xhr_default
 };
 utils_default.forEach(knownAdapters, (fn2, value) => {
   if (fn2) {
@@ -27038,51 +27018,34 @@ utils_default.forEach(knownAdapters, (fn2, value) => {
     Object.defineProperty(fn2, "adapterName", { value });
   }
 });
-var renderReason = (reason) => `- ${reason}`;
-var isResolvedHandle = (adapter2) => utils_default.isFunction(adapter2) || adapter2 === null || adapter2 === false;
-function getAdapter(adapters, config) {
-  adapters = utils_default.isArray(adapters) ? adapters : [adapters];
-  const { length } = adapters;
-  let nameOrAdapter;
-  let adapter2;
-  const rejectedReasons = {};
-  for (let i = 0; i < length; i++) {
-    nameOrAdapter = adapters[i];
-    let id;
-    adapter2 = nameOrAdapter;
-    if (!isResolvedHandle(nameOrAdapter)) {
-      adapter2 = knownAdapters[(id = String(nameOrAdapter)).toLowerCase()];
-      if (adapter2 === void 0) {
-        throw new AxiosError_default(`Unknown adapter '${id}'`);
+var adapters_default = {
+  getAdapter: (adapters) => {
+    adapters = utils_default.isArray(adapters) ? adapters : [adapters];
+    const { length } = adapters;
+    let nameOrAdapter;
+    let adapter;
+    for (let i = 0; i < length; i++) {
+      nameOrAdapter = adapters[i];
+      if (adapter = utils_default.isString(nameOrAdapter) ? knownAdapters[nameOrAdapter.toLowerCase()] : nameOrAdapter) {
+        break;
       }
     }
-    if (adapter2 && (utils_default.isFunction(adapter2) || (adapter2 = adapter2.get(config)))) {
-      break;
+    if (!adapter) {
+      if (adapter === false) {
+        throw new AxiosError_default(
+          `Adapter ${nameOrAdapter} is not supported by the environment`,
+          "ERR_NOT_SUPPORT"
+        );
+      }
+      throw new Error(
+        utils_default.hasOwnProp(knownAdapters, nameOrAdapter) ? `Adapter '${nameOrAdapter}' is not available in the build` : `Unknown adapter '${nameOrAdapter}'`
+      );
     }
-    rejectedReasons[id || "#" + i] = adapter2;
-  }
-  if (!adapter2) {
-    const reasons = Object.entries(rejectedReasons).map(
-      ([id, state]) => `adapter ${id} ` + (state === false ? "is not supported by the environment" : "is not available in the build")
-    );
-    let s2 = length ? reasons.length > 1 ? "since :\n" + reasons.map(renderReason).join("\n") : " " + renderReason(reasons[0]) : "as no adapter specified";
-    throw new AxiosError_default(
-      `There is no suitable adapter to dispatch the request ` + s2,
-      "ERR_NOT_SUPPORT"
-    );
-  }
-  return adapter2;
-}
-var adapters_default = {
-  /**
-   * Resolve an adapter from a list of adapter names or functions.
-   * @type {Function}
-   */
-  getAdapter,
-  /**
-   * Exposes all known adapters
-   * @type {Object<string, Function|Object>}
-   */
+    if (!utils_default.isFunction(adapter)) {
+      throw new TypeError("adapter is not a function");
+    }
+    return adapter;
+  },
   adapters: knownAdapters
 };
 
@@ -27105,8 +27068,8 @@ function dispatchRequest(config) {
   if (["post", "put", "patch"].indexOf(config.method) !== -1) {
     config.headers.setContentType("application/x-www-form-urlencoded", false);
   }
-  const adapter2 = adapters_default.getAdapter(config.adapter || defaults_default.adapter, config);
-  return adapter2(config).then(function onAdapterResolution(response) {
+  const adapter = adapters_default.getAdapter(config.adapter || defaults_default.adapter);
+  return adapter(config).then(function onAdapterResolution(response) {
     throwIfCancellationRequested(config);
     response.data = transformData.call(
       config,
@@ -27131,8 +27094,87 @@ function dispatchRequest(config) {
   });
 }
 
+// node_modules/axios/lib/core/mergeConfig.js
+var headersToObject = (thing) => thing instanceof AxiosHeaders_default ? thing.toJSON() : thing;
+function mergeConfig(config1, config2) {
+  config2 = config2 || {};
+  const config = {};
+  function getMergedValue(target, source, caseless) {
+    if (utils_default.isPlainObject(target) && utils_default.isPlainObject(source)) {
+      return utils_default.merge.call({ caseless }, target, source);
+    } else if (utils_default.isPlainObject(source)) {
+      return utils_default.merge({}, source);
+    } else if (utils_default.isArray(source)) {
+      return source.slice();
+    }
+    return source;
+  }
+  function mergeDeepProperties(a, b, caseless) {
+    if (!utils_default.isUndefined(b)) {
+      return getMergedValue(a, b, caseless);
+    } else if (!utils_default.isUndefined(a)) {
+      return getMergedValue(void 0, a, caseless);
+    }
+  }
+  function valueFromConfig2(a, b) {
+    if (!utils_default.isUndefined(b)) {
+      return getMergedValue(void 0, b);
+    }
+  }
+  function defaultToConfig2(a, b) {
+    if (!utils_default.isUndefined(b)) {
+      return getMergedValue(void 0, b);
+    } else if (!utils_default.isUndefined(a)) {
+      return getMergedValue(void 0, a);
+    }
+  }
+  function mergeDirectKeys(a, b, prop) {
+    if (prop in config2) {
+      return getMergedValue(a, b);
+    } else if (prop in config1) {
+      return getMergedValue(void 0, a);
+    }
+  }
+  const mergeMap = {
+    url: valueFromConfig2,
+    method: valueFromConfig2,
+    data: valueFromConfig2,
+    baseURL: defaultToConfig2,
+    transformRequest: defaultToConfig2,
+    transformResponse: defaultToConfig2,
+    paramsSerializer: defaultToConfig2,
+    timeout: defaultToConfig2,
+    timeoutMessage: defaultToConfig2,
+    withCredentials: defaultToConfig2,
+    adapter: defaultToConfig2,
+    responseType: defaultToConfig2,
+    xsrfCookieName: defaultToConfig2,
+    xsrfHeaderName: defaultToConfig2,
+    onUploadProgress: defaultToConfig2,
+    onDownloadProgress: defaultToConfig2,
+    decompress: defaultToConfig2,
+    maxContentLength: defaultToConfig2,
+    maxBodyLength: defaultToConfig2,
+    beforeRedirect: defaultToConfig2,
+    transport: defaultToConfig2,
+    httpAgent: defaultToConfig2,
+    httpsAgent: defaultToConfig2,
+    cancelToken: defaultToConfig2,
+    socketPath: defaultToConfig2,
+    responseEncoding: defaultToConfig2,
+    validateStatus: mergeDirectKeys,
+    headers: (a, b) => mergeDeepProperties(headersToObject(a), headersToObject(b), true)
+  };
+  utils_default.forEach(Object.keys(Object.assign({}, config1, config2)), function computeConfigValue(prop) {
+    const merge3 = mergeMap[prop] || mergeDeepProperties;
+    const configValue = merge3(config1[prop], config2[prop], prop);
+    utils_default.isUndefined(configValue) && merge3 !== mergeDirectKeys || (config[prop] = configValue);
+  });
+  return config;
+}
+
 // node_modules/axios/lib/env/data.js
-var VERSION7 = "1.13.2";
+var VERSION7 = "1.5.0";
 
 // node_modules/axios/lib/helpers/validator.js
 var validators = {};
@@ -27142,33 +27184,27 @@ var validators = {};
   };
 });
 var deprecatedWarnings = {};
-validators.transitional = function transitional(validator, version2, message) {
+validators.transitional = function transitional(validator, version3, message) {
   function formatMessage(opt, desc) {
     return "[Axios v" + VERSION7 + "] Transitional option '" + opt + "'" + desc + (message ? ". " + message : "");
   }
   return (value, opt, opts) => {
     if (validator === false) {
       throw new AxiosError_default(
-        formatMessage(opt, " has been removed" + (version2 ? " in " + version2 : "")),
+        formatMessage(opt, " has been removed" + (version3 ? " in " + version3 : "")),
         AxiosError_default.ERR_DEPRECATED
       );
     }
-    if (version2 && !deprecatedWarnings[opt]) {
+    if (version3 && !deprecatedWarnings[opt]) {
       deprecatedWarnings[opt] = true;
       console.warn(
         formatMessage(
           opt,
-          " has been deprecated since v" + version2 + " and will be removed in the near future"
+          " has been deprecated since v" + version3 + " and will be removed in the near future"
         )
       );
     }
     return validator ? validator(value, opt, opts) : true;
-  };
-};
-validators.spelling = function spelling(correctSpelling) {
-  return (value, opt) => {
-    console.warn(`${opt} is likely a misspelling of ${correctSpelling}`);
-    return true;
   };
 };
 function assertOptions(options, schema, allowUnknown) {
@@ -27202,7 +27238,7 @@ var validator_default = {
 var validators2 = validator_default.validators;
 var Axios = class {
   constructor(instanceConfig) {
-    this.defaults = instanceConfig || {};
+    this.defaults = instanceConfig;
     this.interceptors = {
       request: new InterceptorManager_default(),
       response: new InterceptorManager_default()
@@ -27217,28 +27253,6 @@ var Axios = class {
    * @returns {Promise} The Promise to be fulfilled
    */
   request(configOrUrl, config) {
-    return __async(this, null, function* () {
-      try {
-        return yield this._request(configOrUrl, config);
-      } catch (err) {
-        if (err instanceof Error) {
-          let dummy = {};
-          Error.captureStackTrace ? Error.captureStackTrace(dummy) : dummy = new Error();
-          const stack = dummy.stack ? dummy.stack.replace(/^.+\n/, "") : "";
-          try {
-            if (!err.stack) {
-              err.stack = stack;
-            } else if (stack && !String(err.stack).endsWith(stack.replace(/^.+\n.+\n/, ""))) {
-              err.stack += "\n" + stack;
-            }
-          } catch (e) {
-          }
-        }
-        throw err;
-      }
-    });
-  }
-  _request(configOrUrl, config) {
     if (typeof configOrUrl === "string") {
       config = config || {};
       config.url = configOrUrl;
@@ -27266,16 +27280,6 @@ var Axios = class {
         }, true);
       }
     }
-    if (config.allowAbsoluteUrls !== void 0) {
-    } else if (this.defaults.allowAbsoluteUrls !== void 0) {
-      config.allowAbsoluteUrls = this.defaults.allowAbsoluteUrls;
-    } else {
-      config.allowAbsoluteUrls = true;
-    }
-    validator_default.assertOptions(config, {
-      baseUrl: validators2.spelling("baseURL"),
-      withXsrfToken: validators2.spelling("withXSRFToken")
-    }, true);
     config.method = (config.method || this.defaults.method || "get").toLowerCase();
     let contextHeaders = headers && utils_default.merge(
       headers.common,
@@ -27306,8 +27310,8 @@ var Axios = class {
     let len;
     if (!synchronousRequestInterceptors) {
       const chain = [dispatchRequest.bind(this), void 0];
-      chain.unshift(...requestInterceptorChain);
-      chain.push(...responseInterceptorChain);
+      chain.unshift.apply(chain, requestInterceptorChain);
+      chain.push.apply(chain, responseInterceptorChain);
       len = chain.length;
       promise = Promise.resolve(config);
       while (i < len) {
@@ -27317,6 +27321,7 @@ var Axios = class {
     }
     len = requestInterceptorChain.length;
     let newConfig = config;
+    i = 0;
     while (i < len) {
       const onFulfilled = requestInterceptorChain[i++];
       const onRejected = requestInterceptorChain[i++];
@@ -27341,7 +27346,7 @@ var Axios = class {
   }
   getUri(config) {
     config = mergeConfig(this.defaults, config);
-    const fullPath = buildFullPath(config.baseURL, config.url, config.allowAbsoluteUrls);
+    const fullPath = buildFullPath(config.baseURL, config.url);
     return buildURL(fullPath, config.params, config.paramsSerializer);
   }
 };
@@ -27384,7 +27389,8 @@ var CancelToken = class _CancelToken {
     });
     const token = this;
     this.promise.then((cancel) => {
-      if (!token._listeners) return;
+      if (!token._listeners)
+        return;
       let i = token._listeners.length;
       while (i-- > 0) {
         token._listeners[i](cancel);
@@ -27439,19 +27445,10 @@ var CancelToken = class _CancelToken {
     if (!this._listeners) {
       return;
     }
-    const index = this._listeners.indexOf(listener);
-    if (index !== -1) {
-      this._listeners.splice(index, 1);
+    const index2 = this._listeners.indexOf(listener);
+    if (index2 !== -1) {
+      this._listeners.splice(index2, 1);
     }
-  }
-  toAbortSignal() {
-    const controller = new AbortController();
-    const abort = (err) => {
-      controller.abort(err);
-    };
-    this.subscribe(abort);
-    controller.signal.unsubscribe = () => this.unsubscribe(abort);
-    return controller.signal;
   }
   /**
    * Returns an object that contains a new `CancelToken` and a function that, when called,
@@ -27546,13 +27543,7 @@ var HttpStatusCode = {
   InsufficientStorage: 507,
   LoopDetected: 508,
   NotExtended: 510,
-  NetworkAuthenticationRequired: 511,
-  WebServerIsDown: 521,
-  ConnectionTimedOut: 522,
-  OriginIsUnreachable: 523,
-  TimeoutOccurred: 524,
-  SslHandshakeFailed: 525,
-  InvalidSslCertificate: 526
+  NetworkAuthenticationRequired: 511
 };
 Object.entries(HttpStatusCode).forEach(([key, value]) => {
   HttpStatusCode[value] = key;
@@ -27562,13 +27553,13 @@ var HttpStatusCode_default = HttpStatusCode;
 // node_modules/axios/lib/axios.js
 function createInstance(defaultConfig) {
   const context = new Axios_default(defaultConfig);
-  const instance9 = bind(Axios_default.prototype.request, context);
-  utils_default.extend(instance9, Axios_default.prototype, context, { allOwnKeys: true });
-  utils_default.extend(instance9, context, null, { allOwnKeys: true });
-  instance9.create = function create(instanceConfig) {
+  const instance11 = bind2(Axios_default.prototype.request, context);
+  utils_default.extend(instance11, Axios_default.prototype, context, { allOwnKeys: true });
+  utils_default.extend(instance11, context, null, { allOwnKeys: true });
+  instance11.create = function create(instanceConfig) {
     return createInstance(mergeConfig(defaultConfig, instanceConfig));
   };
-  return instance9;
+  return instance11;
 }
 var axios = createInstance(defaults_default);
 axios.Axios = Axios_default;
@@ -27608,12 +27599,12 @@ var {
   AxiosHeaders: AxiosHeaders2,
   HttpStatusCode: HttpStatusCode2,
   formToJSON,
-  getAdapter: getAdapter2,
+  getAdapter,
   mergeConfig: mergeConfig2
 } = axios_default;
 
 // src/views/SettingsView/SettingView.ts
-var import_obsidian15 = require("obsidian");
+var import_obsidian17 = require("obsidian");
 
 // src/ui/suggest/file-suggest.ts
 var import_obsidian11 = require("obsidian");
@@ -27902,8 +27893,8 @@ function getContainingBlock(element2) {
     currentNode = currentNode.host;
   }
   while (isHTMLElement(currentNode) && ["html", "body"].indexOf(getNodeName(currentNode)) < 0) {
-    var css = getComputedStyle2(currentNode);
-    if (css.transform !== "none" || css.perspective !== "none" || css.contain === "paint" || ["transform", "perspective"].indexOf(css.willChange) !== -1 || isFirefox && css.willChange === "filter" || isFirefox && css.filter && css.filter !== "none") {
+    var css2 = getComputedStyle2(currentNode);
+    if (css2.transform !== "none" || css2.perspective !== "none" || css2.contain === "paint" || ["transform", "perspective"].indexOf(css2.willChange) !== -1 || isFirefox && css2.willChange === "filter" || isFirefox && css2.filter && css2.filter !== "none") {
       return currentNode;
     } else {
       currentNode = currentNode.parentNode;
@@ -28153,26 +28144,26 @@ var passive = {
   passive: true
 };
 function effect3(_ref) {
-  var state = _ref.state, instance9 = _ref.instance, options = _ref.options;
+  var state = _ref.state, instance11 = _ref.instance, options = _ref.options;
   var _options$scroll = options.scroll, scroll = _options$scroll === void 0 ? true : _options$scroll, _options$resize = options.resize, resize = _options$resize === void 0 ? true : _options$resize;
   var window2 = getWindow(state.elements.popper);
   var scrollParents = [].concat(state.scrollParents.reference, state.scrollParents.popper);
   if (scroll) {
     scrollParents.forEach(function(scrollParent) {
-      scrollParent.addEventListener("scroll", instance9.update, passive);
+      scrollParent.addEventListener("scroll", instance11.update, passive);
     });
   }
   if (resize) {
-    window2.addEventListener("resize", instance9.update, passive);
+    window2.addEventListener("resize", instance11.update, passive);
   }
   return function() {
     if (scroll) {
       scrollParents.forEach(function(scrollParent) {
-        scrollParent.removeEventListener("scroll", instance9.update, passive);
+        scrollParent.removeEventListener("scroll", instance11.update, passive);
       });
     }
     if (resize) {
-      window2.removeEventListener("resize", instance9.update, passive);
+      window2.removeEventListener("resize", instance11.update, passive);
     }
   };
 }
@@ -28571,7 +28562,8 @@ function flip(_ref) {
     };
     for (var _i = numberOfChecks; _i > 0; _i--) {
       var _ret = _loop(_i);
-      if (_ret === "break") break;
+      if (_ret === "break")
+        break;
     }
   }
   if (state.placement !== firstFittingPlacement) {
@@ -28869,14 +28861,14 @@ function order(modifiers) {
   modifiers.forEach(function(modifier) {
     map.set(modifier.name, modifier);
   });
-  function sort(modifier) {
+  function sort2(modifier) {
     visited.add(modifier.name);
     var requires = [].concat(modifier.requires || [], modifier.requiresIfExists || []);
     requires.forEach(function(dep) {
       if (!visited.has(dep)) {
         var depModifier = map.get(dep);
         if (depModifier) {
-          sort(depModifier);
+          sort2(depModifier);
         }
       }
     });
@@ -28884,7 +28876,7 @@ function order(modifiers) {
   }
   modifiers.forEach(function(modifier) {
     if (!visited.has(modifier.name)) {
-      sort(modifier);
+      sort2(modifier);
     }
   });
   return result;
@@ -28966,7 +28958,7 @@ function popperGenerator(generatorOptions) {
     };
     var effectCleanupFns = [];
     var isDestroyed = false;
-    var instance9 = {
+    var instance11 = {
       state,
       setOptions: function setOptions(setOptionsAction) {
         var options2 = typeof setOptionsAction === "function" ? setOptionsAction(state.options) : setOptionsAction;
@@ -28981,7 +28973,7 @@ function popperGenerator(generatorOptions) {
           return m.enabled;
         });
         runModifierEffects();
-        return instance9.update();
+        return instance11.update();
       },
       // Sync update – it will always be executed, even if not necessary. This
       // is useful for low frequency updates where sync behavior simplifies the
@@ -29005,19 +28997,19 @@ function popperGenerator(generatorOptions) {
         state.orderedModifiers.forEach(function(modifier) {
           return state.modifiersData[modifier.name] = Object.assign({}, modifier.data);
         });
-        for (var index = 0; index < state.orderedModifiers.length; index++) {
+        for (var index2 = 0; index2 < state.orderedModifiers.length; index2++) {
           if (state.reset === true) {
             state.reset = false;
-            index = -1;
+            index2 = -1;
             continue;
           }
-          var _state$orderedModifie = state.orderedModifiers[index], fn2 = _state$orderedModifie.fn, _state$orderedModifie2 = _state$orderedModifie.options, _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2, name = _state$orderedModifie.name;
+          var _state$orderedModifie = state.orderedModifiers[index2], fn2 = _state$orderedModifie.fn, _state$orderedModifie2 = _state$orderedModifie.options, _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2, name = _state$orderedModifie.name;
           if (typeof fn2 === "function") {
             state = fn2({
               state,
               options: _options,
               name,
-              instance: instance9
+              instance: instance11
             }) || state;
           }
         }
@@ -29026,19 +29018,19 @@ function popperGenerator(generatorOptions) {
       // not necessary (debounced to run at most once-per-tick)
       update: debounce(function() {
         return new Promise(function(resolve) {
-          instance9.forceUpdate();
+          instance11.forceUpdate();
           resolve(state);
         });
       }),
-      destroy: function destroy() {
+      destroy: function destroy2() {
         cleanupModifierEffects();
         isDestroyed = true;
       }
     };
     if (!areValidElements(reference2, popper2)) {
-      return instance9;
+      return instance11;
     }
-    instance9.setOptions(options).then(function(state2) {
+    instance11.setOptions(options).then(function(state2) {
       if (!isDestroyed && options.onFirstUpdate) {
         options.onFirstUpdate(state2);
       }
@@ -29050,7 +29042,7 @@ function popperGenerator(generatorOptions) {
           var cleanupFn = effect4({
             state,
             name,
-            instance: instance9,
+            instance: instance11,
             options: options2
           });
           var noopFn = function noopFn2() {
@@ -29065,7 +29057,7 @@ function popperGenerator(generatorOptions) {
       });
       effectCleanupFns = [];
     }
-    return instance9;
+    return instance11;
   };
 }
 
@@ -29193,13 +29185,13 @@ var TextInputSuggest = class {
         {
           name: "sameWidth",
           enabled: true,
-          fn: ({ state, instance: instance9 }) => {
+          fn: ({ state, instance: instance11 }) => {
             const targetWidth = `${state.rects.reference.width}px`;
             if (state.styles.popper.width === targetWidth) {
               return;
             }
             state.styles.popper.width = targetWidth;
-            instance9.update();
+            instance11.update();
           },
           phase: "beforeWrite",
           requires: ["computeStyles"]
@@ -29270,7 +29262,7 @@ function addFilterInput(filter2, el, idx, plugin) {
     }
   });
   const patternField = new import_obsidian12.TextComponent(el);
-  patternField.setPlaceholder("regex pattern").setValue(filter2.pattern).onChange((value) => __async(null, null, function* () {
+  patternField.setPlaceholder("regex pattern").setValue(filter2.pattern).onChange((value) => __async(this, null, function* () {
     if (!value) {
       return;
     }
@@ -29281,7 +29273,7 @@ function addFilterInput(filter2, el, idx, plugin) {
   patternEl.style.width = "250px";
   item.appendChild(patternEl);
   const replaceField = new import_obsidian12.TextComponent(el);
-  replaceField.setPlaceholder("replacement").setValue(filter2.replace).onChange((value) => __async(null, null, function* () {
+  replaceField.setPlaceholder("replacement").setValue(filter2.replace).onChange((value) => __async(this, null, function* () {
     if (!value) {
       return;
     }
@@ -29293,7 +29285,7 @@ function addFilterInput(filter2, el, idx, plugin) {
   replaceEl.style.marginLeft = "5px";
   item.appendChild(replaceEl);
   const flagField = new import_obsidian12.TextComponent(el);
-  flagField.setPlaceholder("flags").setValue(filter2.flags).onChange((value) => __async(null, null, function* () {
+  flagField.setPlaceholder("flags").setValue(filter2.flags).onChange((value) => __async(this, null, function* () {
     if (!value) {
       return;
     }
@@ -29307,7 +29299,7 @@ function addFilterInput(filter2, el, idx, plugin) {
   const removeButton = new import_obsidian12.ButtonComponent(el);
   removeButton.setIcon("minus");
   removeButton.setTooltip("Remove filter");
-  removeButton.onClick(() => __async(null, null, function* () {
+  removeButton.onClick(() => __async(this, null, function* () {
     plugin.settings.customFilters.splice(idx, 1);
     el.empty();
     for (let i = 0; i < plugin.settings.customFilters.length; i++) {
@@ -29484,7 +29476,7 @@ var GithubSettings = class {
     desc.createEl("span", void 0, (span) => {
       span.innerText = "A GitHub token with contents permissions. You can see how to generate it ";
       span.createEl("a", void 0, (link) => {
-        link.href = "https://dg-docs.ole.dev/advanced/fine-grained-access-token/";
+        link.href = "https://docs.forestry.md/advanced/fine-grained-access-token/";
         link.innerText = "here!";
       });
     });
@@ -29583,7 +29575,8 @@ function create_if_block_24(ctx) {
     p(ctx2, dirty) {
       if (dirty & /*diff*/
       1 && t_value !== (t_value = /*part*/
-      ctx2[1].value + "")) set_data(t, t_value);
+      ctx2[1].value + ""))
+        set_data(t, t_value);
     },
     d(detaching) {
       if (detaching) {
@@ -29612,7 +29605,8 @@ function create_if_block_14(ctx) {
     p(ctx2, dirty) {
       if (dirty & /*diff*/
       1 && t_value !== (t_value = /*part*/
-      ctx2[1].value + "")) set_data(t, t_value);
+      ctx2[1].value + ""))
+        set_data(t, t_value);
     },
     d(detaching) {
       if (detaching) {
@@ -29627,28 +29621,33 @@ function create_each_block4(ctx) {
     if (
       /*part*/
       ctx2[1].added
-    ) return create_if_block_14;
+    )
+      return create_if_block_14;
     if (
       /*part*/
       ctx2[1].removed
-    ) return create_if_block_24;
+    )
+      return create_if_block_24;
   }
   let current_block_type = select_block_type(ctx, -1);
   let if_block = current_block_type && current_block_type(ctx);
   return {
     c() {
-      if (if_block) if_block.c();
+      if (if_block)
+        if_block.c();
       if_block_anchor = empty();
     },
     m(target, anchor) {
-      if (if_block) if_block.m(target, anchor);
+      if (if_block)
+        if_block.m(target, anchor);
       insert(target, if_block_anchor, anchor);
     },
     p(ctx2, dirty) {
       if (current_block_type === (current_block_type = select_block_type(ctx2, dirty)) && if_block) {
         if_block.p(ctx2, dirty);
       } else {
-        if (if_block) if_block.d(1);
+        if (if_block)
+          if_block.d(1);
         if_block = current_block_type && current_block_type(ctx2);
         if (if_block) {
           if_block.c();
@@ -29675,11 +29674,13 @@ function create_fragment6(ctx) {
   return {
     c() {
       div = element("div");
-      if (if_block) if_block.c();
+      if (if_block)
+        if_block.c();
     },
     m(target, anchor) {
       insert(target, div, anchor);
-      if (if_block) if_block.m(div, null);
+      if (if_block)
+        if_block.m(div, null);
     },
     p(ctx2, [dirty]) {
       if (
@@ -29704,14 +29705,16 @@ function create_fragment6(ctx) {
       if (detaching) {
         detach(div);
       }
-      if (if_block) if_block.d();
+      if (if_block)
+        if_block.d();
     }
   };
 }
 function instance6($$self, $$props, $$invalidate) {
   let { diff: diff2 } = $$props;
   $$self.$$set = ($$props2) => {
-    if ("diff" in $$props2) $$invalidate(0, diff2 = $$props2.diff);
+    if ("diff" in $$props2)
+      $$invalidate(0, diff2 = $$props2.diff);
   };
   return [diff2];
 }
@@ -29768,7 +29771,8 @@ function create_if_block5(ctx) {
     p(ctx2, dirty) {
       if (dirty & /*diff*/
       8 && t0_value !== (t0_value = /*diff*/
-      ctx2[3].length + "")) set_data(t0, t0_value);
+      ctx2[3].length + ""))
+        set_data(t0, t0_value);
     },
     d(detaching) {
       if (detaching) {
@@ -29796,12 +29800,14 @@ function create_each_block5(ctx) {
     p(ctx2, dirty) {
       const linediff_changes = {};
       if (dirty & /*diff*/
-      8) linediff_changes.diff = /*change*/
-      ctx2[9];
+      8)
+        linediff_changes.diff = /*change*/
+        ctx2[9];
       linediff.$set(linediff_changes);
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(linediff.$$.fragment, local);
       current = true;
     },
@@ -29847,7 +29853,8 @@ function create_fragment7(ctx) {
     if (
       /*diff*/
       ctx2[3].length > 0
-    ) return create_if_block5;
+    )
+      return create_if_block5;
     return create_else_block4;
   }
   let current_block_type = select_block_type(ctx, -1);
@@ -29966,7 +29973,8 @@ function create_fragment7(ctx) {
             if (is_function(
               /*closeModal*/
               ctx[1]
-            )) ctx[1].apply(this, arguments);
+            ))
+              ctx[1].apply(this, arguments);
           })
         ];
         mounted = true;
@@ -30021,7 +30029,8 @@ function create_fragment7(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       for (let i = 0; i < each_value.length; i += 1) {
         transition_in(each_blocks[i]);
       }
@@ -30056,7 +30065,7 @@ function instance7($$self, $$props, $$invalidate) {
     $$invalidate(4, saveDisabled = false);
     $$invalidate(2, newPathRewriteRules = event.currentTarget.value);
     const paths = yield getPathsForRewriteRules(newPathRewriteRules, settings.pathRewriteRules);
-    $$invalidate(3, diff2 = paths.map((path) => diffLines(path.oldPath, path.newPath)).filter((diff3) => diff3.length > 1));
+    $$invalidate(3, diff2 = paths.map((path2) => diffLines(path2.oldPath, path2.newPath)).filter((diff3) => diff3.length > 1));
   });
   const getPathsForRewriteRules = (newRules, oldRules) => __awaiter(void 0, void 0, void 0, function* () {
     const newRewriteRules = getRewriteRules(newRules);
@@ -30074,9 +30083,12 @@ function instance7($$self, $$props, $$invalidate) {
     closeModal();
   };
   $$self.$$set = ($$props2) => {
-    if ("publisher" in $$props2) $$invalidate(6, publisher = $$props2.publisher);
-    if ("settings" in $$props2) $$invalidate(0, settings = $$props2.settings);
-    if ("closeModal" in $$props2) $$invalidate(1, closeModal = $$props2.closeModal);
+    if ("publisher" in $$props2)
+      $$invalidate(6, publisher = $$props2.publisher);
+    if ("settings" in $$props2)
+      $$invalidate(0, settings = $$props2.settings);
+    if ("closeModal" in $$props2)
+      $$invalidate(1, closeModal = $$props2.closeModal);
   };
   return [
     settings,
@@ -30182,7 +30194,8 @@ function create_else_block5(ctx) {
       update_await_block_branch(info, ctx, dirty);
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(info.block);
       current = true;
     },
@@ -30346,7 +30359,8 @@ function create_then_block(ctx) {
     if (
       /*pageInfo*/
       ctx2[12]
-    ) return 0;
+    )
+      return 0;
     return 1;
   }
   current_block_type_index = select_block_type_1(ctx, -1);
@@ -30365,7 +30379,8 @@ function create_then_block(ctx) {
       if_block.p(ctx2, dirty);
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(if_block);
       current = true;
     },
@@ -30464,11 +30479,13 @@ function create_if_block_15(ctx) {
     if (
       /*limitsLoading*/
       ctx2[4]
-    ) return create_if_block_25;
+    )
+      return create_if_block_25;
     if (
       /*limits*/
       ctx2[3]
-    ) return create_if_block_33;
+    )
+      return create_if_block_33;
   }
   let current_block_type = select_block_type_2(ctx, -1);
   let if_block = current_block_type && current_block_type(ctx);
@@ -30493,7 +30510,8 @@ function create_if_block_15(ctx) {
       create_component(icon1.$$.fragment);
       t7 = text(" Open Forestry.md Dashboard");
       t8 = space();
-      if (if_block) if_block.c();
+      if (if_block)
+        if_block.c();
       if_block_anchor = empty();
       attr(div0, "class", "setting-item-name");
       set_style(div0, "display", "flex");
@@ -30529,7 +30547,8 @@ function create_if_block_15(ctx) {
       mount_component(icon1, a, null);
       append(a, t7);
       insert(target, t8, anchor);
-      if (if_block) if_block.m(target, anchor);
+      if (if_block)
+        if_block.m(target, anchor);
       insert(target, if_block_anchor, anchor);
       current = true;
       if (!mounted) {
@@ -30546,7 +30565,8 @@ function create_if_block_15(ctx) {
       if (current_block_type === (current_block_type = select_block_type_2(ctx2, dirty)) && if_block) {
         if_block.p(ctx2, dirty);
       } else {
-        if (if_block) if_block.d(1);
+        if (if_block)
+          if_block.d(1);
         if_block = current_block_type && current_block_type(ctx2);
         if (if_block) {
           if_block.c();
@@ -30555,7 +30575,8 @@ function create_if_block_15(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon0.$$.fragment, local);
       transition_in(icon1.$$.fragment, local);
       current = true;
@@ -30673,7 +30694,8 @@ function create_if_block_33(ctx) {
       t7 = text(" / ");
       t8 = text(t8_value);
       t9 = space();
-      if (if_block0) if_block0.c();
+      if (if_block0)
+        if_block0.c();
       t10 = space();
       div2 = element("div");
       span2 = element("span");
@@ -30693,7 +30715,8 @@ function create_if_block_33(ctx) {
       t20 = text(" / ");
       t21 = text(t21_value);
       t22 = space();
-      if (if_block1) if_block1.c();
+      if (if_block1)
+        if_block1.c();
       set_style(div0, "font-weight", "600");
       set_style(div0, "margin-bottom", "8px");
       set_style(
@@ -30741,7 +30764,8 @@ function create_if_block_33(ctx) {
       append(span1, t7);
       append(span1, t8);
       append(div4, t9);
-      if (if_block0) if_block0.m(div4, null);
+      if (if_block0)
+        if_block0.m(div4, null);
       append(div4, t10);
       append(div4, div2);
       append(div2, span2);
@@ -30759,19 +30783,23 @@ function create_if_block_33(ctx) {
       append(span5, t20);
       append(span5, t21);
       append(div5, t22);
-      if (if_block1) if_block1.m(div5, null);
+      if (if_block1)
+        if_block1.m(div5, null);
     },
     p(ctx2, dirty) {
       if (dirty & /*limits*/
       8 && t1_value !== (t1_value = /*limits*/
-      ctx2[3].plan + "")) set_data(t1, t1_value);
+      ctx2[3].plan + ""))
+        set_data(t1, t1_value);
       if (dirty & /*limits*/
       8 && t6_value !== (t6_value = /*limits*/
       ctx2[3].builds.monthlyLimit - /*limits*/
-      ctx2[3].builds.monthlyRemaining + "")) set_data(t6, t6_value);
+      ctx2[3].builds.monthlyRemaining + ""))
+        set_data(t6, t6_value);
       if (dirty & /*limits*/
       8 && t8_value !== (t8_value = /*limits*/
-      ctx2[3].builds.monthlyLimit + "")) set_data(t8, t8_value);
+      ctx2[3].builds.monthlyLimit + ""))
+        set_data(t8, t8_value);
       if (dirty & /*limits*/
       8) {
         set_style(
@@ -30798,10 +30826,12 @@ function create_if_block_33(ctx) {
       }
       if (dirty & /*limits*/
       8 && t13_value !== (t13_value = /*limits*/
-      ctx2[3].storage.usedFormatted + "")) set_data(t13, t13_value);
+      ctx2[3].storage.usedFormatted + ""))
+        set_data(t13, t13_value);
       if (dirty & /*limits*/
       8 && t15_value !== (t15_value = /*limits*/
-      ctx2[3].storage.limitFormatted + "")) set_data(t15, t15_value);
+      ctx2[3].storage.limitFormatted + ""))
+        set_data(t15, t15_value);
       if (dirty & /*limits*/
       8) {
         set_style(
@@ -30814,10 +30844,12 @@ function create_if_block_33(ctx) {
       }
       if (dirty & /*limits*/
       8 && t19_value !== (t19_value = /*limits*/
-      ctx2[3].sites.current + "")) set_data(t19, t19_value);
+      ctx2[3].sites.current + ""))
+        set_data(t19, t19_value);
       if (dirty & /*limits*/
       8 && t21_value !== (t21_value = /*limits*/
-      ctx2[3].sites.limit + "")) set_data(t21, t21_value);
+      ctx2[3].sites.limit + ""))
+        set_data(t21, t21_value);
       if (
         /*limits*/
         ctx2[3].builds.monthlyRemaining === 0 || /*limits*/
@@ -30839,8 +30871,10 @@ function create_if_block_33(ctx) {
       if (detaching) {
         detach(div5);
       }
-      if (if_block0) if_block0.d();
-      if (if_block1) if_block1.d();
+      if (if_block0)
+        if_block0.d();
+      if (if_block1)
+        if_block1.d();
     }
   };
 }
@@ -30895,7 +30929,8 @@ function create_if_block_53(ctx) {
     p(ctx2, dirty) {
       if (dirty & /*limits*/
       8 && t2_value !== (t2_value = /*limits*/
-      ctx2[3].builds.starterCreditsRemaining + "")) set_data(t2, t2_value);
+      ctx2[3].builds.starterCreditsRemaining + ""))
+        set_data(t2, t2_value);
     },
     d(detaching) {
       if (detaching) {
@@ -30956,7 +30991,8 @@ function create_key_block(ctx) {
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (!/*settings*/
-    ctx2[0].forestrySettings.apiKey) return 0;
+    ctx2[0].forestrySettings.apiKey)
+      return 0;
     return 1;
   }
   current_block_type_index = select_block_type(ctx, -1);
@@ -30994,7 +31030,8 @@ function create_key_block(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(if_block);
       current = true;
     },
@@ -31057,7 +31094,8 @@ function create_fragment8(ctx) {
       }
     },
     i(local) {
-      if (current) return;
+      if (current)
+        return;
       transition_in(icon.$$.fragment, local);
       transition_in(key_block);
       current = true;
@@ -31109,7 +31147,8 @@ function instance8($$self, $$props, $$invalidate) {
     return pageInfo;
   });
   const fetchLimits = () => __awaiter(void 0, void 0, void 0, function* () {
-    if (!settings.forestrySettings.apiKey) return;
+    if (!settings.forestrySettings.apiKey)
+      return;
     $$invalidate(4, limitsLoading = true);
     try {
       $$invalidate(3, limits = yield new ForestryApi(settings.forestrySettings.apiKey).getUserLimits());
@@ -31123,16 +31162,20 @@ function instance8($$self, $$props, $$invalidate) {
     $$invalidate(2, apiKey);
   }
   $$self.$$set = ($$props2) => {
-    if ("settings" in $$props2) $$invalidate(0, settings = $$props2.settings);
-    if ("saveSettings" in $$props2) $$invalidate(8, saveSettings = $$props2.saveSettings);
-    if ("onConnect" in $$props2) $$invalidate(9, onConnect = $$props2.onConnect);
+    if ("settings" in $$props2)
+      $$invalidate(0, settings = $$props2.settings);
+    if ("saveSettings" in $$props2)
+      $$invalidate(8, saveSettings = $$props2.saveSettings);
+    if ("onConnect" in $$props2)
+      $$invalidate(9, onConnect = $$props2.onConnect);
   };
   $$self.$$.update = () => {
     if ($$self.$$.dirty & /*settings*/
     1) {
-      $: if (settings.forestrySettings.apiKey) {
-        fetchLimits();
-      }
+      $:
+        if (settings.forestrySettings.apiKey) {
+          fetchLimits();
+        }
     }
   };
   return [
@@ -31161,15 +31204,3337 @@ var ForestrySettings = class extends SvelteComponent {
 };
 var ForestrySettings_default = ForestrySettings;
 
+// src/views/NavigationOrder/NavigationOrderModal.ts
+var import_obsidian16 = require("obsidian");
+
+// src/views/NavigationOrder/NavigationOrderView.svelte
+var import_obsidian15 = require("obsidian");
+
+// node_modules/sortablejs/modular/sortable.esm.js
+function _defineProperty(e, r, t) {
+  return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+    value: t,
+    enumerable: true,
+    configurable: true,
+    writable: true
+  }) : e[r] = t, e;
+}
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function(n2) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t)
+        ({}).hasOwnProperty.call(t, r) && (n2[r] = t[r]);
+    }
+    return n2;
+  }, _extends.apply(null, arguments);
+}
+function ownKeys(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function(r2) {
+      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
+    })), t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread2(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys(Object(t), true).forEach(function(r2) {
+      _defineProperty(e, r2, t[r2]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r2) {
+      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
+    });
+  }
+  return e;
+}
+function _objectWithoutProperties(e, t) {
+  if (null == e)
+    return {};
+  var o, r, i = _objectWithoutPropertiesLoose(e, t);
+  if (Object.getOwnPropertySymbols) {
+    var n2 = Object.getOwnPropertySymbols(e);
+    for (r = 0; r < n2.length; r++)
+      o = n2[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+function _objectWithoutPropertiesLoose(r, e) {
+  if (null == r)
+    return {};
+  var t = {};
+  for (var n2 in r)
+    if ({}.hasOwnProperty.call(r, n2)) {
+      if (-1 !== e.indexOf(n2))
+        continue;
+      t[n2] = r[n2];
+    }
+  return t;
+}
+function _toPrimitive(t, r) {
+  if ("object" != typeof t || !t)
+    return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != typeof i)
+      return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+function _toPropertyKey(t) {
+  var i = _toPrimitive(t, "string");
+  return "symbol" == typeof i ? i : i + "";
+}
+function _typeof2(o) {
+  "@babel/helpers - typeof";
+  return _typeof2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
+    return typeof o2;
+  } : function(o2) {
+    return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
+  }, _typeof2(o);
+}
+var version2 = "1.15.7";
+function userAgent2(pattern) {
+  if (typeof window !== "undefined" && window.navigator) {
+    return !!/* @__PURE__ */ navigator.userAgent.match(pattern);
+  }
+}
+var IE11OrLess = userAgent2(/(?:Trident.*rv[ :]?11\.|msie|iemobile|Windows Phone)/i);
+var Edge = userAgent2(/Edge/i);
+var FireFox = userAgent2(/firefox/i);
+var Safari = userAgent2(/safari/i) && !userAgent2(/chrome/i) && !userAgent2(/android/i);
+var IOS = userAgent2(/iP(ad|od|hone)/i);
+var ChromeForAndroid = userAgent2(/chrome/i) && userAgent2(/android/i);
+var captureMode = {
+  capture: false,
+  passive: false
+};
+function on(el, event, fn2) {
+  el.addEventListener(event, fn2, !IE11OrLess && captureMode);
+}
+function off(el, event, fn2) {
+  el.removeEventListener(event, fn2, !IE11OrLess && captureMode);
+}
+function matches(el, selector) {
+  if (!selector)
+    return;
+  selector[0] === ">" && (selector = selector.substring(1));
+  if (el) {
+    try {
+      if (el.matches) {
+        return el.matches(selector);
+      } else if (el.msMatchesSelector) {
+        return el.msMatchesSelector(selector);
+      } else if (el.webkitMatchesSelector) {
+        return el.webkitMatchesSelector(selector);
+      }
+    } catch (_) {
+      return false;
+    }
+  }
+  return false;
+}
+function getParentOrHost(el) {
+  return el.host && el !== document && el.host.nodeType && el.host !== el ? el.host : el.parentNode;
+}
+function closest(el, selector, ctx, includeCTX) {
+  if (el) {
+    ctx = ctx || document;
+    do {
+      if (selector != null && (selector[0] === ">" ? el.parentNode === ctx && matches(el, selector) : matches(el, selector)) || includeCTX && el === ctx) {
+        return el;
+      }
+      if (el === ctx)
+        break;
+    } while (el = getParentOrHost(el));
+  }
+  return null;
+}
+var R_SPACE = /\s+/g;
+function toggleClass(el, name, state) {
+  if (el && name) {
+    if (el.classList) {
+      el.classList[state ? "add" : "remove"](name);
+    } else {
+      var className = (" " + el.className + " ").replace(R_SPACE, " ").replace(" " + name + " ", " ");
+      el.className = (className + (state ? " " + name : "")).replace(R_SPACE, " ");
+    }
+  }
+}
+function css(el, prop, val) {
+  var style = el && el.style;
+  if (style) {
+    if (val === void 0) {
+      if (document.defaultView && document.defaultView.getComputedStyle) {
+        val = document.defaultView.getComputedStyle(el, "");
+      } else if (el.currentStyle) {
+        val = el.currentStyle;
+      }
+      return prop === void 0 ? val : val[prop];
+    } else {
+      if (!(prop in style) && prop.indexOf("webkit") === -1) {
+        prop = "-webkit-" + prop;
+      }
+      style[prop] = val + (typeof val === "string" ? "" : "px");
+    }
+  }
+}
+function matrix(el, selfOnly) {
+  var appliedTransforms = "";
+  if (typeof el === "string") {
+    appliedTransforms = el;
+  } else {
+    do {
+      var transform = css(el, "transform");
+      if (transform && transform !== "none") {
+        appliedTransforms = transform + " " + appliedTransforms;
+      }
+    } while (!selfOnly && (el = el.parentNode));
+  }
+  var matrixFn = window.DOMMatrix || window.WebKitCSSMatrix || window.CSSMatrix || window.MSCSSMatrix;
+  return matrixFn && new matrixFn(appliedTransforms);
+}
+function find(ctx, tagName, iterator) {
+  if (ctx) {
+    var list = ctx.getElementsByTagName(tagName), i = 0, n2 = list.length;
+    if (iterator) {
+      for (; i < n2; i++) {
+        iterator(list[i], i);
+      }
+    }
+    return list;
+  }
+  return [];
+}
+function getWindowScrollingElement() {
+  var scrollingElement = document.scrollingElement;
+  if (scrollingElement) {
+    return scrollingElement;
+  } else {
+    return document.documentElement;
+  }
+}
+function getRect(el, relativeToContainingBlock, relativeToNonStaticParent, undoScale, container) {
+  if (!el.getBoundingClientRect && el !== window)
+    return;
+  var elRect, top2, left2, bottom2, right2, height, width;
+  if (el !== window && el.parentNode && el !== getWindowScrollingElement()) {
+    elRect = el.getBoundingClientRect();
+    top2 = elRect.top;
+    left2 = elRect.left;
+    bottom2 = elRect.bottom;
+    right2 = elRect.right;
+    height = elRect.height;
+    width = elRect.width;
+  } else {
+    top2 = 0;
+    left2 = 0;
+    bottom2 = window.innerHeight;
+    right2 = window.innerWidth;
+    height = window.innerHeight;
+    width = window.innerWidth;
+  }
+  if ((relativeToContainingBlock || relativeToNonStaticParent) && el !== window) {
+    container = container || el.parentNode;
+    if (!IE11OrLess) {
+      do {
+        if (container && container.getBoundingClientRect && (css(container, "transform") !== "none" || relativeToNonStaticParent && css(container, "position") !== "static")) {
+          var containerRect = container.getBoundingClientRect();
+          top2 -= containerRect.top + parseInt(css(container, "border-top-width"));
+          left2 -= containerRect.left + parseInt(css(container, "border-left-width"));
+          bottom2 = top2 + elRect.height;
+          right2 = left2 + elRect.width;
+          break;
+        }
+      } while (container = container.parentNode);
+    }
+  }
+  if (undoScale && el !== window) {
+    var elMatrix = matrix(container || el), scaleX = elMatrix && elMatrix.a, scaleY = elMatrix && elMatrix.d;
+    if (elMatrix) {
+      top2 /= scaleY;
+      left2 /= scaleX;
+      width /= scaleX;
+      height /= scaleY;
+      bottom2 = top2 + height;
+      right2 = left2 + width;
+    }
+  }
+  return {
+    top: top2,
+    left: left2,
+    bottom: bottom2,
+    right: right2,
+    width,
+    height
+  };
+}
+function isScrolledPast(el, elSide, parentSide) {
+  var parent = getParentAutoScrollElement(el, true), elSideVal = getRect(el)[elSide];
+  while (parent) {
+    var parentSideVal = getRect(parent)[parentSide], visible = void 0;
+    if (parentSide === "top" || parentSide === "left") {
+      visible = elSideVal >= parentSideVal;
+    } else {
+      visible = elSideVal <= parentSideVal;
+    }
+    if (!visible)
+      return parent;
+    if (parent === getWindowScrollingElement())
+      break;
+    parent = getParentAutoScrollElement(parent, false);
+  }
+  return false;
+}
+function getChild(el, childNum, options, includeDragEl) {
+  var currentChild = 0, i = 0, children2 = el.children;
+  while (i < children2.length) {
+    if (children2[i].style.display !== "none" && children2[i] !== Sortable.ghost && (includeDragEl || children2[i] !== Sortable.dragged) && closest(children2[i], options.draggable, el, false)) {
+      if (currentChild === childNum) {
+        return children2[i];
+      }
+      currentChild++;
+    }
+    i++;
+  }
+  return null;
+}
+function lastChild(el, selector) {
+  var last = el.lastElementChild;
+  while (last && (last === Sortable.ghost || css(last, "display") === "none" || selector && !matches(last, selector))) {
+    last = last.previousElementSibling;
+  }
+  return last || null;
+}
+function index(el, selector) {
+  var index2 = 0;
+  if (!el || !el.parentNode) {
+    return -1;
+  }
+  while (el = el.previousElementSibling) {
+    if (el.nodeName.toUpperCase() !== "TEMPLATE" && el !== Sortable.clone && (!selector || matches(el, selector))) {
+      index2++;
+    }
+  }
+  return index2;
+}
+function getRelativeScrollOffset(el) {
+  var offsetLeft = 0, offsetTop = 0, winScroller = getWindowScrollingElement();
+  if (el) {
+    do {
+      var elMatrix = matrix(el), scaleX = elMatrix.a, scaleY = elMatrix.d;
+      offsetLeft += el.scrollLeft * scaleX;
+      offsetTop += el.scrollTop * scaleY;
+    } while (el !== winScroller && (el = el.parentNode));
+  }
+  return [offsetLeft, offsetTop];
+}
+function indexOfObject(arr, obj) {
+  for (var i in arr) {
+    if (!arr.hasOwnProperty(i))
+      continue;
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key) && obj[key] === arr[i][key])
+        return Number(i);
+    }
+  }
+  return -1;
+}
+function getParentAutoScrollElement(el, includeSelf) {
+  if (!el || !el.getBoundingClientRect)
+    return getWindowScrollingElement();
+  var elem = el;
+  var gotSelf = false;
+  do {
+    if (elem.clientWidth < elem.scrollWidth || elem.clientHeight < elem.scrollHeight) {
+      var elemCSS = css(elem);
+      if (elem.clientWidth < elem.scrollWidth && (elemCSS.overflowX == "auto" || elemCSS.overflowX == "scroll") || elem.clientHeight < elem.scrollHeight && (elemCSS.overflowY == "auto" || elemCSS.overflowY == "scroll")) {
+        if (!elem.getBoundingClientRect || elem === document.body)
+          return getWindowScrollingElement();
+        if (gotSelf || includeSelf)
+          return elem;
+        gotSelf = true;
+      }
+    }
+  } while (elem = elem.parentNode);
+  return getWindowScrollingElement();
+}
+function extend2(dst, src) {
+  if (dst && src) {
+    for (var key in src) {
+      if (src.hasOwnProperty(key)) {
+        dst[key] = src[key];
+      }
+    }
+  }
+  return dst;
+}
+function isRectEqual(rect1, rect2) {
+  return Math.round(rect1.top) === Math.round(rect2.top) && Math.round(rect1.left) === Math.round(rect2.left) && Math.round(rect1.height) === Math.round(rect2.height) && Math.round(rect1.width) === Math.round(rect2.width);
+}
+var _throttleTimeout;
+function throttle(callback, ms) {
+  return function() {
+    if (!_throttleTimeout) {
+      var args = arguments, _this = this;
+      if (args.length === 1) {
+        callback.call(_this, args[0]);
+      } else {
+        callback.apply(_this, args);
+      }
+      _throttleTimeout = setTimeout(function() {
+        _throttleTimeout = void 0;
+      }, ms);
+    }
+  };
+}
+function cancelThrottle() {
+  clearTimeout(_throttleTimeout);
+  _throttleTimeout = void 0;
+}
+function scrollBy(el, x, y) {
+  el.scrollLeft += x;
+  el.scrollTop += y;
+}
+function clone3(el) {
+  var Polymer = window.Polymer;
+  var $ = window.jQuery || window.Zepto;
+  if (Polymer && Polymer.dom) {
+    return Polymer.dom(el).cloneNode(true);
+  } else if ($) {
+    return $(el).clone(true)[0];
+  } else {
+    return el.cloneNode(true);
+  }
+}
+function getChildContainingRectFromElement(container, options, ghostEl2) {
+  var rect = {};
+  Array.from(container.children).forEach(function(child) {
+    var _rect$left, _rect$top, _rect$right, _rect$bottom;
+    if (!closest(child, options.draggable, container, false) || child.animated || child === ghostEl2)
+      return;
+    var childRect = getRect(child);
+    rect.left = Math.min((_rect$left = rect.left) !== null && _rect$left !== void 0 ? _rect$left : Infinity, childRect.left);
+    rect.top = Math.min((_rect$top = rect.top) !== null && _rect$top !== void 0 ? _rect$top : Infinity, childRect.top);
+    rect.right = Math.max((_rect$right = rect.right) !== null && _rect$right !== void 0 ? _rect$right : -Infinity, childRect.right);
+    rect.bottom = Math.max((_rect$bottom = rect.bottom) !== null && _rect$bottom !== void 0 ? _rect$bottom : -Infinity, childRect.bottom);
+  });
+  rect.width = rect.right - rect.left;
+  rect.height = rect.bottom - rect.top;
+  rect.x = rect.left;
+  rect.y = rect.top;
+  return rect;
+}
+var expando = "Sortable" + (/* @__PURE__ */ new Date()).getTime();
+function AnimationStateManager() {
+  var animationStates = [], animationCallbackId;
+  return {
+    captureAnimationState: function captureAnimationState() {
+      animationStates = [];
+      if (!this.options.animation)
+        return;
+      var children2 = [].slice.call(this.el.children);
+      children2.forEach(function(child) {
+        if (css(child, "display") === "none" || child === Sortable.ghost)
+          return;
+        animationStates.push({
+          target: child,
+          rect: getRect(child)
+        });
+        var fromRect = _objectSpread2({}, animationStates[animationStates.length - 1].rect);
+        if (child.thisAnimationDuration) {
+          var childMatrix = matrix(child, true);
+          if (childMatrix) {
+            fromRect.top -= childMatrix.f;
+            fromRect.left -= childMatrix.e;
+          }
+        }
+        child.fromRect = fromRect;
+      });
+    },
+    addAnimationState: function addAnimationState(state) {
+      animationStates.push(state);
+    },
+    removeAnimationState: function removeAnimationState(target) {
+      animationStates.splice(indexOfObject(animationStates, {
+        target
+      }), 1);
+    },
+    animateAll: function animateAll(callback) {
+      var _this = this;
+      if (!this.options.animation) {
+        clearTimeout(animationCallbackId);
+        if (typeof callback === "function")
+          callback();
+        return;
+      }
+      var animating = false, animationTime = 0;
+      animationStates.forEach(function(state) {
+        var time = 0, target = state.target, fromRect = target.fromRect, toRect = getRect(target), prevFromRect = target.prevFromRect, prevToRect = target.prevToRect, animatingRect = state.rect, targetMatrix = matrix(target, true);
+        if (targetMatrix) {
+          toRect.top -= targetMatrix.f;
+          toRect.left -= targetMatrix.e;
+        }
+        target.toRect = toRect;
+        if (target.thisAnimationDuration) {
+          if (isRectEqual(prevFromRect, toRect) && !isRectEqual(fromRect, toRect) && // Make sure animatingRect is on line between toRect & fromRect
+          (animatingRect.top - toRect.top) / (animatingRect.left - toRect.left) === (fromRect.top - toRect.top) / (fromRect.left - toRect.left)) {
+            time = calculateRealTime(animatingRect, prevFromRect, prevToRect, _this.options);
+          }
+        }
+        if (!isRectEqual(toRect, fromRect)) {
+          target.prevFromRect = fromRect;
+          target.prevToRect = toRect;
+          if (!time) {
+            time = _this.options.animation;
+          }
+          _this.animate(target, animatingRect, toRect, time);
+        }
+        if (time) {
+          animating = true;
+          animationTime = Math.max(animationTime, time);
+          clearTimeout(target.animationResetTimer);
+          target.animationResetTimer = setTimeout(function() {
+            target.animationTime = 0;
+            target.prevFromRect = null;
+            target.fromRect = null;
+            target.prevToRect = null;
+            target.thisAnimationDuration = null;
+          }, time);
+          target.thisAnimationDuration = time;
+        }
+      });
+      clearTimeout(animationCallbackId);
+      if (!animating) {
+        if (typeof callback === "function")
+          callback();
+      } else {
+        animationCallbackId = setTimeout(function() {
+          if (typeof callback === "function")
+            callback();
+        }, animationTime);
+      }
+      animationStates = [];
+    },
+    animate: function animate(target, currentRect, toRect, duration) {
+      if (duration) {
+        css(target, "transition", "");
+        css(target, "transform", "");
+        var elMatrix = matrix(this.el), scaleX = elMatrix && elMatrix.a, scaleY = elMatrix && elMatrix.d, translateX = (currentRect.left - toRect.left) / (scaleX || 1), translateY = (currentRect.top - toRect.top) / (scaleY || 1);
+        target.animatingX = !!translateX;
+        target.animatingY = !!translateY;
+        css(target, "transform", "translate3d(" + translateX + "px," + translateY + "px,0)");
+        this.forRepaintDummy = repaint(target);
+        css(target, "transition", "transform " + duration + "ms" + (this.options.easing ? " " + this.options.easing : ""));
+        css(target, "transform", "translate3d(0,0,0)");
+        typeof target.animated === "number" && clearTimeout(target.animated);
+        target.animated = setTimeout(function() {
+          css(target, "transition", "");
+          css(target, "transform", "");
+          target.animated = false;
+          target.animatingX = false;
+          target.animatingY = false;
+        }, duration);
+      }
+    }
+  };
+}
+function repaint(target) {
+  return target.offsetWidth;
+}
+function calculateRealTime(animatingRect, fromRect, toRect, options) {
+  return Math.sqrt(Math.pow(fromRect.top - animatingRect.top, 2) + Math.pow(fromRect.left - animatingRect.left, 2)) / Math.sqrt(Math.pow(fromRect.top - toRect.top, 2) + Math.pow(fromRect.left - toRect.left, 2)) * options.animation;
+}
+var plugins = [];
+var defaults2 = {
+  initializeByDefault: true
+};
+var PluginManager = {
+  mount: function mount(plugin) {
+    for (var option2 in defaults2) {
+      if (defaults2.hasOwnProperty(option2) && !(option2 in plugin)) {
+        plugin[option2] = defaults2[option2];
+      }
+    }
+    plugins.forEach(function(p) {
+      if (p.pluginName === plugin.pluginName) {
+        throw "Sortable: Cannot mount plugin ".concat(plugin.pluginName, " more than once");
+      }
+    });
+    plugins.push(plugin);
+  },
+  pluginEvent: function pluginEvent(eventName, sortable, evt) {
+    var _this = this;
+    this.eventCanceled = false;
+    evt.cancel = function() {
+      _this.eventCanceled = true;
+    };
+    var eventNameGlobal = eventName + "Global";
+    plugins.forEach(function(plugin) {
+      if (!sortable[plugin.pluginName])
+        return;
+      if (sortable[plugin.pluginName][eventNameGlobal]) {
+        sortable[plugin.pluginName][eventNameGlobal](_objectSpread2({
+          sortable
+        }, evt));
+      }
+      if (sortable.options[plugin.pluginName] && sortable[plugin.pluginName][eventName]) {
+        sortable[plugin.pluginName][eventName](_objectSpread2({
+          sortable
+        }, evt));
+      }
+    });
+  },
+  initializePlugins: function initializePlugins(sortable, el, defaults3, options) {
+    plugins.forEach(function(plugin) {
+      var pluginName = plugin.pluginName;
+      if (!sortable.options[pluginName] && !plugin.initializeByDefault)
+        return;
+      var initialized = new plugin(sortable, el, sortable.options);
+      initialized.sortable = sortable;
+      initialized.options = sortable.options;
+      sortable[pluginName] = initialized;
+      _extends(defaults3, initialized.defaults);
+    });
+    for (var option2 in sortable.options) {
+      if (!sortable.options.hasOwnProperty(option2))
+        continue;
+      var modified = this.modifyOption(sortable, option2, sortable.options[option2]);
+      if (typeof modified !== "undefined") {
+        sortable.options[option2] = modified;
+      }
+    }
+  },
+  getEventProperties: function getEventProperties(name, sortable) {
+    var eventProperties = {};
+    plugins.forEach(function(plugin) {
+      if (typeof plugin.eventProperties !== "function")
+        return;
+      _extends(eventProperties, plugin.eventProperties.call(sortable[plugin.pluginName], name));
+    });
+    return eventProperties;
+  },
+  modifyOption: function modifyOption(sortable, name, value) {
+    var modifiedValue;
+    plugins.forEach(function(plugin) {
+      if (!sortable[plugin.pluginName])
+        return;
+      if (plugin.optionListeners && typeof plugin.optionListeners[name] === "function") {
+        modifiedValue = plugin.optionListeners[name].call(sortable[plugin.pluginName], value);
+      }
+    });
+    return modifiedValue;
+  }
+};
+function dispatchEvent(_ref) {
+  var sortable = _ref.sortable, rootEl2 = _ref.rootEl, name = _ref.name, targetEl = _ref.targetEl, cloneEl2 = _ref.cloneEl, toEl = _ref.toEl, fromEl = _ref.fromEl, oldIndex2 = _ref.oldIndex, newIndex2 = _ref.newIndex, oldDraggableIndex2 = _ref.oldDraggableIndex, newDraggableIndex2 = _ref.newDraggableIndex, originalEvent = _ref.originalEvent, putSortable2 = _ref.putSortable, extraEventProperties = _ref.extraEventProperties;
+  sortable = sortable || rootEl2 && rootEl2[expando];
+  if (!sortable)
+    return;
+  var evt, options = sortable.options, onName = "on" + name.charAt(0).toUpperCase() + name.substr(1);
+  if (window.CustomEvent && !IE11OrLess && !Edge) {
+    evt = new CustomEvent(name, {
+      bubbles: true,
+      cancelable: true
+    });
+  } else {
+    evt = document.createEvent("Event");
+    evt.initEvent(name, true, true);
+  }
+  evt.to = toEl || rootEl2;
+  evt.from = fromEl || rootEl2;
+  evt.item = targetEl || rootEl2;
+  evt.clone = cloneEl2;
+  evt.oldIndex = oldIndex2;
+  evt.newIndex = newIndex2;
+  evt.oldDraggableIndex = oldDraggableIndex2;
+  evt.newDraggableIndex = newDraggableIndex2;
+  evt.originalEvent = originalEvent;
+  evt.pullMode = putSortable2 ? putSortable2.lastPutMode : void 0;
+  var allEventProperties = _objectSpread2(_objectSpread2({}, extraEventProperties), PluginManager.getEventProperties(name, sortable));
+  for (var option2 in allEventProperties) {
+    evt[option2] = allEventProperties[option2];
+  }
+  if (rootEl2) {
+    rootEl2.dispatchEvent(evt);
+  }
+  if (options[onName]) {
+    options[onName].call(sortable, evt);
+  }
+}
+var _excluded = ["evt"];
+var pluginEvent2 = function pluginEvent3(eventName, sortable) {
+  var _ref = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {}, originalEvent = _ref.evt, data = _objectWithoutProperties(_ref, _excluded);
+  PluginManager.pluginEvent.bind(Sortable)(eventName, sortable, _objectSpread2({
+    dragEl,
+    parentEl,
+    ghostEl,
+    rootEl,
+    nextEl,
+    lastDownEl,
+    cloneEl,
+    cloneHidden,
+    dragStarted: moved,
+    putSortable,
+    activeSortable: Sortable.active,
+    originalEvent,
+    oldIndex,
+    oldDraggableIndex,
+    newIndex,
+    newDraggableIndex,
+    hideGhostForTarget: _hideGhostForTarget,
+    unhideGhostForTarget: _unhideGhostForTarget,
+    cloneNowHidden: function cloneNowHidden() {
+      cloneHidden = true;
+    },
+    cloneNowShown: function cloneNowShown() {
+      cloneHidden = false;
+    },
+    dispatchSortableEvent: function dispatchSortableEvent(name) {
+      _dispatchEvent({
+        sortable,
+        name,
+        originalEvent
+      });
+    }
+  }, data));
+};
+function _dispatchEvent(info) {
+  dispatchEvent(_objectSpread2({
+    putSortable,
+    cloneEl,
+    targetEl: dragEl,
+    rootEl,
+    oldIndex,
+    oldDraggableIndex,
+    newIndex,
+    newDraggableIndex
+  }, info));
+}
+var dragEl;
+var parentEl;
+var ghostEl;
+var rootEl;
+var nextEl;
+var lastDownEl;
+var cloneEl;
+var cloneHidden;
+var oldIndex;
+var newIndex;
+var oldDraggableIndex;
+var newDraggableIndex;
+var activeGroup;
+var putSortable;
+var awaitingDragStarted = false;
+var ignoreNextClick = false;
+var sortables = [];
+var tapEvt;
+var touchEvt;
+var lastDx;
+var lastDy;
+var tapDistanceLeft;
+var tapDistanceTop;
+var moved;
+var lastTarget;
+var lastDirection;
+var pastFirstInvertThresh = false;
+var isCircumstantialInvert = false;
+var targetMoveDistance;
+var ghostRelativeParent;
+var ghostRelativeParentInitialScroll = [];
+var _silent = false;
+var savedInputChecked = [];
+var documentExists = typeof document !== "undefined";
+var PositionGhostAbsolutely = IOS;
+var CSSFloatProperty = Edge || IE11OrLess ? "cssFloat" : "float";
+var supportDraggable = documentExists && !ChromeForAndroid && !IOS && "draggable" in document.createElement("div");
+var supportCssPointerEvents = function() {
+  if (!documentExists)
+    return;
+  if (IE11OrLess) {
+    return false;
+  }
+  var el = document.createElement("x");
+  el.style.cssText = "pointer-events:auto";
+  return el.style.pointerEvents === "auto";
+}();
+var _detectDirection = function _detectDirection2(el, options) {
+  var elCSS = css(el), elWidth = parseInt(elCSS.width) - parseInt(elCSS.paddingLeft) - parseInt(elCSS.paddingRight) - parseInt(elCSS.borderLeftWidth) - parseInt(elCSS.borderRightWidth), child1 = getChild(el, 0, options), child2 = getChild(el, 1, options), firstChildCSS = child1 && css(child1), secondChildCSS = child2 && css(child2), firstChildWidth = firstChildCSS && parseInt(firstChildCSS.marginLeft) + parseInt(firstChildCSS.marginRight) + getRect(child1).width, secondChildWidth = secondChildCSS && parseInt(secondChildCSS.marginLeft) + parseInt(secondChildCSS.marginRight) + getRect(child2).width;
+  if (elCSS.display === "flex") {
+    return elCSS.flexDirection === "column" || elCSS.flexDirection === "column-reverse" ? "vertical" : "horizontal";
+  }
+  if (elCSS.display === "grid") {
+    return elCSS.gridTemplateColumns.split(" ").length <= 1 ? "vertical" : "horizontal";
+  }
+  if (child1 && firstChildCSS["float"] && firstChildCSS["float"] !== "none") {
+    var touchingSideChild2 = firstChildCSS["float"] === "left" ? "left" : "right";
+    return child2 && (secondChildCSS.clear === "both" || secondChildCSS.clear === touchingSideChild2) ? "vertical" : "horizontal";
+  }
+  return child1 && (firstChildCSS.display === "block" || firstChildCSS.display === "flex" || firstChildCSS.display === "table" || firstChildCSS.display === "grid" || firstChildWidth >= elWidth && elCSS[CSSFloatProperty] === "none" || child2 && elCSS[CSSFloatProperty] === "none" && firstChildWidth + secondChildWidth > elWidth) ? "vertical" : "horizontal";
+};
+var _dragElInRowColumn = function _dragElInRowColumn2(dragRect, targetRect, vertical) {
+  var dragElS1Opp = vertical ? dragRect.left : dragRect.top, dragElS2Opp = vertical ? dragRect.right : dragRect.bottom, dragElOppLength = vertical ? dragRect.width : dragRect.height, targetS1Opp = vertical ? targetRect.left : targetRect.top, targetS2Opp = vertical ? targetRect.right : targetRect.bottom, targetOppLength = vertical ? targetRect.width : targetRect.height;
+  return dragElS1Opp === targetS1Opp || dragElS2Opp === targetS2Opp || dragElS1Opp + dragElOppLength / 2 === targetS1Opp + targetOppLength / 2;
+};
+var _detectNearestEmptySortable = function _detectNearestEmptySortable2(x, y) {
+  var ret;
+  sortables.some(function(sortable) {
+    var threshold = sortable[expando].options.emptyInsertThreshold;
+    if (!threshold || lastChild(sortable))
+      return;
+    var rect = getRect(sortable), insideHorizontally = x >= rect.left - threshold && x <= rect.right + threshold, insideVertically = y >= rect.top - threshold && y <= rect.bottom + threshold;
+    if (insideHorizontally && insideVertically) {
+      return ret = sortable;
+    }
+  });
+  return ret;
+};
+var _prepareGroup = function _prepareGroup2(options) {
+  function toFn(value, pull) {
+    return function(to, from, dragEl2, evt) {
+      var sameGroup = to.options.group.name && from.options.group.name && to.options.group.name === from.options.group.name;
+      if (value == null && (pull || sameGroup)) {
+        return true;
+      } else if (value == null || value === false) {
+        return false;
+      } else if (pull && value === "clone") {
+        return value;
+      } else if (typeof value === "function") {
+        return toFn(value(to, from, dragEl2, evt), pull)(to, from, dragEl2, evt);
+      } else {
+        var otherGroup = (pull ? to : from).options.group.name;
+        return value === true || typeof value === "string" && value === otherGroup || value.join && value.indexOf(otherGroup) > -1;
+      }
+    };
+  }
+  var group = {};
+  var originalGroup = options.group;
+  if (!originalGroup || _typeof2(originalGroup) != "object") {
+    originalGroup = {
+      name: originalGroup
+    };
+  }
+  group.name = originalGroup.name;
+  group.checkPull = toFn(originalGroup.pull, true);
+  group.checkPut = toFn(originalGroup.put);
+  group.revertClone = originalGroup.revertClone;
+  options.group = group;
+};
+var _hideGhostForTarget = function _hideGhostForTarget2() {
+  if (!supportCssPointerEvents && ghostEl) {
+    css(ghostEl, "display", "none");
+  }
+};
+var _unhideGhostForTarget = function _unhideGhostForTarget2() {
+  if (!supportCssPointerEvents && ghostEl) {
+    css(ghostEl, "display", "");
+  }
+};
+if (documentExists && !ChromeForAndroid) {
+  document.addEventListener("click", function(evt) {
+    if (ignoreNextClick) {
+      evt.preventDefault();
+      evt.stopPropagation && evt.stopPropagation();
+      evt.stopImmediatePropagation && evt.stopImmediatePropagation();
+      ignoreNextClick = false;
+      return false;
+    }
+  }, true);
+}
+var nearestEmptyInsertDetectEvent = function nearestEmptyInsertDetectEvent2(evt) {
+  if (dragEl) {
+    evt = evt.touches ? evt.touches[0] : evt;
+    var nearest = _detectNearestEmptySortable(evt.clientX, evt.clientY);
+    if (nearest) {
+      var event = {};
+      for (var i in evt) {
+        if (evt.hasOwnProperty(i)) {
+          event[i] = evt[i];
+        }
+      }
+      event.target = event.rootEl = nearest;
+      event.preventDefault = void 0;
+      event.stopPropagation = void 0;
+      nearest[expando]._onDragOver(event);
+    }
+  }
+};
+var _checkOutsideTargetEl = function _checkOutsideTargetEl2(evt) {
+  if (dragEl) {
+    dragEl.parentNode[expando]._isOutsideThisEl(evt.target);
+  }
+};
+function Sortable(el, options) {
+  if (!(el && el.nodeType && el.nodeType === 1)) {
+    throw "Sortable: `el` must be an HTMLElement, not ".concat({}.toString.call(el));
+  }
+  this.el = el;
+  this.options = options = _extends({}, options);
+  el[expando] = this;
+  var defaults3 = {
+    group: null,
+    sort: true,
+    disabled: false,
+    store: null,
+    handle: null,
+    draggable: /^[uo]l$/i.test(el.nodeName) ? ">li" : ">*",
+    swapThreshold: 1,
+    // percentage; 0 <= x <= 1
+    invertSwap: false,
+    // invert always
+    invertedSwapThreshold: null,
+    // will be set to same as swapThreshold if default
+    removeCloneOnHide: true,
+    direction: function direction() {
+      return _detectDirection(el, this.options);
+    },
+    ghostClass: "sortable-ghost",
+    chosenClass: "sortable-chosen",
+    dragClass: "sortable-drag",
+    ignore: "a, img",
+    filter: null,
+    preventOnFilter: true,
+    animation: 0,
+    easing: null,
+    setData: function setData(dataTransfer, dragEl2) {
+      dataTransfer.setData("Text", dragEl2.textContent);
+    },
+    dropBubble: false,
+    dragoverBubble: false,
+    dataIdAttr: "data-id",
+    delay: 0,
+    delayOnTouchOnly: false,
+    touchStartThreshold: (Number.parseInt ? Number : window).parseInt(window.devicePixelRatio, 10) || 1,
+    forceFallback: false,
+    fallbackClass: "sortable-fallback",
+    fallbackOnBody: false,
+    fallbackTolerance: 0,
+    fallbackOffset: {
+      x: 0,
+      y: 0
+    },
+    // Disabled on Safari: #1571; Enabled on Safari IOS: #2244
+    supportPointer: Sortable.supportPointer !== false && "PointerEvent" in window && (!Safari || IOS),
+    emptyInsertThreshold: 5
+  };
+  PluginManager.initializePlugins(this, el, defaults3);
+  for (var name in defaults3) {
+    !(name in options) && (options[name] = defaults3[name]);
+  }
+  _prepareGroup(options);
+  for (var fn2 in this) {
+    if (fn2.charAt(0) === "_" && typeof this[fn2] === "function") {
+      this[fn2] = this[fn2].bind(this);
+    }
+  }
+  this.nativeDraggable = options.forceFallback ? false : supportDraggable;
+  if (this.nativeDraggable) {
+    this.options.touchStartThreshold = 1;
+  }
+  if (options.supportPointer) {
+    on(el, "pointerdown", this._onTapStart);
+  } else {
+    on(el, "mousedown", this._onTapStart);
+    on(el, "touchstart", this._onTapStart);
+  }
+  if (this.nativeDraggable) {
+    on(el, "dragover", this);
+    on(el, "dragenter", this);
+  }
+  sortables.push(this.el);
+  options.store && options.store.get && this.sort(options.store.get(this) || []);
+  _extends(this, AnimationStateManager());
+}
+Sortable.prototype = /** @lends Sortable.prototype */
+{
+  constructor: Sortable,
+  _isOutsideThisEl: function _isOutsideThisEl(target) {
+    if (!this.el.contains(target) && target !== this.el) {
+      lastTarget = null;
+    }
+  },
+  _getDirection: function _getDirection(evt, target) {
+    return typeof this.options.direction === "function" ? this.options.direction.call(this, evt, target, dragEl) : this.options.direction;
+  },
+  _onTapStart: function _onTapStart(evt) {
+    if (!evt.cancelable)
+      return;
+    var _this = this, el = this.el, options = this.options, preventOnFilter = options.preventOnFilter, type = evt.type, touch = evt.touches && evt.touches[0] || evt.pointerType && evt.pointerType === "touch" && evt, target = (touch || evt).target, originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0] || evt.composedPath && evt.composedPath()[0]) || target, filter2 = options.filter;
+    _saveInputCheckedState(el);
+    if (dragEl) {
+      return;
+    }
+    if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
+      return;
+    }
+    if (originalTarget.isContentEditable) {
+      return;
+    }
+    if (!this.nativeDraggable && Safari && target && target.tagName.toUpperCase() === "SELECT") {
+      return;
+    }
+    target = closest(target, options.draggable, el, false);
+    if (target && target.animated) {
+      return;
+    }
+    if (lastDownEl === target) {
+      return;
+    }
+    oldIndex = index(target);
+    oldDraggableIndex = index(target, options.draggable);
+    if (typeof filter2 === "function") {
+      if (filter2.call(this, evt, target, this)) {
+        _dispatchEvent({
+          sortable: _this,
+          rootEl: originalTarget,
+          name: "filter",
+          targetEl: target,
+          toEl: el,
+          fromEl: el
+        });
+        pluginEvent2("filter", _this, {
+          evt
+        });
+        preventOnFilter && evt.preventDefault();
+        return;
+      }
+    } else if (filter2) {
+      filter2 = filter2.split(",").some(function(criteria) {
+        criteria = closest(originalTarget, criteria.trim(), el, false);
+        if (criteria) {
+          _dispatchEvent({
+            sortable: _this,
+            rootEl: criteria,
+            name: "filter",
+            targetEl: target,
+            fromEl: el,
+            toEl: el
+          });
+          pluginEvent2("filter", _this, {
+            evt
+          });
+          return true;
+        }
+      });
+      if (filter2) {
+        preventOnFilter && evt.preventDefault();
+        return;
+      }
+    }
+    if (options.handle && !closest(originalTarget, options.handle, el, false)) {
+      return;
+    }
+    this._prepareDragStart(evt, touch, target);
+  },
+  _prepareDragStart: function _prepareDragStart(evt, touch, target) {
+    var _this = this, el = _this.el, options = _this.options, ownerDocument = el.ownerDocument, dragStartFn;
+    if (target && !dragEl && target.parentNode === el) {
+      var dragRect = getRect(target);
+      rootEl = el;
+      dragEl = target;
+      parentEl = dragEl.parentNode;
+      nextEl = dragEl.nextSibling;
+      lastDownEl = target;
+      activeGroup = options.group;
+      Sortable.dragged = dragEl;
+      tapEvt = {
+        target: dragEl,
+        clientX: (touch || evt).clientX,
+        clientY: (touch || evt).clientY
+      };
+      tapDistanceLeft = tapEvt.clientX - dragRect.left;
+      tapDistanceTop = tapEvt.clientY - dragRect.top;
+      this._lastX = (touch || evt).clientX;
+      this._lastY = (touch || evt).clientY;
+      dragEl.style["will-change"] = "all";
+      dragStartFn = function dragStartFn2() {
+        pluginEvent2("delayEnded", _this, {
+          evt
+        });
+        if (Sortable.eventCanceled) {
+          _this._onDrop();
+          return;
+        }
+        _this._disableDelayedDragEvents();
+        if (!FireFox && _this.nativeDraggable) {
+          dragEl.draggable = true;
+        }
+        _this._triggerDragStart(evt, touch);
+        _dispatchEvent({
+          sortable: _this,
+          name: "choose",
+          originalEvent: evt
+        });
+        toggleClass(dragEl, options.chosenClass, true);
+      };
+      options.ignore.split(",").forEach(function(criteria) {
+        find(dragEl, criteria.trim(), _disableDraggable);
+      });
+      on(ownerDocument, "dragover", nearestEmptyInsertDetectEvent);
+      on(ownerDocument, "mousemove", nearestEmptyInsertDetectEvent);
+      on(ownerDocument, "touchmove", nearestEmptyInsertDetectEvent);
+      if (options.supportPointer) {
+        on(ownerDocument, "pointerup", _this._onDrop);
+        !this.nativeDraggable && on(ownerDocument, "pointercancel", _this._onDrop);
+      } else {
+        on(ownerDocument, "mouseup", _this._onDrop);
+        on(ownerDocument, "touchend", _this._onDrop);
+        on(ownerDocument, "touchcancel", _this._onDrop);
+      }
+      if (FireFox && this.nativeDraggable) {
+        this.options.touchStartThreshold = 4;
+        dragEl.draggable = true;
+      }
+      pluginEvent2("delayStart", this, {
+        evt
+      });
+      if (options.delay && (!options.delayOnTouchOnly || touch) && (!this.nativeDraggable || !(Edge || IE11OrLess))) {
+        if (Sortable.eventCanceled) {
+          this._onDrop();
+          return;
+        }
+        if (options.supportPointer) {
+          on(ownerDocument, "pointerup", _this._disableDelayedDrag);
+          on(ownerDocument, "pointercancel", _this._disableDelayedDrag);
+        } else {
+          on(ownerDocument, "mouseup", _this._disableDelayedDrag);
+          on(ownerDocument, "touchend", _this._disableDelayedDrag);
+          on(ownerDocument, "touchcancel", _this._disableDelayedDrag);
+        }
+        on(ownerDocument, "mousemove", _this._delayedDragTouchMoveHandler);
+        on(ownerDocument, "touchmove", _this._delayedDragTouchMoveHandler);
+        options.supportPointer && on(ownerDocument, "pointermove", _this._delayedDragTouchMoveHandler);
+        _this._dragStartTimer = setTimeout(dragStartFn, options.delay);
+      } else {
+        dragStartFn();
+      }
+    }
+  },
+  _delayedDragTouchMoveHandler: function _delayedDragTouchMoveHandler(e) {
+    var touch = e.touches ? e.touches[0] : e;
+    if (Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY)) >= Math.floor(this.options.touchStartThreshold / (this.nativeDraggable && window.devicePixelRatio || 1))) {
+      this._disableDelayedDrag();
+    }
+  },
+  _disableDelayedDrag: function _disableDelayedDrag() {
+    dragEl && _disableDraggable(dragEl);
+    clearTimeout(this._dragStartTimer);
+    this._disableDelayedDragEvents();
+  },
+  _disableDelayedDragEvents: function _disableDelayedDragEvents() {
+    var ownerDocument = this.el.ownerDocument;
+    off(ownerDocument, "mouseup", this._disableDelayedDrag);
+    off(ownerDocument, "touchend", this._disableDelayedDrag);
+    off(ownerDocument, "touchcancel", this._disableDelayedDrag);
+    off(ownerDocument, "pointerup", this._disableDelayedDrag);
+    off(ownerDocument, "pointercancel", this._disableDelayedDrag);
+    off(ownerDocument, "mousemove", this._delayedDragTouchMoveHandler);
+    off(ownerDocument, "touchmove", this._delayedDragTouchMoveHandler);
+    off(ownerDocument, "pointermove", this._delayedDragTouchMoveHandler);
+  },
+  _triggerDragStart: function _triggerDragStart(evt, touch) {
+    touch = touch || evt.pointerType == "touch" && evt;
+    if (!this.nativeDraggable || touch) {
+      if (this.options.supportPointer) {
+        on(document, "pointermove", this._onTouchMove);
+      } else if (touch) {
+        on(document, "touchmove", this._onTouchMove);
+      } else {
+        on(document, "mousemove", this._onTouchMove);
+      }
+    } else {
+      on(dragEl, "dragend", this);
+      on(rootEl, "dragstart", this._onDragStart);
+    }
+    try {
+      if (document.selection) {
+        _nextTick(function() {
+          document.selection.empty();
+        });
+      } else {
+        window.getSelection().removeAllRanges();
+      }
+    } catch (err) {
+    }
+  },
+  _dragStarted: function _dragStarted(fallback, evt) {
+    awaitingDragStarted = false;
+    if (rootEl && dragEl) {
+      pluginEvent2("dragStarted", this, {
+        evt
+      });
+      if (this.nativeDraggable) {
+        on(document, "dragover", _checkOutsideTargetEl);
+      }
+      var options = this.options;
+      !fallback && toggleClass(dragEl, options.dragClass, false);
+      toggleClass(dragEl, options.ghostClass, true);
+      Sortable.active = this;
+      fallback && this._appendGhost();
+      _dispatchEvent({
+        sortable: this,
+        name: "start",
+        originalEvent: evt
+      });
+    } else {
+      this._nulling();
+    }
+  },
+  _emulateDragOver: function _emulateDragOver() {
+    if (touchEvt) {
+      this._lastX = touchEvt.clientX;
+      this._lastY = touchEvt.clientY;
+      _hideGhostForTarget();
+      var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+      var parent = target;
+      while (target && target.shadowRoot) {
+        target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+        if (target === parent)
+          break;
+        parent = target;
+      }
+      dragEl.parentNode[expando]._isOutsideThisEl(target);
+      if (parent) {
+        do {
+          if (parent[expando]) {
+            var inserted = void 0;
+            inserted = parent[expando]._onDragOver({
+              clientX: touchEvt.clientX,
+              clientY: touchEvt.clientY,
+              target,
+              rootEl: parent
+            });
+            if (inserted && !this.options.dragoverBubble) {
+              break;
+            }
+          }
+          target = parent;
+        } while (parent = getParentOrHost(parent));
+      }
+      _unhideGhostForTarget();
+    }
+  },
+  _onTouchMove: function _onTouchMove(evt) {
+    if (tapEvt) {
+      var options = this.options, fallbackTolerance = options.fallbackTolerance, fallbackOffset = options.fallbackOffset, touch = evt.touches ? evt.touches[0] : evt, ghostMatrix = ghostEl && matrix(ghostEl, true), scaleX = ghostEl && ghostMatrix && ghostMatrix.a, scaleY = ghostEl && ghostMatrix && ghostMatrix.d, relativeScrollOffset = PositionGhostAbsolutely && ghostRelativeParent && getRelativeScrollOffset(ghostRelativeParent), dx = (touch.clientX - tapEvt.clientX + fallbackOffset.x) / (scaleX || 1) + (relativeScrollOffset ? relativeScrollOffset[0] - ghostRelativeParentInitialScroll[0] : 0) / (scaleX || 1), dy = (touch.clientY - tapEvt.clientY + fallbackOffset.y) / (scaleY || 1) + (relativeScrollOffset ? relativeScrollOffset[1] - ghostRelativeParentInitialScroll[1] : 0) / (scaleY || 1);
+      if (!Sortable.active && !awaitingDragStarted) {
+        if (fallbackTolerance && Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY)) < fallbackTolerance) {
+          return;
+        }
+        this._onDragStart(evt, true);
+      }
+      if (ghostEl) {
+        if (ghostMatrix) {
+          ghostMatrix.e += dx - (lastDx || 0);
+          ghostMatrix.f += dy - (lastDy || 0);
+        } else {
+          ghostMatrix = {
+            a: 1,
+            b: 0,
+            c: 0,
+            d: 1,
+            e: dx,
+            f: dy
+          };
+        }
+        var cssMatrix = "matrix(".concat(ghostMatrix.a, ",").concat(ghostMatrix.b, ",").concat(ghostMatrix.c, ",").concat(ghostMatrix.d, ",").concat(ghostMatrix.e, ",").concat(ghostMatrix.f, ")");
+        css(ghostEl, "webkitTransform", cssMatrix);
+        css(ghostEl, "mozTransform", cssMatrix);
+        css(ghostEl, "msTransform", cssMatrix);
+        css(ghostEl, "transform", cssMatrix);
+        lastDx = dx;
+        lastDy = dy;
+        touchEvt = touch;
+      }
+      evt.cancelable && evt.preventDefault();
+    }
+  },
+  _appendGhost: function _appendGhost() {
+    if (!ghostEl) {
+      var container = this.options.fallbackOnBody ? document.body : rootEl, rect = getRect(dragEl, true, PositionGhostAbsolutely, true, container), options = this.options;
+      if (PositionGhostAbsolutely) {
+        ghostRelativeParent = container;
+        while (css(ghostRelativeParent, "position") === "static" && css(ghostRelativeParent, "transform") === "none" && ghostRelativeParent !== document) {
+          ghostRelativeParent = ghostRelativeParent.parentNode;
+        }
+        if (ghostRelativeParent !== document.body && ghostRelativeParent !== document.documentElement) {
+          if (ghostRelativeParent === document)
+            ghostRelativeParent = getWindowScrollingElement();
+          rect.top += ghostRelativeParent.scrollTop;
+          rect.left += ghostRelativeParent.scrollLeft;
+        } else {
+          ghostRelativeParent = getWindowScrollingElement();
+        }
+        ghostRelativeParentInitialScroll = getRelativeScrollOffset(ghostRelativeParent);
+      }
+      ghostEl = dragEl.cloneNode(true);
+      toggleClass(ghostEl, options.ghostClass, false);
+      toggleClass(ghostEl, options.fallbackClass, true);
+      toggleClass(ghostEl, options.dragClass, true);
+      css(ghostEl, "transition", "");
+      css(ghostEl, "transform", "");
+      css(ghostEl, "box-sizing", "border-box");
+      css(ghostEl, "margin", 0);
+      css(ghostEl, "top", rect.top);
+      css(ghostEl, "left", rect.left);
+      css(ghostEl, "width", rect.width);
+      css(ghostEl, "height", rect.height);
+      css(ghostEl, "opacity", "0.8");
+      css(ghostEl, "position", PositionGhostAbsolutely ? "absolute" : "fixed");
+      css(ghostEl, "zIndex", "100000");
+      css(ghostEl, "pointerEvents", "none");
+      Sortable.ghost = ghostEl;
+      container.appendChild(ghostEl);
+      css(ghostEl, "transform-origin", tapDistanceLeft / parseInt(ghostEl.style.width) * 100 + "% " + tapDistanceTop / parseInt(ghostEl.style.height) * 100 + "%");
+    }
+  },
+  _onDragStart: function _onDragStart(evt, fallback) {
+    var _this = this;
+    var dataTransfer = evt.dataTransfer;
+    var options = _this.options;
+    pluginEvent2("dragStart", this, {
+      evt
+    });
+    if (Sortable.eventCanceled) {
+      this._onDrop();
+      return;
+    }
+    pluginEvent2("setupClone", this);
+    if (!Sortable.eventCanceled) {
+      cloneEl = clone3(dragEl);
+      cloneEl.removeAttribute("id");
+      cloneEl.draggable = false;
+      cloneEl.style["will-change"] = "";
+      this._hideClone();
+      toggleClass(cloneEl, this.options.chosenClass, false);
+      Sortable.clone = cloneEl;
+    }
+    _this.cloneId = _nextTick(function() {
+      pluginEvent2("clone", _this);
+      if (Sortable.eventCanceled)
+        return;
+      if (!_this.options.removeCloneOnHide) {
+        rootEl.insertBefore(cloneEl, dragEl);
+      }
+      _this._hideClone();
+      _dispatchEvent({
+        sortable: _this,
+        name: "clone"
+      });
+    });
+    !fallback && toggleClass(dragEl, options.dragClass, true);
+    if (fallback) {
+      ignoreNextClick = true;
+      _this._loopId = setInterval(_this._emulateDragOver, 50);
+    } else {
+      off(document, "mouseup", _this._onDrop);
+      off(document, "touchend", _this._onDrop);
+      off(document, "touchcancel", _this._onDrop);
+      if (dataTransfer) {
+        dataTransfer.effectAllowed = "move";
+        options.setData && options.setData.call(_this, dataTransfer, dragEl);
+      }
+      on(document, "drop", _this);
+      css(dragEl, "transform", "translateZ(0)");
+    }
+    awaitingDragStarted = true;
+    _this._dragStartId = _nextTick(_this._dragStarted.bind(_this, fallback, evt));
+    on(document, "selectstart", _this);
+    moved = true;
+    window.getSelection().removeAllRanges();
+    if (Safari) {
+      css(document.body, "user-select", "none");
+    }
+  },
+  // Returns true - if no further action is needed (either inserted or another condition)
+  _onDragOver: function _onDragOver(evt) {
+    var el = this.el, target = evt.target, dragRect, targetRect, revert, options = this.options, group = options.group, activeSortable = Sortable.active, isOwner = activeGroup === group, canSort = options.sort, fromSortable = putSortable || activeSortable, vertical, _this = this, completedFired = false;
+    if (_silent)
+      return;
+    function dragOverEvent(name, extra) {
+      pluginEvent2(name, _this, _objectSpread2({
+        evt,
+        isOwner,
+        axis: vertical ? "vertical" : "horizontal",
+        revert,
+        dragRect,
+        targetRect,
+        canSort,
+        fromSortable,
+        target,
+        completed,
+        onMove: function onMove(target2, after2) {
+          return _onMove(rootEl, el, dragEl, dragRect, target2, getRect(target2), evt, after2);
+        },
+        changed
+      }, extra));
+    }
+    function capture() {
+      dragOverEvent("dragOverAnimationCapture");
+      _this.captureAnimationState();
+      if (_this !== fromSortable) {
+        fromSortable.captureAnimationState();
+      }
+    }
+    function completed(insertion) {
+      dragOverEvent("dragOverCompleted", {
+        insertion
+      });
+      if (insertion) {
+        if (isOwner) {
+          activeSortable._hideClone();
+        } else {
+          activeSortable._showClone(_this);
+        }
+        if (_this !== fromSortable) {
+          toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : activeSortable.options.ghostClass, false);
+          toggleClass(dragEl, options.ghostClass, true);
+        }
+        if (putSortable !== _this && _this !== Sortable.active) {
+          putSortable = _this;
+        } else if (_this === Sortable.active && putSortable) {
+          putSortable = null;
+        }
+        if (fromSortable === _this) {
+          _this._ignoreWhileAnimating = target;
+        }
+        _this.animateAll(function() {
+          dragOverEvent("dragOverAnimationComplete");
+          _this._ignoreWhileAnimating = null;
+        });
+        if (_this !== fromSortable) {
+          fromSortable.animateAll();
+          fromSortable._ignoreWhileAnimating = null;
+        }
+      }
+      if (target === dragEl && !dragEl.animated || target === el && !target.animated) {
+        lastTarget = null;
+      }
+      if (!options.dragoverBubble && !evt.rootEl && target !== document) {
+        dragEl.parentNode[expando]._isOutsideThisEl(evt.target);
+        !insertion && nearestEmptyInsertDetectEvent(evt);
+      }
+      !options.dragoverBubble && evt.stopPropagation && evt.stopPropagation();
+      return completedFired = true;
+    }
+    function changed() {
+      newIndex = index(dragEl);
+      newDraggableIndex = index(dragEl, options.draggable);
+      _dispatchEvent({
+        sortable: _this,
+        name: "change",
+        toEl: el,
+        newIndex,
+        newDraggableIndex,
+        originalEvent: evt
+      });
+    }
+    if (evt.preventDefault !== void 0) {
+      evt.cancelable && evt.preventDefault();
+    }
+    target = closest(target, options.draggable, el, true);
+    dragOverEvent("dragOver");
+    if (Sortable.eventCanceled)
+      return completedFired;
+    if (dragEl.contains(evt.target) || target.animated && target.animatingX && target.animatingY || _this._ignoreWhileAnimating === target) {
+      return completed(false);
+    }
+    ignoreNextClick = false;
+    if (activeSortable && !options.disabled && (isOwner ? canSort || (revert = parentEl !== rootEl) : putSortable === this || (this.lastPutMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) && group.checkPut(this, activeSortable, dragEl, evt))) {
+      vertical = this._getDirection(evt, target) === "vertical";
+      dragRect = getRect(dragEl);
+      dragOverEvent("dragOverValid");
+      if (Sortable.eventCanceled)
+        return completedFired;
+      if (revert) {
+        parentEl = rootEl;
+        capture();
+        this._hideClone();
+        dragOverEvent("revert");
+        if (!Sortable.eventCanceled) {
+          if (nextEl) {
+            rootEl.insertBefore(dragEl, nextEl);
+          } else {
+            rootEl.appendChild(dragEl);
+          }
+        }
+        return completed(true);
+      }
+      var elLastChild = lastChild(el, options.draggable);
+      if (!elLastChild || _ghostIsLast(evt, vertical, this) && !elLastChild.animated) {
+        if (elLastChild === dragEl) {
+          return completed(false);
+        }
+        if (elLastChild && el === evt.target) {
+          target = elLastChild;
+        }
+        if (target) {
+          targetRect = getRect(target);
+        }
+        if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, !!target) !== false) {
+          capture();
+          if (elLastChild && elLastChild.nextSibling) {
+            el.insertBefore(dragEl, elLastChild.nextSibling);
+          } else {
+            el.appendChild(dragEl);
+          }
+          parentEl = el;
+          changed();
+          return completed(true);
+        }
+      } else if (elLastChild && _ghostIsFirst(evt, vertical, this)) {
+        var firstChild = getChild(el, 0, options, true);
+        if (firstChild === dragEl) {
+          return completed(false);
+        }
+        target = firstChild;
+        targetRect = getRect(target);
+        if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, false) !== false) {
+          capture();
+          el.insertBefore(dragEl, firstChild);
+          parentEl = el;
+          changed();
+          return completed(true);
+        }
+      } else if (target.parentNode === el) {
+        targetRect = getRect(target);
+        var direction = 0, targetBeforeFirstSwap, differentLevel = dragEl.parentNode !== el, differentRowCol = !_dragElInRowColumn(dragEl.animated && dragEl.toRect || dragRect, target.animated && target.toRect || targetRect, vertical), side1 = vertical ? "top" : "left", scrolledPastTop = isScrolledPast(target, "top", "top") || isScrolledPast(dragEl, "top", "top"), scrollBefore = scrolledPastTop ? scrolledPastTop.scrollTop : void 0;
+        if (lastTarget !== target) {
+          targetBeforeFirstSwap = targetRect[side1];
+          pastFirstInvertThresh = false;
+          isCircumstantialInvert = !differentRowCol && options.invertSwap || differentLevel;
+        }
+        direction = _getSwapDirection(evt, target, targetRect, vertical, differentRowCol ? 1 : options.swapThreshold, options.invertedSwapThreshold == null ? options.swapThreshold : options.invertedSwapThreshold, isCircumstantialInvert, lastTarget === target);
+        var sibling;
+        if (direction !== 0) {
+          var dragIndex = index(dragEl);
+          do {
+            dragIndex -= direction;
+            sibling = parentEl.children[dragIndex];
+          } while (sibling && (css(sibling, "display") === "none" || sibling === ghostEl));
+        }
+        if (direction === 0 || sibling === target) {
+          return completed(false);
+        }
+        lastTarget = target;
+        lastDirection = direction;
+        var nextSibling = target.nextElementSibling, after = false;
+        after = direction === 1;
+        var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
+        if (moveVector !== false) {
+          if (moveVector === 1 || moveVector === -1) {
+            after = moveVector === 1;
+          }
+          _silent = true;
+          setTimeout(_unsilent, 30);
+          capture();
+          if (after && !nextSibling) {
+            el.appendChild(dragEl);
+          } else {
+            target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
+          }
+          if (scrolledPastTop) {
+            scrollBy(scrolledPastTop, 0, scrollBefore - scrolledPastTop.scrollTop);
+          }
+          parentEl = dragEl.parentNode;
+          if (targetBeforeFirstSwap !== void 0 && !isCircumstantialInvert) {
+            targetMoveDistance = Math.abs(targetBeforeFirstSwap - getRect(target)[side1]);
+          }
+          changed();
+          return completed(true);
+        }
+      }
+      if (el.contains(dragEl)) {
+        return completed(false);
+      }
+    }
+    return false;
+  },
+  _ignoreWhileAnimating: null,
+  _offMoveEvents: function _offMoveEvents() {
+    off(document, "mousemove", this._onTouchMove);
+    off(document, "touchmove", this._onTouchMove);
+    off(document, "pointermove", this._onTouchMove);
+    off(document, "dragover", nearestEmptyInsertDetectEvent);
+    off(document, "mousemove", nearestEmptyInsertDetectEvent);
+    off(document, "touchmove", nearestEmptyInsertDetectEvent);
+  },
+  _offUpEvents: function _offUpEvents() {
+    var ownerDocument = this.el.ownerDocument;
+    off(ownerDocument, "mouseup", this._onDrop);
+    off(ownerDocument, "touchend", this._onDrop);
+    off(ownerDocument, "pointerup", this._onDrop);
+    off(ownerDocument, "pointercancel", this._onDrop);
+    off(ownerDocument, "touchcancel", this._onDrop);
+    off(document, "selectstart", this);
+  },
+  _onDrop: function _onDrop(evt) {
+    var el = this.el, options = this.options;
+    newIndex = index(dragEl);
+    newDraggableIndex = index(dragEl, options.draggable);
+    pluginEvent2("drop", this, {
+      evt
+    });
+    parentEl = dragEl && dragEl.parentNode;
+    newIndex = index(dragEl);
+    newDraggableIndex = index(dragEl, options.draggable);
+    if (Sortable.eventCanceled) {
+      this._nulling();
+      return;
+    }
+    awaitingDragStarted = false;
+    isCircumstantialInvert = false;
+    pastFirstInvertThresh = false;
+    clearInterval(this._loopId);
+    clearTimeout(this._dragStartTimer);
+    _cancelNextTick(this.cloneId);
+    _cancelNextTick(this._dragStartId);
+    if (this.nativeDraggable) {
+      off(document, "drop", this);
+      off(el, "dragstart", this._onDragStart);
+    }
+    this._offMoveEvents();
+    this._offUpEvents();
+    if (Safari) {
+      css(document.body, "user-select", "");
+    }
+    css(dragEl, "transform", "");
+    if (evt) {
+      if (moved) {
+        evt.cancelable && evt.preventDefault();
+        !options.dropBubble && evt.stopPropagation();
+      }
+      ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
+      if (rootEl === parentEl || putSortable && putSortable.lastPutMode !== "clone") {
+        cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
+      }
+      if (dragEl) {
+        if (this.nativeDraggable) {
+          off(dragEl, "dragend", this);
+        }
+        _disableDraggable(dragEl);
+        dragEl.style["will-change"] = "";
+        if (moved && !awaitingDragStarted) {
+          toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : this.options.ghostClass, false);
+        }
+        toggleClass(dragEl, this.options.chosenClass, false);
+        _dispatchEvent({
+          sortable: this,
+          name: "unchoose",
+          toEl: parentEl,
+          newIndex: null,
+          newDraggableIndex: null,
+          originalEvent: evt
+        });
+        if (rootEl !== parentEl) {
+          if (newIndex >= 0) {
+            _dispatchEvent({
+              rootEl: parentEl,
+              name: "add",
+              toEl: parentEl,
+              fromEl: rootEl,
+              originalEvent: evt
+            });
+            _dispatchEvent({
+              sortable: this,
+              name: "remove",
+              toEl: parentEl,
+              originalEvent: evt
+            });
+            _dispatchEvent({
+              rootEl: parentEl,
+              name: "sort",
+              toEl: parentEl,
+              fromEl: rootEl,
+              originalEvent: evt
+            });
+            _dispatchEvent({
+              sortable: this,
+              name: "sort",
+              toEl: parentEl,
+              originalEvent: evt
+            });
+          }
+          putSortable && putSortable.save();
+        } else {
+          if (newIndex !== oldIndex) {
+            if (newIndex >= 0) {
+              _dispatchEvent({
+                sortable: this,
+                name: "update",
+                toEl: parentEl,
+                originalEvent: evt
+              });
+              _dispatchEvent({
+                sortable: this,
+                name: "sort",
+                toEl: parentEl,
+                originalEvent: evt
+              });
+            }
+          }
+        }
+        if (Sortable.active) {
+          if (newIndex == null || newIndex === -1) {
+            newIndex = oldIndex;
+            newDraggableIndex = oldDraggableIndex;
+          }
+          _dispatchEvent({
+            sortable: this,
+            name: "end",
+            toEl: parentEl,
+            originalEvent: evt
+          });
+          this.save();
+        }
+      }
+    }
+    this._nulling();
+  },
+  _nulling: function _nulling() {
+    pluginEvent2("nulling", this);
+    rootEl = dragEl = parentEl = ghostEl = nextEl = cloneEl = lastDownEl = cloneHidden = tapEvt = touchEvt = moved = newIndex = newDraggableIndex = oldIndex = oldDraggableIndex = lastTarget = lastDirection = putSortable = activeGroup = Sortable.dragged = Sortable.ghost = Sortable.clone = Sortable.active = null;
+    var el = this.el;
+    savedInputChecked.forEach(function(checkEl) {
+      if (el.contains(checkEl)) {
+        checkEl.checked = true;
+      }
+    });
+    savedInputChecked.length = lastDx = lastDy = 0;
+  },
+  handleEvent: function handleEvent(evt) {
+    switch (evt.type) {
+      case "drop":
+      case "dragend":
+        this._onDrop(evt);
+        break;
+      case "dragenter":
+      case "dragover":
+        if (dragEl) {
+          this._onDragOver(evt);
+          _globalDragOver(evt);
+        }
+        break;
+      case "selectstart":
+        evt.preventDefault();
+        break;
+    }
+  },
+  /**
+   * Serializes the item into an array of string.
+   * @returns {String[]}
+   */
+  toArray: function toArray2() {
+    var order2 = [], el, children2 = this.el.children, i = 0, n2 = children2.length, options = this.options;
+    for (; i < n2; i++) {
+      el = children2[i];
+      if (closest(el, options.draggable, this.el, false)) {
+        order2.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
+      }
+    }
+    return order2;
+  },
+  /**
+   * Sorts the elements according to the array.
+   * @param  {String[]}  order  order of the items
+   */
+  sort: function sort(order2, useAnimation) {
+    var items = {}, rootEl2 = this.el;
+    this.toArray().forEach(function(id, i) {
+      var el = rootEl2.children[i];
+      if (closest(el, this.options.draggable, rootEl2, false)) {
+        items[id] = el;
+      }
+    }, this);
+    useAnimation && this.captureAnimationState();
+    order2.forEach(function(id) {
+      if (items[id]) {
+        rootEl2.removeChild(items[id]);
+        rootEl2.appendChild(items[id]);
+      }
+    });
+    useAnimation && this.animateAll();
+  },
+  /**
+   * Save the current sorting
+   */
+  save: function save() {
+    var store = this.options.store;
+    store && store.set && store.set(this);
+  },
+  /**
+   * For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
+   * @param   {HTMLElement}  el
+   * @param   {String}       [selector]  default: `options.draggable`
+   * @returns {HTMLElement|null}
+   */
+  closest: function closest$1(el, selector) {
+    return closest(el, selector || this.options.draggable, this.el, false);
+  },
+  /**
+   * Set/get option
+   * @param   {string} name
+   * @param   {*}      [value]
+   * @returns {*}
+   */
+  option: function option(name, value) {
+    var options = this.options;
+    if (value === void 0) {
+      return options[name];
+    } else {
+      var modifiedValue = PluginManager.modifyOption(this, name, value);
+      if (typeof modifiedValue !== "undefined") {
+        options[name] = modifiedValue;
+      } else {
+        options[name] = value;
+      }
+      if (name === "group") {
+        _prepareGroup(options);
+      }
+    }
+  },
+  /**
+   * Destroy
+   */
+  destroy: function destroy() {
+    pluginEvent2("destroy", this);
+    var el = this.el;
+    el[expando] = null;
+    off(el, "mousedown", this._onTapStart);
+    off(el, "touchstart", this._onTapStart);
+    off(el, "pointerdown", this._onTapStart);
+    if (this.nativeDraggable) {
+      off(el, "dragover", this);
+      off(el, "dragenter", this);
+    }
+    Array.prototype.forEach.call(el.querySelectorAll("[draggable]"), function(el2) {
+      el2.removeAttribute("draggable");
+    });
+    this._onDrop();
+    this._disableDelayedDragEvents();
+    sortables.splice(sortables.indexOf(this.el), 1);
+    this.el = el = null;
+  },
+  _hideClone: function _hideClone() {
+    if (!cloneHidden) {
+      pluginEvent2("hideClone", this);
+      if (Sortable.eventCanceled)
+        return;
+      css(cloneEl, "display", "none");
+      if (this.options.removeCloneOnHide && cloneEl.parentNode) {
+        cloneEl.parentNode.removeChild(cloneEl);
+      }
+      cloneHidden = true;
+    }
+  },
+  _showClone: function _showClone(putSortable2) {
+    if (putSortable2.lastPutMode !== "clone") {
+      this._hideClone();
+      return;
+    }
+    if (cloneHidden) {
+      pluginEvent2("showClone", this);
+      if (Sortable.eventCanceled)
+        return;
+      if (dragEl.parentNode == rootEl && !this.options.group.revertClone) {
+        rootEl.insertBefore(cloneEl, dragEl);
+      } else if (nextEl) {
+        rootEl.insertBefore(cloneEl, nextEl);
+      } else {
+        rootEl.appendChild(cloneEl);
+      }
+      if (this.options.group.revertClone) {
+        this.animate(dragEl, cloneEl);
+      }
+      css(cloneEl, "display", "");
+      cloneHidden = false;
+    }
+  }
+};
+function _globalDragOver(evt) {
+  if (evt.dataTransfer) {
+    evt.dataTransfer.dropEffect = "move";
+  }
+  evt.cancelable && evt.preventDefault();
+}
+function _onMove(fromEl, toEl, dragEl2, dragRect, targetEl, targetRect, originalEvent, willInsertAfter) {
+  var evt, sortable = fromEl[expando], onMoveFn = sortable.options.onMove, retVal;
+  if (window.CustomEvent && !IE11OrLess && !Edge) {
+    evt = new CustomEvent("move", {
+      bubbles: true,
+      cancelable: true
+    });
+  } else {
+    evt = document.createEvent("Event");
+    evt.initEvent("move", true, true);
+  }
+  evt.to = toEl;
+  evt.from = fromEl;
+  evt.dragged = dragEl2;
+  evt.draggedRect = dragRect;
+  evt.related = targetEl || toEl;
+  evt.relatedRect = targetRect || getRect(toEl);
+  evt.willInsertAfter = willInsertAfter;
+  evt.originalEvent = originalEvent;
+  fromEl.dispatchEvent(evt);
+  if (onMoveFn) {
+    retVal = onMoveFn.call(sortable, evt, originalEvent);
+  }
+  return retVal;
+}
+function _disableDraggable(el) {
+  el.draggable = false;
+}
+function _unsilent() {
+  _silent = false;
+}
+function _ghostIsFirst(evt, vertical, sortable) {
+  var firstElRect = getRect(getChild(sortable.el, 0, sortable.options, true));
+  var childContainingRect = getChildContainingRectFromElement(sortable.el, sortable.options, ghostEl);
+  var spacer = 10;
+  return vertical ? evt.clientX < childContainingRect.left - spacer || evt.clientY < firstElRect.top && evt.clientX < firstElRect.right : evt.clientY < childContainingRect.top - spacer || evt.clientY < firstElRect.bottom && evt.clientX < firstElRect.left;
+}
+function _ghostIsLast(evt, vertical, sortable) {
+  var lastElRect = getRect(lastChild(sortable.el, sortable.options.draggable));
+  var childContainingRect = getChildContainingRectFromElement(sortable.el, sortable.options, ghostEl);
+  var spacer = 10;
+  return vertical ? evt.clientX > childContainingRect.right + spacer || evt.clientY > lastElRect.bottom && evt.clientX > lastElRect.left : evt.clientY > childContainingRect.bottom + spacer || evt.clientX > lastElRect.right && evt.clientY > lastElRect.top;
+}
+function _getSwapDirection(evt, target, targetRect, vertical, swapThreshold, invertedSwapThreshold, invertSwap, isLastTarget) {
+  var mouseOnAxis = vertical ? evt.clientY : evt.clientX, targetLength = vertical ? targetRect.height : targetRect.width, targetS1 = vertical ? targetRect.top : targetRect.left, targetS2 = vertical ? targetRect.bottom : targetRect.right, invert = false;
+  if (!invertSwap) {
+    if (isLastTarget && targetMoveDistance < targetLength * swapThreshold) {
+      if (!pastFirstInvertThresh && (lastDirection === 1 ? mouseOnAxis > targetS1 + targetLength * invertedSwapThreshold / 2 : mouseOnAxis < targetS2 - targetLength * invertedSwapThreshold / 2)) {
+        pastFirstInvertThresh = true;
+      }
+      if (!pastFirstInvertThresh) {
+        if (lastDirection === 1 ? mouseOnAxis < targetS1 + targetMoveDistance : mouseOnAxis > targetS2 - targetMoveDistance) {
+          return -lastDirection;
+        }
+      } else {
+        invert = true;
+      }
+    } else {
+      if (mouseOnAxis > targetS1 + targetLength * (1 - swapThreshold) / 2 && mouseOnAxis < targetS2 - targetLength * (1 - swapThreshold) / 2) {
+        return _getInsertDirection(target);
+      }
+    }
+  }
+  invert = invert || invertSwap;
+  if (invert) {
+    if (mouseOnAxis < targetS1 + targetLength * invertedSwapThreshold / 2 || mouseOnAxis > targetS2 - targetLength * invertedSwapThreshold / 2) {
+      return mouseOnAxis > targetS1 + targetLength / 2 ? 1 : -1;
+    }
+  }
+  return 0;
+}
+function _getInsertDirection(target) {
+  if (index(dragEl) < index(target)) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
+function _generateId(el) {
+  var str = el.tagName + el.className + el.src + el.href + el.textContent, i = str.length, sum = 0;
+  while (i--) {
+    sum += str.charCodeAt(i);
+  }
+  return sum.toString(36);
+}
+function _saveInputCheckedState(root) {
+  savedInputChecked.length = 0;
+  var inputs = root.getElementsByTagName("input");
+  var idx = inputs.length;
+  while (idx--) {
+    var el = inputs[idx];
+    el.checked && savedInputChecked.push(el);
+  }
+}
+function _nextTick(fn2) {
+  return setTimeout(fn2, 0);
+}
+function _cancelNextTick(id) {
+  return clearTimeout(id);
+}
+if (documentExists) {
+  on(document, "touchmove", function(evt) {
+    if ((Sortable.active || awaitingDragStarted) && evt.cancelable) {
+      evt.preventDefault();
+    }
+  });
+}
+Sortable.utils = {
+  on,
+  off,
+  css,
+  find,
+  is: function is(el, selector) {
+    return !!closest(el, selector, el, false);
+  },
+  extend: extend2,
+  throttle,
+  closest,
+  toggleClass,
+  clone: clone3,
+  index,
+  nextTick: _nextTick,
+  cancelNextTick: _cancelNextTick,
+  detectDirection: _detectDirection,
+  getChild,
+  expando
+};
+Sortable.get = function(element2) {
+  return element2[expando];
+};
+Sortable.mount = function() {
+  for (var _len = arguments.length, plugins2 = new Array(_len), _key = 0; _key < _len; _key++) {
+    plugins2[_key] = arguments[_key];
+  }
+  if (plugins2[0].constructor === Array)
+    plugins2 = plugins2[0];
+  plugins2.forEach(function(plugin) {
+    if (!plugin.prototype || !plugin.prototype.constructor) {
+      throw "Sortable: Mounted plugin must be a constructor function, not ".concat({}.toString.call(plugin));
+    }
+    if (plugin.utils)
+      Sortable.utils = _objectSpread2(_objectSpread2({}, Sortable.utils), plugin.utils);
+    PluginManager.mount(plugin);
+  });
+};
+Sortable.create = function(el, options) {
+  return new Sortable(el, options);
+};
+Sortable.version = version2;
+var autoScrolls = [];
+var scrollEl;
+var scrollRootEl;
+var scrolling = false;
+var lastAutoScrollX;
+var lastAutoScrollY;
+var touchEvt$1;
+var pointerElemChangedInterval;
+function AutoScrollPlugin() {
+  function AutoScroll() {
+    this.defaults = {
+      scroll: true,
+      forceAutoScrollFallback: false,
+      scrollSensitivity: 30,
+      scrollSpeed: 10,
+      bubbleScroll: true
+    };
+    for (var fn2 in this) {
+      if (fn2.charAt(0) === "_" && typeof this[fn2] === "function") {
+        this[fn2] = this[fn2].bind(this);
+      }
+    }
+  }
+  AutoScroll.prototype = {
+    dragStarted: function dragStarted(_ref) {
+      var originalEvent = _ref.originalEvent;
+      if (this.sortable.nativeDraggable) {
+        on(document, "dragover", this._handleAutoScroll);
+      } else {
+        if (this.options.supportPointer) {
+          on(document, "pointermove", this._handleFallbackAutoScroll);
+        } else if (originalEvent.touches) {
+          on(document, "touchmove", this._handleFallbackAutoScroll);
+        } else {
+          on(document, "mousemove", this._handleFallbackAutoScroll);
+        }
+      }
+    },
+    dragOverCompleted: function dragOverCompleted(_ref2) {
+      var originalEvent = _ref2.originalEvent;
+      if (!this.options.dragOverBubble && !originalEvent.rootEl) {
+        this._handleAutoScroll(originalEvent);
+      }
+    },
+    drop: function drop3() {
+      if (this.sortable.nativeDraggable) {
+        off(document, "dragover", this._handleAutoScroll);
+      } else {
+        off(document, "pointermove", this._handleFallbackAutoScroll);
+        off(document, "touchmove", this._handleFallbackAutoScroll);
+        off(document, "mousemove", this._handleFallbackAutoScroll);
+      }
+      clearPointerElemChangedInterval();
+      clearAutoScrolls();
+      cancelThrottle();
+    },
+    nulling: function nulling() {
+      touchEvt$1 = scrollRootEl = scrollEl = scrolling = pointerElemChangedInterval = lastAutoScrollX = lastAutoScrollY = null;
+      autoScrolls.length = 0;
+    },
+    _handleFallbackAutoScroll: function _handleFallbackAutoScroll(evt) {
+      this._handleAutoScroll(evt, true);
+    },
+    _handleAutoScroll: function _handleAutoScroll(evt, fallback) {
+      var _this = this;
+      var x = (evt.touches ? evt.touches[0] : evt).clientX, y = (evt.touches ? evt.touches[0] : evt).clientY, elem = document.elementFromPoint(x, y);
+      touchEvt$1 = evt;
+      if (fallback || this.options.forceAutoScrollFallback || Edge || IE11OrLess || Safari) {
+        autoScroll(evt, this.options, elem, fallback);
+        var ogElemScroller = getParentAutoScrollElement(elem, true);
+        if (scrolling && (!pointerElemChangedInterval || x !== lastAutoScrollX || y !== lastAutoScrollY)) {
+          pointerElemChangedInterval && clearPointerElemChangedInterval();
+          pointerElemChangedInterval = setInterval(function() {
+            var newElem = getParentAutoScrollElement(document.elementFromPoint(x, y), true);
+            if (newElem !== ogElemScroller) {
+              ogElemScroller = newElem;
+              clearAutoScrolls();
+            }
+            autoScroll(evt, _this.options, newElem, fallback);
+          }, 10);
+          lastAutoScrollX = x;
+          lastAutoScrollY = y;
+        }
+      } else {
+        if (!this.options.bubbleScroll || getParentAutoScrollElement(elem, true) === getWindowScrollingElement()) {
+          clearAutoScrolls();
+          return;
+        }
+        autoScroll(evt, this.options, getParentAutoScrollElement(elem, false), false);
+      }
+    }
+  };
+  return _extends(AutoScroll, {
+    pluginName: "scroll",
+    initializeByDefault: true
+  });
+}
+function clearAutoScrolls() {
+  autoScrolls.forEach(function(autoScroll2) {
+    clearInterval(autoScroll2.pid);
+  });
+  autoScrolls = [];
+}
+function clearPointerElemChangedInterval() {
+  clearInterval(pointerElemChangedInterval);
+}
+var autoScroll = throttle(function(evt, options, rootEl2, isFallback) {
+  if (!options.scroll)
+    return;
+  var x = (evt.touches ? evt.touches[0] : evt).clientX, y = (evt.touches ? evt.touches[0] : evt).clientY, sens = options.scrollSensitivity, speed = options.scrollSpeed, winScroller = getWindowScrollingElement();
+  var scrollThisInstance = false, scrollCustomFn;
+  if (scrollRootEl !== rootEl2) {
+    scrollRootEl = rootEl2;
+    clearAutoScrolls();
+    scrollEl = options.scroll;
+    scrollCustomFn = options.scrollFn;
+    if (scrollEl === true) {
+      scrollEl = getParentAutoScrollElement(rootEl2, true);
+    }
+  }
+  var layersOut = 0;
+  var currentParent = scrollEl;
+  do {
+    var el = currentParent, rect = getRect(el), top2 = rect.top, bottom2 = rect.bottom, left2 = rect.left, right2 = rect.right, width = rect.width, height = rect.height, canScrollX = void 0, canScrollY = void 0, scrollWidth = el.scrollWidth, scrollHeight = el.scrollHeight, elCSS = css(el), scrollPosX = el.scrollLeft, scrollPosY = el.scrollTop;
+    if (el === winScroller) {
+      canScrollX = width < scrollWidth && (elCSS.overflowX === "auto" || elCSS.overflowX === "scroll" || elCSS.overflowX === "visible");
+      canScrollY = height < scrollHeight && (elCSS.overflowY === "auto" || elCSS.overflowY === "scroll" || elCSS.overflowY === "visible");
+    } else {
+      canScrollX = width < scrollWidth && (elCSS.overflowX === "auto" || elCSS.overflowX === "scroll");
+      canScrollY = height < scrollHeight && (elCSS.overflowY === "auto" || elCSS.overflowY === "scroll");
+    }
+    var vx = canScrollX && (Math.abs(right2 - x) <= sens && scrollPosX + width < scrollWidth) - (Math.abs(left2 - x) <= sens && !!scrollPosX);
+    var vy = canScrollY && (Math.abs(bottom2 - y) <= sens && scrollPosY + height < scrollHeight) - (Math.abs(top2 - y) <= sens && !!scrollPosY);
+    if (!autoScrolls[layersOut]) {
+      for (var i = 0; i <= layersOut; i++) {
+        if (!autoScrolls[i]) {
+          autoScrolls[i] = {};
+        }
+      }
+    }
+    if (autoScrolls[layersOut].vx != vx || autoScrolls[layersOut].vy != vy || autoScrolls[layersOut].el !== el) {
+      autoScrolls[layersOut].el = el;
+      autoScrolls[layersOut].vx = vx;
+      autoScrolls[layersOut].vy = vy;
+      clearInterval(autoScrolls[layersOut].pid);
+      if (vx != 0 || vy != 0) {
+        scrollThisInstance = true;
+        autoScrolls[layersOut].pid = setInterval(function() {
+          if (isFallback && this.layer === 0) {
+            Sortable.active._onTouchMove(touchEvt$1);
+          }
+          var scrollOffsetY = autoScrolls[this.layer].vy ? autoScrolls[this.layer].vy * speed : 0;
+          var scrollOffsetX = autoScrolls[this.layer].vx ? autoScrolls[this.layer].vx * speed : 0;
+          if (typeof scrollCustomFn === "function") {
+            if (scrollCustomFn.call(Sortable.dragged.parentNode[expando], scrollOffsetX, scrollOffsetY, evt, touchEvt$1, autoScrolls[this.layer].el) !== "continue") {
+              return;
+            }
+          }
+          scrollBy(autoScrolls[this.layer].el, scrollOffsetX, scrollOffsetY);
+        }.bind({
+          layer: layersOut
+        }), 24);
+      }
+    }
+    layersOut++;
+  } while (options.bubbleScroll && currentParent !== winScroller && (currentParent = getParentAutoScrollElement(currentParent, false)));
+  scrolling = scrollThisInstance;
+}, 30);
+var drop = function drop2(_ref) {
+  var originalEvent = _ref.originalEvent, putSortable2 = _ref.putSortable, dragEl2 = _ref.dragEl, activeSortable = _ref.activeSortable, dispatchSortableEvent = _ref.dispatchSortableEvent, hideGhostForTarget = _ref.hideGhostForTarget, unhideGhostForTarget = _ref.unhideGhostForTarget;
+  if (!originalEvent)
+    return;
+  var toSortable = putSortable2 || activeSortable;
+  hideGhostForTarget();
+  var touch = originalEvent.changedTouches && originalEvent.changedTouches.length ? originalEvent.changedTouches[0] : originalEvent;
+  var target = document.elementFromPoint(touch.clientX, touch.clientY);
+  unhideGhostForTarget();
+  if (toSortable && !toSortable.el.contains(target)) {
+    dispatchSortableEvent("spill");
+    this.onSpill({
+      dragEl: dragEl2,
+      putSortable: putSortable2
+    });
+  }
+};
+function Revert() {
+}
+Revert.prototype = {
+  startIndex: null,
+  dragStart: function dragStart(_ref2) {
+    var oldDraggableIndex2 = _ref2.oldDraggableIndex;
+    this.startIndex = oldDraggableIndex2;
+  },
+  onSpill: function onSpill(_ref3) {
+    var dragEl2 = _ref3.dragEl, putSortable2 = _ref3.putSortable;
+    this.sortable.captureAnimationState();
+    if (putSortable2) {
+      putSortable2.captureAnimationState();
+    }
+    var nextSibling = getChild(this.sortable.el, this.startIndex, this.options);
+    if (nextSibling) {
+      this.sortable.el.insertBefore(dragEl2, nextSibling);
+    } else {
+      this.sortable.el.appendChild(dragEl2);
+    }
+    this.sortable.animateAll();
+    if (putSortable2) {
+      putSortable2.animateAll();
+    }
+  },
+  drop
+};
+_extends(Revert, {
+  pluginName: "revertOnSpill"
+});
+function Remove() {
+}
+Remove.prototype = {
+  onSpill: function onSpill2(_ref4) {
+    var dragEl2 = _ref4.dragEl, putSortable2 = _ref4.putSortable;
+    var parentSortable = putSortable2 || this.sortable;
+    parentSortable.captureAnimationState();
+    dragEl2.parentNode && dragEl2.parentNode.removeChild(dragEl2);
+    parentSortable.animateAll();
+  },
+  drop
+};
+_extends(Remove, {
+  pluginName: "removeOnSpill"
+});
+Sortable.mount(new AutoScrollPlugin());
+Sortable.mount(Remove, Revert);
+var sortable_esm_default = Sortable;
+
+// src/views/NavigationOrder/SortableTree.svelte
+function add_css6(target) {
+  append_styles(target, "svelte-zxz7we", ".sortable-list.svelte-zxz7we{list-style:none;margin:0;padding:0}.sortable-item.svelte-zxz7we{user-select:none}.item-row.svelte-zxz7we{display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:var(--radius-s);cursor:default}.item-row.svelte-zxz7we:hover{background:var(--background-modifier-hover)}.drag-handle.svelte-zxz7we{cursor:grab;opacity:0.4;font-size:14px;width:16px;text-align:center}.drag-handle.svelte-zxz7we:hover{opacity:1}.folder-toggle.svelte-zxz7we{background:none;border:none;cursor:pointer;padding:0;width:16px;display:flex;align-items:center;justify-content:center;color:var(--text-muted)}.collapse-icon.svelte-zxz7we{display:inline-block;transition:transform 0.15s ease;font-size:14px}.collapse-icon.expanded.svelte-zxz7we{transform:rotate(90deg)}.file-spacer.svelte-zxz7we{width:16px}.folder-icon.svelte-zxz7we,.file-icon.svelte-zxz7we{font-size:14px;width:18px;text-align:center}.item-name.svelte-zxz7we{font-size:var(--font-ui-small)}.sortable-ghost{opacity:0.4;background:var(--background-modifier-active-hover)}.sortable-chosen{background:var(--background-modifier-hover)}");
+}
+function get_each_context6(ctx, list, i) {
+  const child_ctx = ctx.slice();
+  child_ctx[10] = list[i];
+  child_ctx[11] = list;
+  child_ctx[12] = i;
+  return child_ctx;
+}
+function create_else_block6(ctx) {
+  let span0;
+  let t0;
+  let span1;
+  return {
+    c() {
+      span0 = element("span");
+      t0 = space();
+      span1 = element("span");
+      span1.textContent = "\u{1F4C4}";
+      attr(span0, "class", "file-spacer svelte-zxz7we");
+      attr(span1, "class", "file-icon svelte-zxz7we");
+    },
+    m(target, anchor) {
+      insert(target, span0, anchor);
+      insert(target, t0, anchor);
+      insert(target, span1, anchor);
+    },
+    p: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(span0);
+        detach(t0);
+        detach(span1);
+      }
+    }
+  };
+}
+function create_if_block_16(ctx) {
+  let button;
+  let span0;
+  let t1;
+  let span1;
+  let mounted;
+  let dispose;
+  function click_handler() {
+    return (
+      /*click_handler*/
+      ctx[5](
+        /*item*/
+        ctx[10]
+      )
+    );
+  }
+  return {
+    c() {
+      button = element("button");
+      span0 = element("span");
+      span0.textContent = "\u203A";
+      t1 = space();
+      span1 = element("span");
+      span1.textContent = "\u{1F4C1}";
+      attr(span0, "class", "collapse-icon svelte-zxz7we");
+      toggle_class(
+        span0,
+        "expanded",
+        /*expandedFolders*/
+        ctx[3].has(
+          /*item*/
+          ctx[10].name
+        )
+      );
+      attr(button, "class", "folder-toggle svelte-zxz7we");
+      attr(span1, "class", "folder-icon svelte-zxz7we");
+    },
+    m(target, anchor) {
+      insert(target, button, anchor);
+      append(button, span0);
+      insert(target, t1, anchor);
+      insert(target, span1, anchor);
+      if (!mounted) {
+        dispose = listen(button, "click", click_handler);
+        mounted = true;
+      }
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      if (dirty & /*expandedFolders, items*/
+      9) {
+        toggle_class(
+          span0,
+          "expanded",
+          /*expandedFolders*/
+          ctx[3].has(
+            /*item*/
+            ctx[10].name
+          )
+        );
+      }
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(button);
+        detach(t1);
+        detach(span1);
+      }
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_if_block7(ctx) {
+  let sortabletree;
+  let updating_items;
+  let current;
+  function sortabletree_items_binding(value) {
+    ctx[6](
+      value,
+      /*item*/
+      ctx[10]
+    );
+  }
+  let sortabletree_props = { depth: (
+    /*depth*/
+    ctx[1] + 1
+  ) };
+  if (
+    /*item*/
+    ctx[10].children !== void 0
+  ) {
+    sortabletree_props.items = /*item*/
+    ctx[10].children;
+  }
+  sortabletree = new SortableTree({ props: sortabletree_props });
+  binding_callbacks.push(() => bind(sortabletree, "items", sortabletree_items_binding));
+  return {
+    c() {
+      create_component(sortabletree.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(sortabletree, target, anchor);
+      current = true;
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      const sortabletree_changes = {};
+      if (dirty & /*depth*/
+      2)
+        sortabletree_changes.depth = /*depth*/
+        ctx[1] + 1;
+      if (!updating_items && dirty & /*items*/
+      1) {
+        updating_items = true;
+        sortabletree_changes.items = /*item*/
+        ctx[10].children;
+        add_flush_callback(() => updating_items = false);
+      }
+      sortabletree.$set(sortabletree_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(sortabletree.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(sortabletree.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(sortabletree, detaching);
+    }
+  };
+}
+function create_each_block6(key_1, ctx) {
+  let div1;
+  let div0;
+  let span0;
+  let t1;
+  let t2;
+  let span1;
+  let t3_value = (
+    /*item*/
+    ctx[10].name + ""
+  );
+  let t3;
+  let t4;
+  let show_if = (
+    /*item*/
+    ctx[10].isFolder && /*expandedFolders*/
+    ctx[3].has(
+      /*item*/
+      ctx[10].name
+    )
+  );
+  let t5;
+  let div1_data_name_value;
+  let current;
+  function select_block_type(ctx2, dirty) {
+    if (
+      /*item*/
+      ctx2[10].isFolder
+    )
+      return create_if_block_16;
+    return create_else_block6;
+  }
+  let current_block_type = select_block_type(ctx, -1);
+  let if_block0 = current_block_type(ctx);
+  let if_block1 = show_if && create_if_block7(ctx);
+  return {
+    key: key_1,
+    first: null,
+    c() {
+      div1 = element("div");
+      div0 = element("div");
+      span0 = element("span");
+      span0.textContent = "\u283F";
+      t1 = space();
+      if_block0.c();
+      t2 = space();
+      span1 = element("span");
+      t3 = text(t3_value);
+      t4 = space();
+      if (if_block1)
+        if_block1.c();
+      t5 = space();
+      attr(span0, "class", "drag-handle svelte-zxz7we");
+      attr(span1, "class", "item-name svelte-zxz7we");
+      attr(div0, "class", "item-row svelte-zxz7we");
+      set_style(
+        div0,
+        "padding-left",
+        /*depth*/
+        ctx[1] * 16 + "px"
+      );
+      attr(div1, "class", "sortable-item svelte-zxz7we");
+      attr(div1, "data-name", div1_data_name_value = /*item*/
+      ctx[10].name);
+      this.first = div1;
+    },
+    m(target, anchor) {
+      insert(target, div1, anchor);
+      append(div1, div0);
+      append(div0, span0);
+      append(div0, t1);
+      if_block0.m(div0, null);
+      append(div0, t2);
+      append(div0, span1);
+      append(span1, t3);
+      append(div1, t4);
+      if (if_block1)
+        if_block1.m(div1, null);
+      append(div1, t5);
+      current = true;
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      if (current_block_type === (current_block_type = select_block_type(ctx, dirty)) && if_block0) {
+        if_block0.p(ctx, dirty);
+      } else {
+        if_block0.d(1);
+        if_block0 = current_block_type(ctx);
+        if (if_block0) {
+          if_block0.c();
+          if_block0.m(div0, t2);
+        }
+      }
+      if ((!current || dirty & /*items*/
+      1) && t3_value !== (t3_value = /*item*/
+      ctx[10].name + ""))
+        set_data(t3, t3_value);
+      if (!current || dirty & /*depth*/
+      2) {
+        set_style(
+          div0,
+          "padding-left",
+          /*depth*/
+          ctx[1] * 16 + "px"
+        );
+      }
+      if (dirty & /*items, expandedFolders*/
+      9)
+        show_if = /*item*/
+        ctx[10].isFolder && /*expandedFolders*/
+        ctx[3].has(
+          /*item*/
+          ctx[10].name
+        );
+      if (show_if) {
+        if (if_block1) {
+          if_block1.p(ctx, dirty);
+          if (dirty & /*items, expandedFolders*/
+          9) {
+            transition_in(if_block1, 1);
+          }
+        } else {
+          if_block1 = create_if_block7(ctx);
+          if_block1.c();
+          transition_in(if_block1, 1);
+          if_block1.m(div1, t5);
+        }
+      } else if (if_block1) {
+        group_outros();
+        transition_out(if_block1, 1, 1, () => {
+          if_block1 = null;
+        });
+        check_outros();
+      }
+      if (!current || dirty & /*items*/
+      1 && div1_data_name_value !== (div1_data_name_value = /*item*/
+      ctx[10].name)) {
+        attr(div1, "data-name", div1_data_name_value);
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(if_block1);
+      current = true;
+    },
+    o(local) {
+      transition_out(if_block1);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div1);
+      }
+      if_block0.d();
+      if (if_block1)
+        if_block1.d();
+    }
+  };
+}
+function create_fragment9(ctx) {
+  let div;
+  let each_blocks = [];
+  let each_1_lookup = /* @__PURE__ */ new Map();
+  let current;
+  let each_value = ensure_array_like(
+    /*items*/
+    ctx[0]
+  );
+  const get_key = (ctx2) => (
+    /*item*/
+    ctx2[10].name
+  );
+  for (let i = 0; i < each_value.length; i += 1) {
+    let child_ctx = get_each_context6(ctx, each_value, i);
+    let key = get_key(child_ctx);
+    each_1_lookup.set(key, each_blocks[i] = create_each_block6(key, child_ctx));
+  }
+  return {
+    c() {
+      div = element("div");
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
+      attr(div, "class", "sortable-list svelte-zxz7we");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        if (each_blocks[i]) {
+          each_blocks[i].m(div, null);
+        }
+      }
+      ctx[7](div);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      if (dirty & /*items, depth, expandedFolders, toggleFolder*/
+      27) {
+        each_value = ensure_array_like(
+          /*items*/
+          ctx2[0]
+        );
+        group_outros();
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx2, each_value, each_1_lookup, div, outro_and_destroy_block, create_each_block6, null, get_each_context6);
+        check_outros();
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      for (let i = 0; i < each_value.length; i += 1) {
+        transition_in(each_blocks[i]);
+      }
+      current = true;
+    },
+    o(local) {
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        transition_out(each_blocks[i]);
+      }
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].d();
+      }
+      ctx[7](null);
+    }
+  };
+}
+function instance9($$self, $$props, $$invalidate) {
+  let { items = [] } = $$props;
+  let { depth = 0 } = $$props;
+  let listEl;
+  let sortableInstance = null;
+  let expandedFolders = /* @__PURE__ */ new Set();
+  function toggleFolder(name) {
+    if (expandedFolders.has(name)) {
+      expandedFolders.delete(name);
+    } else {
+      expandedFolders.add(name);
+    }
+    $$invalidate(3, expandedFolders);
+  }
+  function initSortable(el) {
+    sortableInstance = sortable_esm_default.create(el, {
+      animation: 150,
+      handle: ".drag-handle",
+      ghostClass: "sortable-ghost",
+      chosenClass: "sortable-chosen",
+      group: {
+        name: `level-${depth}`,
+        pull: false,
+        put: false
+      },
+      onEnd: (evt) => {
+        if (evt.oldIndex == null || evt.newIndex == null)
+          return;
+        if (evt.oldIndex === evt.newIndex)
+          return;
+        const moved2 = items.splice(evt.oldIndex, 1)[0];
+        items.splice(evt.newIndex, 0, moved2);
+        $$invalidate(0, items);
+      }
+    });
+  }
+  onMount(() => {
+    if (listEl) {
+      initSortable(listEl);
+    }
+  });
+  onDestroy(() => {
+    sortableInstance === null || sortableInstance === void 0 ? void 0 : sortableInstance.destroy();
+  });
+  const click_handler = (item) => toggleFolder(item.name);
+  function sortabletree_items_binding(value, item) {
+    if ($$self.$$.not_equal(item.children, value)) {
+      item.children = value;
+      $$invalidate(0, items);
+    }
+  }
+  function div_binding($$value) {
+    binding_callbacks[$$value ? "unshift" : "push"](() => {
+      listEl = $$value;
+      $$invalidate(2, listEl);
+    });
+  }
+  $$self.$$set = ($$props2) => {
+    if ("items" in $$props2)
+      $$invalidate(0, items = $$props2.items);
+    if ("depth" in $$props2)
+      $$invalidate(1, depth = $$props2.depth);
+  };
+  return [
+    items,
+    depth,
+    listEl,
+    expandedFolders,
+    toggleFolder,
+    click_handler,
+    sortabletree_items_binding,
+    div_binding
+  ];
+}
+var SortableTree = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(this, options, instance9, create_fragment9, safe_not_equal, { items: 0, depth: 1 }, add_css6);
+  }
+};
+var SortableTree_default = SortableTree;
+
+// src/views/NavigationOrder/NavigationOrderView.svelte
+function add_css7(target) {
+  append_styles(target, "svelte-1sm3l95", ".navigation-order-container.svelte-1sm3l95{display:flex;flex-direction:column;min-height:300px;max-height:60vh}.loading-container.svelte-1sm3l95{display:flex;align-items:center;justify-content:center;padding:2rem}.error-container.svelte-1sm3l95{padding:1rem}.error-text.svelte-1sm3l95{color:var(--text-error)}.description.svelte-1sm3l95{margin-bottom:0.5rem;color:var(--text-muted);font-size:var(--font-ui-small)}.tree-container.svelte-1sm3l95{flex:1;overflow-y:auto;border:1px solid var(--background-modifier-border);border-radius:var(--radius-s);padding:0.5rem;margin-bottom:1rem}.button-container.svelte-1sm3l95{display:flex;justify-content:space-between;align-items:center;gap:0.5rem}.right-buttons.svelte-1sm3l95{display:flex;gap:0.5rem}.reset-button.svelte-1sm3l95{color:var(--text-error)}.dg-navigation-order-modal{width:500px;max-width:90vw}.dg-navigation-order-modal .modal-content{max-height:70vh;overflow:hidden;display:flex;flex-direction:column}");
+}
+function create_else_block7(ctx) {
+  let p;
+  let t1;
+  let div0;
+  let sortabletree;
+  let updating_items;
+  let t2;
+  let div2;
+  let button0;
+  let t3;
+  let t4;
+  let div1;
+  let button1;
+  let t5;
+  let t6;
+  let button2;
+  let t7_value = (
+    /*saving*/
+    ctx[2] ? "Saving..." : "Save"
+  );
+  let t7;
+  let current;
+  let mounted;
+  let dispose;
+  function sortabletree_items_binding(value) {
+    ctx[12](value);
+  }
+  let sortabletree_props = {};
+  if (
+    /*tree*/
+    ctx[4] !== void 0
+  ) {
+    sortabletree_props.items = /*tree*/
+    ctx[4];
+  }
+  sortabletree = new SortableTree_default({ props: sortabletree_props });
+  binding_callbacks.push(() => bind(sortabletree, "items", sortabletree_items_binding));
+  return {
+    c() {
+      p = element("p");
+      p.textContent = "Drag and drop to reorder the navigation items on your site.";
+      t1 = space();
+      div0 = element("div");
+      create_component(sortabletree.$$.fragment);
+      t2 = space();
+      div2 = element("div");
+      button0 = element("button");
+      t3 = text("Reset to default");
+      t4 = space();
+      div1 = element("div");
+      button1 = element("button");
+      t5 = text("Cancel");
+      t6 = space();
+      button2 = element("button");
+      t7 = text(t7_value);
+      attr(p, "class", "description svelte-1sm3l95");
+      attr(div0, "class", "tree-container svelte-1sm3l95");
+      button0.disabled = /*saving*/
+      ctx[2];
+      attr(button0, "class", "reset-button svelte-1sm3l95");
+      button1.disabled = /*saving*/
+      ctx[2];
+      button2.disabled = /*saving*/
+      ctx[2];
+      attr(button2, "class", "mod-cta");
+      attr(div1, "class", "right-buttons svelte-1sm3l95");
+      attr(div2, "class", "button-container svelte-1sm3l95");
+    },
+    m(target, anchor) {
+      insert(target, p, anchor);
+      insert(target, t1, anchor);
+      insert(target, div0, anchor);
+      mount_component(sortabletree, div0, null);
+      insert(target, t2, anchor);
+      insert(target, div2, anchor);
+      append(div2, button0);
+      append(button0, t3);
+      append(div2, t4);
+      append(div2, div1);
+      append(div1, button1);
+      append(button1, t5);
+      append(div1, t6);
+      append(div1, button2);
+      append(button2, t7);
+      current = true;
+      if (!mounted) {
+        dispose = [
+          listen(
+            button0,
+            "click",
+            /*handleReset*/
+            ctx[7]
+          ),
+          listen(button1, "click", function() {
+            if (is_function(
+              /*close*/
+              ctx[0]
+            ))
+              ctx[0].apply(this, arguments);
+          }),
+          listen(
+            button2,
+            "click",
+            /*handleSave*/
+            ctx[6]
+          )
+        ];
+        mounted = true;
+      }
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
+      const sortabletree_changes = {};
+      if (!updating_items && dirty & /*tree*/
+      16) {
+        updating_items = true;
+        sortabletree_changes.items = /*tree*/
+        ctx[4];
+        add_flush_callback(() => updating_items = false);
+      }
+      sortabletree.$set(sortabletree_changes);
+      if (!current || dirty & /*saving*/
+      4) {
+        button0.disabled = /*saving*/
+        ctx[2];
+      }
+      if (!current || dirty & /*saving*/
+      4) {
+        button1.disabled = /*saving*/
+        ctx[2];
+      }
+      if ((!current || dirty & /*saving*/
+      4) && t7_value !== (t7_value = /*saving*/
+      ctx[2] ? "Saving..." : "Save"))
+        set_data(t7, t7_value);
+      if (!current || dirty & /*saving*/
+      4) {
+        button2.disabled = /*saving*/
+        ctx[2];
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(sortabletree.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(sortabletree.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(p);
+        detach(t1);
+        detach(div0);
+        detach(t2);
+        detach(div2);
+      }
+      destroy_component(sortabletree);
+      mounted = false;
+      run_all(dispose);
+    }
+  };
+}
+function create_if_block_17(ctx) {
+  let div;
+  let p;
+  let t0;
+  let t1;
+  let button;
+  let mounted;
+  let dispose;
+  return {
+    c() {
+      div = element("div");
+      p = element("p");
+      t0 = text(
+        /*error*/
+        ctx[3]
+      );
+      t1 = space();
+      button = element("button");
+      button.textContent = "Retry";
+      attr(p, "class", "error-text svelte-1sm3l95");
+      attr(div, "class", "error-container svelte-1sm3l95");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      append(div, p);
+      append(p, t0);
+      append(div, t1);
+      append(div, button);
+      if (!mounted) {
+        dispose = listen(
+          button,
+          "click",
+          /*loadTree*/
+          ctx[5]
+        );
+        mounted = true;
+      }
+    },
+    p(ctx2, dirty) {
+      if (dirty & /*error*/
+      8)
+        set_data(
+          t0,
+          /*error*/
+          ctx2[3]
+        );
+    },
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_if_block8(ctx) {
+  let div1;
+  return {
+    c() {
+      div1 = element("div");
+      div1.innerHTML = `<div class="loading-text">Loading navigation...</div>`;
+      attr(div1, "class", "loading-container svelte-1sm3l95");
+    },
+    m(target, anchor) {
+      insert(target, div1, anchor);
+    },
+    p: noop,
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(div1);
+      }
+    }
+  };
+}
+function create_fragment10(ctx) {
+  let div;
+  let current_block_type_index;
+  let if_block;
+  let current;
+  const if_block_creators = [create_if_block8, create_if_block_17, create_else_block7];
+  const if_blocks = [];
+  function select_block_type(ctx2, dirty) {
+    if (
+      /*loading*/
+      ctx2[1]
+    )
+      return 0;
+    if (
+      /*error*/
+      ctx2[3]
+    )
+      return 1;
+    return 2;
+  }
+  current_block_type_index = select_block_type(ctx, -1);
+  if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+  return {
+    c() {
+      div = element("div");
+      if_block.c();
+      attr(div, "class", "navigation-order-container svelte-1sm3l95");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      if_blocks[current_block_type_index].m(div, null);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      let previous_block_index = current_block_type_index;
+      current_block_type_index = select_block_type(ctx2, dirty);
+      if (current_block_type_index === previous_block_index) {
+        if_blocks[current_block_type_index].p(ctx2, dirty);
+      } else {
+        group_outros();
+        transition_out(if_blocks[previous_block_index], 1, 1, () => {
+          if_blocks[previous_block_index] = null;
+        });
+        check_outros();
+        if_block = if_blocks[current_block_type_index];
+        if (!if_block) {
+          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
+          if_block.c();
+        } else {
+          if_block.p(ctx2, dirty);
+        }
+        transition_in(if_block, 1);
+        if_block.m(div, null);
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(if_block);
+      current = true;
+    },
+    o(local) {
+      transition_out(if_block);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+      if_blocks[current_block_type_index].d();
+    }
+  };
+}
+var NAV_ORDER_PATH = "src/site/_data/navigationOrder.json";
+function convertToTreeItems(obj) {
+  const items = [];
+  for (const [name, value] of Object.entries(obj)) {
+    if (value.__isFile) {
+      items.push({ name, isFolder: false, children: [] });
+    } else {
+      const children2 = convertToTreeItems(value);
+      items.push({ name, isFolder: true, children: children2 });
+    }
+  }
+  items.sort((a, b) => {
+    if (a.isFolder && !b.isFolder)
+      return -1;
+    if (!a.isFolder && b.isFolder)
+      return 1;
+    return a.name.localeCompare(b.name);
+  });
+  return items;
+}
+function applyOrdering(items, ordering, path2) {
+  const orderList = ordering[path2];
+  let result;
+  if (orderList && Array.isArray(orderList)) {
+    const itemMap = new Map(items.map((item) => [item.name, item]));
+    const ordered = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const name of orderList) {
+      const item = itemMap.get(name);
+      if (item) {
+        ordered.push(item);
+        seen.add(name);
+      }
+    }
+    for (const item of items) {
+      if (!seen.has(item.name)) {
+        ordered.push(item);
+      }
+    }
+    result = ordered;
+  } else {
+    result = items;
+  }
+  for (const item of result) {
+    if (item.isFolder && item.children.length > 0) {
+      const childPath = path2 === "/" ? `/${item.name}` : `${path2}/${item.name}`;
+      item.children = applyOrdering(item.children, ordering, childPath);
+    }
+  }
+  return result;
+}
+function extractOrdering(items, path2) {
+  let ordering = {};
+  ordering[path2] = items.map((item) => item.name);
+  for (const item of items) {
+    if (item.isFolder && item.children.length > 0) {
+      const childPath = path2 === "/" ? `/${item.name}` : `${path2}/${item.name}`;
+      const childOrdering = extractOrdering(item.children, childPath);
+      ordering = Object.assign(Object.assign({}, ordering), childOrdering);
+    }
+  }
+  return ordering;
+}
+function instance10($$self, $$props, $$invalidate) {
+  let { repositoryConnection } = $$props;
+  let { publisher } = $$props;
+  let { settings } = $$props;
+  let { saveSettings } = $$props;
+  let { close } = $$props;
+  let loading = true;
+  let saving = false;
+  let error = null;
+  let tree = [];
+  let remoteSha = null;
+  onMount(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield loadTree();
+  }));
+  function fetchRemoteOrdering() {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        const file = yield repositoryConnection.getFile(NAV_ORDER_PATH);
+        if (file && file.content) {
+          const content = gBase64.decode(file.content);
+          return {
+            order: JSON.parse(content),
+            sha: file.sha
+          };
+        }
+      } catch (_a2) {
+      }
+      return { order: {}, sha: null };
+    });
+  }
+  function buildPublishedTree() {
+    return __awaiter(this, void 0, void 0, function* () {
+      const { notes } = yield publisher.getFilesMarkedForPublishing();
+      const rewriteRules = getRewriteRules(settings.pathRewriteRules);
+      const root = {};
+      for (const note of notes) {
+        const vaultPath = note.getPath();
+        const frontmatter = note.getFrontmatter();
+        const gardenPath = (frontmatter === null || frontmatter === void 0 ? void 0 : frontmatter["dg-path"]) ? frontmatter["dg-path"] : getGardenPathForNote(vaultPath, rewriteRules);
+        const parts = gardenPath.split("/");
+        const lastIdx = parts.length - 1;
+        const dotIdx = parts[lastIdx].lastIndexOf(".");
+        if (dotIdx > 0) {
+          parts[lastIdx] = parts[lastIdx].substring(0, dotIdx);
+        }
+        let current = root;
+        for (let i = 0; i < parts.length; i++) {
+          const part = parts[i];
+          if (!current[part]) {
+            current[part] = i === parts.length - 1 ? { __isFile: true } : {};
+          }
+          if (i < parts.length - 1) {
+            current = current[part];
+          }
+        }
+      }
+      return convertToTreeItems(root);
+    });
+  }
+  function loadTree() {
+    return __awaiter(this, void 0, void 0, function* () {
+      $$invalidate(1, loading = true);
+      $$invalidate(3, error = null);
+      try {
+        const [{ order: order2, sha }, publishedTree] = yield Promise.all([fetchRemoteOrdering(), buildPublishedTree()]);
+        remoteSha = sha;
+        $$invalidate(4, tree = applyOrdering(publishedTree, order2, "/"));
+        $$invalidate(8, settings.navigationOrder = Object.keys(order2).length > 0 ? order2 : void 0, settings);
+        yield saveSettings();
+      } catch (e) {
+        $$invalidate(3, error = `Failed to load navigation data: ${e.message}`);
+      } finally {
+        $$invalidate(1, loading = false);
+      }
+    });
+  }
+  function handleSave() {
+    return __awaiter(this, void 0, void 0, function* () {
+      $$invalidate(2, saving = true);
+      try {
+        const ordering = extractOrdering(tree, "/");
+        const content = JSON.stringify(ordering, null, 2);
+        const encoded = gBase64.encode(content);
+        yield repositoryConnection.updateFile({
+          path: NAV_ORDER_PATH,
+          content: encoded,
+          message: "Update navigation ordering",
+          sha: remoteSha !== null && remoteSha !== void 0 ? remoteSha : void 0
+        });
+        $$invalidate(8, settings.navigationOrder = ordering, settings);
+        yield saveSettings();
+        new import_obsidian15.Notice("Navigation ordering saved!");
+        close();
+      } catch (e) {
+        $$invalidate(3, error = `Failed to save: ${e.message}`);
+      } finally {
+        $$invalidate(2, saving = false);
+      }
+    });
+  }
+  function handleReset() {
+    return __awaiter(this, void 0, void 0, function* () {
+      if (!remoteSha) {
+        new import_obsidian15.Notice("No custom ordering to reset.");
+        return;
+      }
+      $$invalidate(2, saving = true);
+      try {
+        yield repositoryConnection.deleteFile(NAV_ORDER_PATH, { sha: remoteSha });
+        $$invalidate(8, settings.navigationOrder = void 0, settings);
+        yield saveSettings();
+        new import_obsidian15.Notice("Navigation ordering reset to default.");
+        close();
+      } catch (e) {
+        $$invalidate(3, error = `Failed to reset: ${e.message}`);
+      } finally {
+        $$invalidate(2, saving = false);
+      }
+    });
+  }
+  function sortabletree_items_binding(value) {
+    tree = value;
+    $$invalidate(4, tree);
+  }
+  $$self.$$set = ($$props2) => {
+    if ("repositoryConnection" in $$props2)
+      $$invalidate(9, repositoryConnection = $$props2.repositoryConnection);
+    if ("publisher" in $$props2)
+      $$invalidate(10, publisher = $$props2.publisher);
+    if ("settings" in $$props2)
+      $$invalidate(8, settings = $$props2.settings);
+    if ("saveSettings" in $$props2)
+      $$invalidate(11, saveSettings = $$props2.saveSettings);
+    if ("close" in $$props2)
+      $$invalidate(0, close = $$props2.close);
+  };
+  return [
+    close,
+    loading,
+    saving,
+    error,
+    tree,
+    loadTree,
+    handleSave,
+    handleReset,
+    settings,
+    repositoryConnection,
+    publisher,
+    saveSettings,
+    sortabletree_items_binding
+  ];
+}
+var NavigationOrderView = class extends SvelteComponent {
+  constructor(options) {
+    super();
+    init(
+      this,
+      options,
+      instance10,
+      create_fragment10,
+      safe_not_equal,
+      {
+        repositoryConnection: 9,
+        publisher: 10,
+        settings: 8,
+        saveSettings: 11,
+        close: 0
+      },
+      add_css7
+    );
+  }
+};
+var NavigationOrderView_default = NavigationOrderView;
+
+// src/views/NavigationOrder/NavigationOrderModal.ts
+var NavigationOrderModal = class {
+  constructor(app, repositoryConnection, publisher, settings, saveSettings) {
+    this.repositoryConnection = repositoryConnection;
+    this.publisher = publisher;
+    this.settings = settings;
+    this.saveSettings = saveSettings;
+    this.open = () => {
+      this.modal.onClose = () => {
+        var _a2;
+        (_a2 = this.view) == null ? void 0 : _a2.$destroy();
+      };
+      this.modal.onOpen = () => {
+        this.modal.contentEl.empty();
+        this.modal.contentEl.addClass("dg-navigation-order-modal");
+        this.view = new NavigationOrderView_default({
+          target: this.modal.contentEl,
+          props: {
+            repositoryConnection: this.repositoryConnection,
+            publisher: this.publisher,
+            settings: this.settings,
+            saveSettings: this.saveSettings,
+            close: () => this.modal.close()
+          }
+        });
+      };
+      this.modal.open();
+    };
+    this.modal = new import_obsidian16.Modal(app);
+    this.modal.titleEl.innerText = "Reorder Navigation";
+  }
+};
+
 // src/views/SettingsView/SettingView.ts
 var OBSIDIAN_THEME_URL = "https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-css-themes.json";
 var SettingView = class {
   constructor(app, settingsRootElement, settings, saveSettings) {
-    this.debouncedSaveAndUpdate = (0, import_obsidian15.debounce)(
+    this.debouncedSaveAndUpdate = (0, import_obsidian17.debounce)(
       this.saveSiteSettingsAndUpdateEnv,
       500,
       true
     );
+    this.updateSectionAnchor = null;
     this.app = app;
     this.settingsRootElement = settingsRootElement;
     this.settingsRootElement.classList.add("dg-settings");
@@ -31178,7 +34543,7 @@ var SettingView = class {
   }
   getIcon(name) {
     var _a2;
-    return (_a2 = (0, import_obsidian15.getIcon)(name)) != null ? _a2 : document.createElement("span");
+    return (_a2 = (0, import_obsidian17.getIcon)(name)) != null ? _a2 : document.createElement("span");
   }
   reInitializeSettings() {
     if (this.prModal) {
@@ -31195,14 +34560,15 @@ var SettingView = class {
       const linkDiv = this.settingsRootElement.createEl("div", {
         attr: { style: "margin-bottom: 10px;" }
       });
+      this.updateSectionAnchor = this.settingsRootElement.createDiv();
       linkDiv.createEl("span", {
         text: "Remember to read the setup guide if you haven't already. It can be found "
       });
       linkDiv.createEl("a", {
         text: "here.",
-        href: "https://dg-docs.ole.dev/getting-started/01-getting-started/"
+        href: "https://docs.forestry.md/getting-started/01-getting-started/"
       });
-      new import_obsidian15.Setting(this.settingsRootElement).setName("Publish Platform").addDropdown((dd) => {
+      new import_obsidian17.Setting(this.settingsRootElement).setName("Publish Platform").addDropdown((dd) => {
         dd.addOption("SelfHosted" /* SelfHosted */, "GitHub/Self Hosted");
         dd.addOption("ForestryMd" /* ForestryMd */, "Forestry.md");
         if (this.settings.publishPlatform === "SelfHosted" /* SelfHosted */) {
@@ -31241,8 +34607,16 @@ var SettingView = class {
       this.initializeThemesSettings();
       this.settingsRootElement.createEl("h3", { text: "Localization" }).prepend(this.getIcon("languages"));
       this.initializeUIStringsSettings();
+      new import_obsidian17.Setting(this.settingsRootElement).setName("Navigation Order").setDesc(
+        "Customize the order of files and folders in your site's navigation."
+      ).addButton((cb) => {
+        cb.setButtonText("Reorder Navigation");
+        cb.onClick(() => __async(this, null, function* () {
+          yield this.openNavigationOrderModal();
+        }));
+      });
       this.settingsRootElement.createEl("h3", { text: "Advanced" }).prepend(this.getIcon("cog"));
-      new import_obsidian15.Setting(this.settingsRootElement).setName("Path Rewrite Rules").setDesc(
+      new import_obsidian17.Setting(this.settingsRootElement).setName("Path Rewrite Rules").setDesc(
         "Define rules to rewrite note folder structure in the garden. See the modal for more information."
       ).addButton((cb) => {
         cb.setButtonText("Manage Rewrite Rules");
@@ -31251,7 +34625,7 @@ var SettingView = class {
         });
       });
       this.initializeCustomFilterSettings();
-      new import_obsidian15.Setting(this.settingsRootElement).setName("Enable debug logging").setDesc(
+      new import_obsidian17.Setting(this.settingsRootElement).setName("Enable debug logging").setDesc(
         "Show detailed logs in the developer console. Useful for troubleshooting."
       ).addToggle((toggle) => {
         toggle.setValue(this.settings.logLevel === import_js_logger9.default.DEBUG).onChange((value) => __async(this, null, function* () {
@@ -31259,6 +34633,17 @@ var SettingView = class {
           import_js_logger9.default.setLevel(value ? import_js_logger9.default.DEBUG : import_js_logger9.default.WARN);
           yield this.saveSettings();
         }));
+      });
+      this.settingsRootElement.createEl("h3", { text: "Local Export" }).prepend(this.getIcon("folder-output"));
+      new import_obsidian17.Setting(this.settingsRootElement).setName("Local garden folder path").setDesc(
+        "Absolute path to your local digital garden folder. Used by the 'Export Garden to Local Folder' command."
+      ).addText((text2) => {
+        var _a2;
+        text2.setPlaceholder("/path/to/your/digitalgarden").setValue((_a2 = this.settings.localExportPath) != null ? _a2 : "").onChange((value) => __async(this, null, function* () {
+          this.settings.localExportPath = value;
+          yield this.saveSettings();
+        }));
+        text2.inputEl.style.width = "300px";
       });
       prModal.titleEl.createEl("h1", "Site template settings");
     });
@@ -31282,7 +34667,7 @@ var SettingView = class {
   }
   initializeDefaultNoteSettings() {
     return __async(this, null, function* () {
-      const noteSettingsModal = new import_obsidian15.Modal(this.app);
+      const noteSettingsModal = new import_obsidian17.Modal(this.app);
       let hasUnsavedChanges = false;
       const toggles = {};
       noteSettingsModal.titleEl.createEl("h1", {
@@ -31294,9 +34679,9 @@ var SettingView = class {
       linkDiv.createEl("span", { text: "Note Setting Docs is available " });
       linkDiv.createEl("a", {
         text: "here.",
-        href: "https://dg-docs.ole.dev/getting-started/03-note-settings/"
+        href: "https://docs.forestry.md/getting-started/03-note-settings/"
       });
-      new import_obsidian15.Setting(this.settingsRootElement).setName("Global Note Settings").setDesc(
+      new import_obsidian17.Setting(this.settingsRootElement).setName("Global Note Settings").setDesc(
         `Default settings for each published note. These can be overwritten per note via frontmatter.`
       ).addButton((cb) => {
         cb.setButtonText("Manage note settings");
@@ -31322,7 +34707,8 @@ var SettingView = class {
         cls: "mod-cta dg-apply-settings-button"
       });
       applyButton.addEventListener("click", () => __async(this, null, function* () {
-        if (!hasUnsavedChanges) return;
+        if (!hasUnsavedChanges)
+          return;
         yield this.saveSiteSettingsAndUpdateEnv(
           this.app.metadataCache,
           this.settings,
@@ -31379,7 +34765,7 @@ var SettingView = class {
         }
       });
       updateApplyButton();
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Show home link (dg-home-link)").setDesc(
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Show home link (dg-home-link)").setDesc(
         "Determines whether to show a link back to the homepage or not."
       ).addToggle((t) => {
         toggles["dgHomeLink"] = t;
@@ -31389,7 +34775,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Show local graph for notes (dg-show-local-graph)").setDesc(
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Show local graph for notes (dg-show-local-graph)").setDesc(
         "When turned on, notes will show its local graph in a sidebar on desktop and at the bottom of the page on mobile."
       ).addToggle((t) => {
         toggles["dgShowLocalGraph"] = t;
@@ -31399,7 +34785,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Show backlinks for notes (dg-show-backlinks)").setDesc(
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Show backlinks for notes (dg-show-backlinks)").setDesc(
         "When turned on, notes will show backlinks in a sidebar on desktop and at the bottom of the page on mobile."
       ).addToggle((t) => {
         toggles["dgShowBacklinks"] = t;
@@ -31409,7 +34795,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Show a table of content for notes (dg-show-toc)").setDesc(
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Show a table of content for notes (dg-show-toc)").setDesc(
         "When turned on, notes will show all headers as a table of content in a sidebar on desktop. It will not be shown on mobile devices."
       ).addToggle((t) => {
         toggles["dgShowToc"] = t;
@@ -31419,7 +34805,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Show inline title (dg-show-inline-title)").setDesc(
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Show inline title (dg-show-inline-title)").setDesc(
         "When turned on, the title of the note will show on top of the page."
       ).addToggle((t) => {
         toggles["dgShowInlineTitle"] = t;
@@ -31429,7 +34815,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Show filetree sidebar (dg-show-file-tree)").setDesc("When turned on, a filetree will be shown on your site.").addToggle((t) => {
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Show filetree sidebar (dg-show-file-tree)").setDesc("When turned on, a filetree will be shown on your site.").addToggle((t) => {
         toggles["dgShowFileTree"] = t;
         t.setValue(this.settings.defaultNoteSettings.dgShowFileTree);
         t.onChange((val) => {
@@ -31437,7 +34823,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Enable search (dg-enable-search)").setDesc(
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Enable search (dg-enable-search)").setDesc(
         "When turned on, users will be able to search through the content of your site."
       ).addToggle((t) => {
         toggles["dgEnableSearch"] = t;
@@ -31447,7 +34833,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Enable link preview (dg-link-preview)").setDesc(
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Enable link preview (dg-link-preview)").setDesc(
         "When turned on, hovering over links to notes in your garden shows a scrollable preview."
       ).addToggle((t) => {
         toggles["dgLinkPreview"] = t;
@@ -31457,7 +34843,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Show Tags (dg-show-tags)").setDesc(
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Show Tags (dg-show-tags)").setDesc(
         "When turned on, tags in your frontmatter will be displayed on each note. If search is enabled, clicking on a tag will bring up a search for all notes containing that tag."
       ).addToggle((t) => {
         toggles["dgShowTags"] = t;
@@ -31467,7 +34853,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(noteSettingsModal.contentEl).setName("Let all frontmatter through (dg-pass-frontmatter)").setDesc(
+      new import_obsidian17.Setting(noteSettingsModal.contentEl).setName("Let all frontmatter through (dg-pass-frontmatter)").setDesc(
         "THIS WILL BREAK YOUR SITE IF YOU DON'T KNOW WHAT YOU ARE DOING! (But disabling will fix it). Determines whether to let all frontmatter data through to the site template. Be aware that this could break your site if you have data in a format not recognized by the template engine, 11ty."
       ).addToggle((t) => {
         toggles["dgPassFrontmatter"] = t;
@@ -31481,7 +34867,7 @@ var SettingView = class {
   }
   initializeUIStringsSettings() {
     return __async(this, null, function* () {
-      const uiStringsModal = new import_obsidian15.Modal(this.app);
+      const uiStringsModal = new import_obsidian17.Modal(this.app);
       uiStringsModal.containerEl.addClass("dg-settings");
       let hasUnsavedChanges = false;
       const textControls = {};
@@ -31494,7 +34880,7 @@ var SettingView = class {
       descDiv.createEl("span", {
         text: "Customize text displayed on your garden. Leave empty to use defaults."
       });
-      new import_obsidian15.Setting(this.settingsRootElement).setName("UI Text / Localization").setDesc(
+      new import_obsidian17.Setting(this.settingsRootElement).setName("UI Text / Localization").setDesc(
         "Customize labels and messages shown on your garden (Search, Backlinks, etc.)"
       ).addButton((cb) => {
         cb.setButtonText("Manage UI text");
@@ -31520,7 +34906,8 @@ var SettingView = class {
         cls: "mod-cta dg-apply-settings-button"
       });
       applyButton.addEventListener("click", () => __async(this, null, function* () {
-        if (!hasUnsavedChanges) return;
+        if (!hasUnsavedChanges)
+          return;
         yield this.saveSiteSettingsAndUpdateEnv(
           this.app.metadataCache,
           this.settings,
@@ -31587,6 +34974,41 @@ var SettingView = class {
           envKey: "UI_SEARCH_PREVIEW_PLACEHOLDER",
           controlKey: "searchPreviewPlaceholder",
           settingsKey: "searchPreviewPlaceholder"
+        },
+        {
+          envKey: "UI_SEARCH_NOT_STARTED_TEXT",
+          controlKey: "searchNotStarted",
+          settingsKey: "searchNotStarted"
+        },
+        {
+          envKey: "UI_SEARCH_ENTER_HOTKEY",
+          controlKey: "searchEnterHotkey",
+          settingsKey: "searchEnterHotkey"
+        },
+        {
+          envKey: "UI_SEARCH_NAVIGATE_HOTKEY",
+          controlKey: "searchNavigateHotkey",
+          settingsKey: "searchNavigateHotkey"
+        },
+        {
+          envKey: "UI_SEARCH_CLOSE_HOTKEY",
+          controlKey: "searchCloseHotkey",
+          settingsKey: "searchCloseHotkey"
+        },
+        {
+          envKey: "UI_CANVAS_DRAG_HINT",
+          controlKey: "canvasDragHint",
+          settingsKey: "canvasDragHint"
+        },
+        {
+          envKey: "UI_CANVAS_ZOOM_HINT",
+          controlKey: "canvasZoomHint",
+          settingsKey: "canvasZoomHint"
+        },
+        {
+          envKey: "UI_CANVAS_RESET_HINT",
+          controlKey: "canvasResetHint",
+          settingsKey: "canvasResetHint"
         }
       ];
       const loadRemoteSettings = () => __async(this, null, function* () {
@@ -31626,7 +35048,7 @@ var SettingView = class {
       });
       updateApplyButton();
       uiStringsModal.contentEl.createEl("h3", { text: "Backlinks" }).prepend(this.getIcon("link"));
-      new import_obsidian15.Setting(uiStringsModal.contentEl).setName("Backlink header").setDesc('Default: "Pages mentioning this page"').addText((text2) => {
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Backlink header").setDesc('Default: "Pages mentioning this page"').addText((text2) => {
         var _a2, _b;
         textControls["backlinkHeader"] = text2;
         text2.setPlaceholder("Pages mentioning this page").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.backlinkHeader) != null ? _b : "").onChange((val) => {
@@ -31634,7 +35056,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(uiStringsModal.contentEl).setName("No backlinks message").setDesc('Default: "No other pages mentions this page"').addText((text2) => {
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("No backlinks message").setDesc('Default: "No other pages mentions this page"').addText((text2) => {
         var _a2, _b;
         textControls["noBacklinksMessage"] = text2;
         text2.setPlaceholder("No other pages mentions this page").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.noBacklinksMessage) != null ? _b : "").onChange((val) => {
@@ -31643,7 +35065,7 @@ var SettingView = class {
         });
       });
       uiStringsModal.contentEl.createEl("h3", { text: "Search" }).prepend(this.getIcon("search"));
-      new import_obsidian15.Setting(uiStringsModal.contentEl).setName("Search button text").setDesc('Default: "Search"').addText((text2) => {
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Search button text").setDesc('Default: "Search"').addText((text2) => {
         var _a2, _b;
         textControls["searchButtonText"] = text2;
         text2.setPlaceholder("Search").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchButtonText) != null ? _b : "").onChange((val) => {
@@ -31651,7 +35073,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(uiStringsModal.contentEl).setName("Search placeholder").setDesc('Default: "Start typing..."').addText((text2) => {
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Search placeholder").setDesc('Default: "Start typing..."').addText((text2) => {
         var _a2, _b;
         textControls["searchPlaceholder"] = text2;
         text2.setPlaceholder("Start typing...").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchPlaceholder) != null ? _b : "").onChange((val) => {
@@ -31659,7 +35081,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(uiStringsModal.contentEl).setName("Enter to select hint").setDesc('Default: "Enter to select"').addText((text2) => {
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Enter to select hint").setDesc('Default: "Enter to select"').addText((text2) => {
         var _a2, _b;
         textControls["searchEnterHint"] = text2;
         text2.setPlaceholder("Enter to select").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchEnterHint) != null ? _b : "").onChange((val) => {
@@ -31667,7 +35089,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(uiStringsModal.contentEl).setName("Navigate hint").setDesc('Default: "to navigate"').addText((text2) => {
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Navigate hint").setDesc('Default: "to navigate"').addText((text2) => {
         var _a2, _b;
         textControls["searchNavigateHint"] = text2;
         text2.setPlaceholder("to navigate").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchNavigateHint) != null ? _b : "").onChange((val) => {
@@ -31675,7 +35097,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(uiStringsModal.contentEl).setName("Close hint").setDesc('Default: "ESC to close"').addText((text2) => {
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Close hint").setDesc('Default: "ESC to close"').addText((text2) => {
         var _a2, _b;
         textControls["searchCloseHint"] = text2;
         text2.setPlaceholder("ESC to close").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchCloseHint) != null ? _b : "").onChange((val) => {
@@ -31683,7 +35105,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(uiStringsModal.contentEl).setName("No results message").setDesc('Default: "No results for"').addText((text2) => {
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("No results message").setDesc('Default: "No results for"').addText((text2) => {
         var _a2, _b;
         textControls["searchNoResults"] = text2;
         text2.setPlaceholder("No results for").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchNoResults) != null ? _b : "").onChange((val) => {
@@ -31691,7 +35113,7 @@ var SettingView = class {
           markAsChanged();
         });
       });
-      new import_obsidian15.Setting(uiStringsModal.contentEl).setName("Preview placeholder text").setDesc('Default: "Select a result to preview"').addText((text2) => {
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Preview placeholder text").setDesc('Default: "Select a result to preview"').addText((text2) => {
         var _a2, _b;
         textControls["searchPreviewPlaceholder"] = text2;
         text2.setPlaceholder("Select a result to preview").setValue(
@@ -31701,11 +35123,70 @@ var SettingView = class {
           markAsChanged();
         });
       });
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Search not started text").setDesc('Default: "Enter your search text in the box above"').addText((text2) => {
+        var _a2, _b;
+        textControls["searchNotStarted"] = text2;
+        text2.setPlaceholder("Enter your search text in the box above").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchNotStarted) != null ? _b : "").onChange((val) => {
+          this.settings.uiStrings.searchNotStarted = val;
+          markAsChanged();
+        });
+      });
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Enter hotkey label").setDesc('Default: "Enter"').addText((text2) => {
+        var _a2, _b;
+        textControls["searchEnterHotkey"] = text2;
+        text2.setPlaceholder("Enter").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchEnterHotkey) != null ? _b : "").onChange((val) => {
+          this.settings.uiStrings.searchEnterHotkey = val;
+          markAsChanged();
+        });
+      });
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Navigate hotkey label").setDesc('Default: "\u21C5"').addText((text2) => {
+        var _a2, _b;
+        textControls["searchNavigateHotkey"] = text2;
+        text2.setPlaceholder("\u21C5").setValue(
+          (_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchNavigateHotkey) != null ? _b : ""
+        ).onChange((val) => {
+          this.settings.uiStrings.searchNavigateHotkey = val;
+          markAsChanged();
+        });
+      });
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Close hotkey label").setDesc('Default: "ESC"').addText((text2) => {
+        var _a2, _b;
+        textControls["searchCloseHotkey"] = text2;
+        text2.setPlaceholder("ESC").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.searchCloseHotkey) != null ? _b : "").onChange((val) => {
+          this.settings.uiStrings.searchCloseHotkey = val;
+          markAsChanged();
+        });
+      });
+      uiStringsModal.contentEl.createEl("h3", { text: "Canvas" }).addClass("dg-ui-strings-section-header");
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Drag hint").setDesc('Default: "Drag to pan"').addText((text2) => {
+        var _a2, _b;
+        textControls["canvasDragHint"] = text2;
+        text2.setPlaceholder("Drag to pan").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.canvasDragHint) != null ? _b : "").onChange((val) => {
+          this.settings.uiStrings.canvasDragHint = val;
+          markAsChanged();
+        });
+      });
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Zoom hint").setDesc('Default: "Scroll to zoom"').addText((text2) => {
+        var _a2, _b;
+        textControls["canvasZoomHint"] = text2;
+        text2.setPlaceholder("Scroll to zoom").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.canvasZoomHint) != null ? _b : "").onChange((val) => {
+          this.settings.uiStrings.canvasZoomHint = val;
+          markAsChanged();
+        });
+      });
+      new import_obsidian17.Setting(uiStringsModal.contentEl).setName("Reset hint").setDesc('Default: "Double-click to reset"').addText((text2) => {
+        var _a2, _b;
+        textControls["canvasResetHint"] = text2;
+        text2.setPlaceholder("Double-click to reset").setValue((_b = (_a2 = this.settings.uiStrings) == null ? void 0 : _a2.canvasResetHint) != null ? _b : "").onChange((val) => {
+          this.settings.uiStrings.canvasResetHint = val;
+          markAsChanged();
+        });
+      });
     });
   }
   initializeThemesSettings() {
     return __async(this, null, function* () {
-      const themeModal = new import_obsidian15.Modal(this.app);
+      const themeModal = new import_obsidian17.Modal(this.app);
       themeModal.containerEl.addClass("dg-settings");
       themeModal.titleEl.createEl("h1", { text: "Appearance Settings" });
       const controls = {
@@ -31842,7 +35323,7 @@ var SettingView = class {
         cb.setButtonText("Apply settings to site");
         cb.setCta();
         cb.onClick((_ev) => __async(this, null, function* () {
-          new import_obsidian15.Notice("Applying settings to site...");
+          new import_obsidian17.Notice("Applying settings to site...");
           yield this.saveSettingsAndUpdateEnv();
           const connection = yield PublishPlatformConnectionFactory.createPublishPlatformConnection(
             this.settings
@@ -31854,7 +35335,7 @@ var SettingView = class {
             yield this.addFavicon(octokit, owner, repo);
           } catch (error) {
             import_js_logger9.default.error("Failed to update favicon", error);
-            new import_obsidian15.Notice(
+            new import_obsidian17.Notice(
               "Failed to update favicon. Check the developer console for details."
             );
           }
@@ -31862,14 +35343,14 @@ var SettingView = class {
             yield this.addLogo(octokit, owner, repo);
           } catch (error) {
             import_js_logger9.default.error("Failed to update logo", error);
-            new import_obsidian15.Notice(
+            new import_obsidian17.Notice(
               "Failed to update logo. Check the developer console for details."
             );
           }
-          new import_obsidian15.Notice("Settings applied to site!");
+          new import_obsidian17.Notice("Settings applied to site!");
         }));
       };
-      new import_obsidian15.Setting(this.settingsRootElement).setName("Appearance").setDesc("Manage themes, sitename and styling on your site").addButton((cb) => {
+      new import_obsidian17.Setting(this.settingsRootElement).setName("Appearance").setDesc("Manage themes, sitename and styling on your site").addButton((cb) => {
         cb.setButtonText("Manage appearance");
         cb.onClick(() => __async(this, null, function* () {
           themeModal.open();
@@ -31886,20 +35367,20 @@ var SettingView = class {
             cls: "dg-settings-section"
           });
           styleSettingsSection.createEl("h3", { text: "Style Settings Plugin" }).prepend(this.getIcon("paintbrush"));
-          new import_obsidian15.Setting(styleSettingsSection).setName("Apply current style settings to site").setDesc(
+          new import_obsidian17.Setting(styleSettingsSection).setName("Apply current style settings to site").setDesc(
             "Click the apply button to use the current style settings from the Style Settings Plugin on your site. (The plugin looks at the currently APPLIED settings. Meaning you need to have the theme you are using in the garden selected in Obsidian before applying)"
           ).addButton((btn) => {
             btn.setButtonText("Apply Style Settings");
             btn.setCta();
             btn.onClick((_ev) => __async(this, null, function* () {
               var _a2;
-              new import_obsidian15.Notice("Applying Style Settings...");
+              new import_obsidian17.Notice("Applying Style Settings...");
               const styleSettingsNode = document.querySelector(
                 "#css-settings-manager"
               );
               const bodyClasses = (_a2 = document.querySelector("body")) == null ? void 0 : _a2.className;
               if (!styleSettingsNode && !bodyClasses) {
-                new import_obsidian15.Notice("No Style Settings found");
+                new import_obsidian17.Notice("No Style Settings found");
                 return;
               }
               if (styleSettingsNode == null ? void 0 : styleSettingsNode.innerHTML) {
@@ -31909,7 +35390,7 @@ var SettingView = class {
                 this.settings.styleSettingsBodyClasses = `${bodyClasses}`;
               }
               if (!this.settings.styleSettingsCss && !this.settings.styleSettingsBodyClasses) {
-                new import_obsidian15.Notice("No Style Settings found");
+                new import_obsidian17.Notice("No Style Settings found");
                 return;
               }
               yield this.saveSiteSettingsAndUpdateEnv(
@@ -31917,7 +35398,7 @@ var SettingView = class {
                 this.settings,
                 this.saveSettings
               );
-              new import_obsidian15.Notice("Style Settings applied to site");
+              new import_obsidian17.Notice("Style Settings applied to site");
             }));
           }).addButton((btn) => {
             btn.setButtonText("Clear");
@@ -31929,7 +35410,7 @@ var SettingView = class {
                 this.settings,
                 this.saveSettings
               );
-              new import_obsidian15.Notice("Style Settings removed from site");
+              new import_obsidian17.Notice("Style Settings removed from site");
             }));
           });
         }
@@ -32029,7 +35510,7 @@ var SettingView = class {
         const target = e.target;
         renderThemes(target.value);
       });
-      new import_obsidian15.Setting(themeSection).setName("Base theme").addDropdown((dd) => {
+      new import_obsidian17.Setting(themeSection).setName("Base theme").addDropdown((dd) => {
         controls.baseTheme = dd;
         dd.addOption("dark", "Dark");
         dd.addOption("light", "Light");
@@ -32039,7 +35520,7 @@ var SettingView = class {
           yield this.saveSettings();
         }));
       });
-      new import_obsidian15.Setting(themeSection).setName("Sitename").setDesc(
+      new import_obsidian17.Setting(themeSection).setName("Sitename").setDesc(
         "The name of your site. This will be displayed as the site header."
       ).addText((text2) => {
         controls.siteName = text2;
@@ -32050,7 +35531,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(themeSection).setName("Logo").setDesc(
+      new import_obsidian17.Setting(themeSection).setName("Logo").setDesc(
         "Path to an image in your vault to use as a logo instead of the sitename. Leave blank to show sitename text."
       ).addText((tc) => {
         tc.setPlaceholder("mylogo.png");
@@ -32061,7 +35542,7 @@ var SettingView = class {
         }));
         new ImageFileSuggest(this.app, tc.inputEl);
       });
-      new import_obsidian15.Setting(themeSection).setName("Main language").setDesc(
+      new import_obsidian17.Setting(themeSection).setName("Main language").setDesc(
         "Language code (ISO 639-1) for the main language of your site. This is used to set the correct language on your site to assist search engines and browsers."
       ).addText((text2) => {
         controls.mainLanguage = text2;
@@ -32072,7 +35553,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(themeSection).setName("Favicon").setDesc(
+      new import_obsidian17.Setting(themeSection).setName("Favicon").setDesc(
         "Path to an svg in your vault you wish to use as a favicon. Leave blank to use default. Must be square! (eg. 16x16)"
       ).addText((tc) => {
         tc.setPlaceholder("myfavicon.svg");
@@ -32083,7 +35564,7 @@ var SettingView = class {
         }));
         new SvgFileSuggest(this.app, tc.inputEl);
       });
-      new import_obsidian15.Setting(themeSection).setName("Use full resolution images").setDesc(
+      new import_obsidian17.Setting(themeSection).setName("Use full resolution images").setDesc(
         "By default, the images on your site are compressed to make your site load faster. If you instead want to use the full resolution images, enable this setting."
       ).addToggle((toggle) => {
         controls.useFullResolutionImages = toggle;
@@ -32093,12 +35574,12 @@ var SettingView = class {
           yield this.saveSettings();
         }));
       });
-      new import_obsidian15.Setting(themeSection).setClass("dg-apply-button-container").addButton(handleSaveSettingsButton);
+      new import_obsidian17.Setting(themeSection).setClass("dg-apply-button-container").addButton(handleSaveSettingsButton);
       const timestampsSection = themeModal.contentEl.createDiv({
         cls: "dg-settings-section"
       });
       timestampsSection.createEl("h3", { text: "Timestamps Settings" }).prepend(this.getIcon("calendar-clock"));
-      new import_obsidian15.Setting(timestampsSection).setName("Timestamp format").setDesc(
+      new import_obsidian17.Setting(timestampsSection).setName("Timestamp format").setDesc(
         "The format string to render timestamp on the garden. Must be luxon compatible"
       ).addText((text2) => {
         controls.timestampFormat = text2;
@@ -32109,7 +35590,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(timestampsSection).setName("Show created timestamp").addToggle((t) => {
+      new import_obsidian17.Setting(timestampsSection).setName("Show created timestamp").addToggle((t) => {
         controls.showCreatedTimestamp = t;
         t.setValue(this.settings.showCreatedTimestamp).onChange(
           (value) => __async(this, null, function* () {
@@ -32118,7 +35599,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(timestampsSection).setName("Created timestamp Frontmatter Key").setDesc(
+      new import_obsidian17.Setting(timestampsSection).setName("Created timestamp Frontmatter Key").setDesc(
         "Key to get the created timestamp from the frontmatter. Leave blank to get the value from file creation time. The value can be any value that luxon Datetime.fromISO can parse."
       ).addText(
         (text2) => text2.setValue(this.settings.createdTimestampKey).onChange((value) => __async(this, null, function* () {
@@ -32126,7 +35607,7 @@ var SettingView = class {
           yield this.saveSettings();
         }))
       );
-      new import_obsidian15.Setting(timestampsSection).setName("Show updated timestamp").addToggle((t) => {
+      new import_obsidian17.Setting(timestampsSection).setName("Show updated timestamp").addToggle((t) => {
         controls.showUpdatedTimestamp = t;
         t.setValue(this.settings.showUpdatedTimestamp).onChange(
           (value) => __async(this, null, function* () {
@@ -32135,7 +35616,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(timestampsSection).setName("Updated timestamp Frontmatter Key").setDesc(
+      new import_obsidian17.Setting(timestampsSection).setName("Updated timestamp Frontmatter Key").setDesc(
         "Key to get the updated timestamp from the frontmatter. Leave blank to get the value from file update time. The value can be any value that luxon Datetime.fromISO can parse."
       ).addText(
         (text2) => text2.setValue(this.settings.updatedTimestampKey).onChange((value) => __async(this, null, function* () {
@@ -32143,12 +35624,12 @@ var SettingView = class {
           yield this.saveSettings();
         }))
       );
-      new import_obsidian15.Setting(timestampsSection).setClass("dg-apply-button-container").addButton(handleSaveSettingsButton);
+      new import_obsidian17.Setting(timestampsSection).setClass("dg-apply-button-container").addButton(handleSaveSettingsButton);
       const cssSection = themeModal.contentEl.createDiv({
         cls: "dg-settings-section"
       });
       cssSection.createEl("h3", { text: "CSS settings" }).prepend(this.getIcon("code"));
-      new import_obsidian15.Setting(cssSection).setName("Body Classes Key").setDesc(
+      new import_obsidian17.Setting(cssSection).setName("Body Classes Key").setDesc(
         "Key for setting css-classes to the note body from the frontmatter."
       ).addText(
         (text2) => text2.setValue(this.settings.contentClassesKey).onChange((value) => __async(this, null, function* () {
@@ -32156,22 +35637,22 @@ var SettingView = class {
           yield this.saveSettings();
         }))
       );
-      new import_obsidian15.Setting(cssSection).setClass("dg-apply-button-container").addButton(handleSaveSettingsButton);
+      new import_obsidian17.Setting(cssSection).setClass("dg-apply-button-container").addButton(handleSaveSettingsButton);
       const noteIconsSection = themeModal.contentEl.createDiv({
         cls: "dg-settings-section"
       });
       noteIconsSection.createEl("h3", { text: "Note icons Settings" }).prepend(this.getIcon("image"));
       noteIconsSection.createEl("div", { cls: "dg-docs-link" }).createEl("a", {
         text: "Documentation on note icons",
-        href: "https://dg-docs.ole.dev/advanced/note-specific-settings/#note-icons"
+        href: "https://docs.forestry.md/advanced/note-specific-settings/#note-icons"
       });
-      new import_obsidian15.Setting(noteIconsSection).setName("Note icon Frontmatter Key").setDesc("Key to get the note icon value from the frontmatter").addText(
+      new import_obsidian17.Setting(noteIconsSection).setName("Note icon Frontmatter Key").setDesc("Key to get the note icon value from the frontmatter").addText(
         (text2) => text2.setValue(this.settings.noteIconKey).onChange((value) => __async(this, null, function* () {
           this.settings.noteIconKey = value;
           yield this.saveSettings();
         }))
       );
-      new import_obsidian15.Setting(noteIconsSection).setName("Default note icon Value").setDesc("The default value for note icon if not specified").addText((text2) => {
+      new import_obsidian17.Setting(noteIconsSection).setName("Default note icon Value").setDesc("The default value for note icon if not specified").addText((text2) => {
         controls.defaultNoteIcon = text2;
         text2.setValue(this.settings.defaultNoteIcon).onChange(
           (value) => __async(this, null, function* () {
@@ -32180,7 +35661,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(noteIconsSection).setName("Show note icon on Title").addToggle((t) => {
+      new import_obsidian17.Setting(noteIconsSection).setName("Show note icon on Title").addToggle((t) => {
         controls.showNoteIconOnTitle = t;
         t.setValue(this.settings.showNoteIconOnTitle).onChange(
           (value) => __async(this, null, function* () {
@@ -32189,7 +35670,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(noteIconsSection).setName("Show note icon in FileTree").addToggle((t) => {
+      new import_obsidian17.Setting(noteIconsSection).setName("Show note icon in FileTree").addToggle((t) => {
         controls.showNoteIconInFileTree = t;
         t.setValue(this.settings.showNoteIconInFileTree).onChange(
           (value) => __async(this, null, function* () {
@@ -32198,7 +35679,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(noteIconsSection).setName("Show note icon on Internal Links").addToggle((t) => {
+      new import_obsidian17.Setting(noteIconsSection).setName("Show note icon on Internal Links").addToggle((t) => {
         controls.showNoteIconOnInternalLink = t;
         t.setValue(this.settings.showNoteIconOnInternalLink).onChange(
           (value) => __async(this, null, function* () {
@@ -32207,7 +35688,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(noteIconsSection).setName("Show note icon on Backlinks").addToggle((t) => {
+      new import_obsidian17.Setting(noteIconsSection).setName("Show note icon on Backlinks").addToggle((t) => {
         controls.showNoteIconOnBackLink = t;
         t.setValue(this.settings.showNoteIconOnBackLink).onChange(
           (value) => __async(this, null, function* () {
@@ -32216,7 +35697,7 @@ var SettingView = class {
           })
         );
       });
-      new import_obsidian15.Setting(noteIconsSection).setClass("dg-apply-button-container").addButton(handleSaveSettingsButton);
+      new import_obsidian17.Setting(noteIconsSection).setClass("dg-apply-button-container").addButton(handleSaveSettingsButton);
     });
   }
   saveSettingsAndUpdateEnv() {
@@ -32224,7 +35705,7 @@ var SettingView = class {
       const theme = JSON.parse(this.settings.theme);
       const baseTheme = this.settings.baseTheme;
       if (theme.modes.indexOf(baseTheme) < 0) {
-        new import_obsidian15.Notice(
+        new import_obsidian17.Notice(
           `The ${theme.name} theme doesn't support ${baseTheme} mode.`
         );
         return;
@@ -32234,12 +35715,12 @@ var SettingView = class {
         this.settings
       );
       yield gardenManager.updateEnv();
-      new import_obsidian15.Notice("Successfully applied settings");
+      new import_obsidian17.Notice("Successfully applied settings");
     });
   }
   saveSiteSettingsAndUpdateEnv(metadataCache, settings, saveSettings) {
     return __async(this, null, function* () {
-      new import_obsidian15.Notice("Updating settings...");
+      new import_obsidian17.Notice("Updating settings...");
       let updateFailed = false;
       try {
         const gardenManager = new DigitalGardenSiteManager(
@@ -32248,13 +35729,13 @@ var SettingView = class {
         );
         yield gardenManager.updateEnv();
       } catch (e) {
-        new import_obsidian15.Notice(
+        new import_obsidian17.Notice(
           "Failed to update settings. Make sure you have an internet connection."
         );
         updateFailed = true;
       }
       if (!updateFailed) {
-        new import_obsidian15.Notice("Settings successfully updated!");
+        new import_obsidian17.Notice("Settings successfully updated!");
         yield saveSettings();
       }
     });
@@ -32263,7 +35744,8 @@ var SettingView = class {
     const settings = {};
     for (const line of envContent.split("\n")) {
       const trimmedLine = line.trim();
-      if (!trimmedLine || trimmedLine.startsWith("#")) continue;
+      if (!trimmedLine || trimmedLine.startsWith("#"))
+        continue;
       const [key, ...valueParts] = trimmedLine.split("=");
       if (key) {
         settings[key.trim()] = valueParts.join("=").trim();
@@ -32278,8 +35760,8 @@ var SettingView = class {
         const faviconFile = this.app.vault.getAbstractFileByPath(
           this.settings.faviconPath
         );
-        if (!(faviconFile instanceof import_obsidian15.TFile)) {
-          new import_obsidian15.Notice(`${this.settings.faviconPath} is not a valid file.`);
+        if (!(faviconFile instanceof import_obsidian17.TFile)) {
+          new import_obsidian17.Notice(`${this.settings.faviconPath} is not a valid file.`);
           return;
         }
         const faviconContent = yield this.app.vault.readBinary(faviconFile);
@@ -32374,8 +35856,8 @@ var SettingView = class {
       const logoFile = this.app.vault.getAbstractFileByPath(
         this.settings.logoPath
       );
-      if (!(logoFile instanceof import_obsidian15.TFile)) {
-        new import_obsidian15.Notice(`${this.settings.logoPath} is not a valid file.`);
+      if (!(logoFile instanceof import_obsidian17.TFile)) {
+        new import_obsidian17.Notice(`${this.settings.logoPath} is not a valid file.`);
         return;
       }
       const logoContent = yield this.app.vault.readBinary(logoFile);
@@ -32421,7 +35903,7 @@ var SettingView = class {
           );
         } catch (error) {
           import_js_logger9.default.error("Failed to upload logo", error);
-          new import_obsidian15.Notice(
+          new import_obsidian17.Notice(
             "Failed to upload logo. Check the developer console for details."
           );
         }
@@ -32429,7 +35911,7 @@ var SettingView = class {
     });
   }
   initializeGitHubBaseURLSetting() {
-    const siteBaseUrl = new import_obsidian15.Setting(this.settingsRootElement).setName("Base URL").setDesc(
+    const siteBaseUrl = new import_obsidian17.Setting(this.settingsRootElement).setName("Base URL").setDesc(
       `This is optional, but recommended. It is used for the "Copy Garden URL" command, generating a sitemap.xml for better SEO and an RSS feed located at /feed.xml. `
     );
     if (this.settings.publishPlatform === "ForestryMd" /* ForestryMd */) {
@@ -32457,7 +35939,7 @@ var SettingView = class {
     }
   }
   initializeSlugifySetting() {
-    new import_obsidian15.Setting(this.settingsRootElement).setName("Slugify Note URL").setDesc(
+    new import_obsidian17.Setting(this.settingsRootElement).setName("Slugify Note URL").setDesc(
       'Transform the URL from "/My Folder/My Note/" to "/my-folder/my-note". If your note titles contains non-English characters, this should be disabled.'
     ).addToggle(
       (toggle) => toggle.setValue(this.settings.slugifyEnabled).onChange((value) => __async(this, null, function* () {
@@ -32466,13 +35948,34 @@ var SettingView = class {
       }))
     );
   }
+  openNavigationOrderModal() {
+    return __async(this, null, function* () {
+      const connection = yield PublishPlatformConnectionFactory.createPublishPlatformConnection(
+        this.settings
+      );
+      const repositoryConnection = new RepositoryConnection(connection);
+      const publisher = new Publisher(
+        this.app.vault,
+        this.app.metadataCache,
+        this.settings
+      );
+      const modal = new NavigationOrderModal(
+        this.app,
+        repositoryConnection,
+        publisher,
+        this.settings,
+        this.saveSettings
+      );
+      modal.open();
+    });
+  }
   openPathRewriteRulesModal() {
     const publisher = new Publisher(
       this.app.vault,
       this.app.metadataCache,
       this.settings
     );
-    const rewriteRulesModal = new import_obsidian15.Modal(this.app);
+    const rewriteRulesModal = new import_obsidian17.Modal(this.app);
     rewriteRulesModal.open();
     const modalContent = new RewriteSettings_default({
       target: rewriteRulesModal.contentEl,
@@ -32487,10 +35990,10 @@ var SettingView = class {
     };
   }
   initializeCustomFilterSettings() {
-    const customFilterModal = new import_obsidian15.Modal(this.app);
+    const customFilterModal = new import_obsidian17.Modal(this.app);
     customFilterModal.titleEl.createEl("h1", { text: "Custom Filters" });
     customFilterModal.modalEl.style.width = "fit-content";
-    new import_obsidian15.Setting(this.settingsRootElement).setName("Custom Filters").setDesc(
+    new import_obsidian17.Setting(this.settingsRootElement).setName("Custom Filters").setDesc(
       "Define custom rules to replace parts of the note before publishing."
     ).addButton((cb) => {
       cb.setButtonText("Manage Custom Filters");
@@ -32520,7 +36023,7 @@ var SettingView = class {
       }
     }).innerHTML = `Example: filter [<code>:smile:</code>, <code>\u{1F600}</code>, <code>g</code>] will replace text with real emojis`;
     const customFilters = this.settings.customFilters;
-    new import_obsidian15.Setting(rewriteSettingsContainer).setName("Filters").addButton((button) => {
+    new import_obsidian17.Setting(rewriteSettingsContainer).setName("Filters").addButton((button) => {
       button.setButtonText("Add");
       button.setTooltip("Add a filter");
       button.setIcon("plus");
@@ -32544,17 +36047,37 @@ var SettingView = class {
   }
   renderCreatePr(modal, handlePR, siteManager) {
     return __async(this, null, function* () {
-      var _a2;
-      this.settingsRootElement.createEl("h3", { text: "Update site" }).prepend((_a2 = (0, import_obsidian15.getIcon)("sync")) != null ? _a2 : "");
+      var _a2, _b, _c;
+      const target = (_a2 = this.updateSectionAnchor) != null ? _a2 : this.settingsRootElement;
+      target.createEl("h3", { text: "Update site template" }).prepend((_b = (0, import_obsidian17.getIcon)("sync")) != null ? _b : "");
+      const loadingContainer = target.createDiv({
+        cls: "dg-update-loading"
+      });
+      new import_obsidian17.Setting(loadingContainer).setName("Site Template").setDesc("Checking for updates...").addButton((button) => {
+        button.setButtonText("Checking...");
+        button.setDisabled(true);
+      });
       import_js_logger9.default.time("checkForUpdate");
-      const updater = yield (yield siteManager.getTemplateUpdater()).checkForUpdates();
+      let updater;
+      try {
+        updater = yield (yield siteManager.getTemplateUpdater()).checkForUpdates();
+      } catch (error) {
+        import_js_logger9.default.warn("Failed to check for template updates", error);
+        loadingContainer.empty();
+        new import_obsidian17.Setting(loadingContainer).setName("Site Template").setDesc(
+          "Unable to check for updates. Please check your connection and credentials."
+        ).addButton((button) => {
+          button.setButtonText("Check failed");
+          button.setDisabled(true);
+        });
+        return;
+      }
       import_js_logger9.default.timeEnd("checkForUpdate");
+      loadingContainer.empty();
       const updateAvailable = hasUpdates(updater);
-      new import_obsidian15.Setting(this.settingsRootElement).setName("Site Template").setDesc(
-        "Manage updates to the base template. You should try updating the template when you update the plugin to make sure your garden support all features."
+      new import_obsidian17.Setting(loadingContainer).setName("Site Template").setDesc(
+        updateAvailable ? "Manage updates to the base template. You should try updating the template when you update the plugin to make sure your garden support all features." : `Your site template is up to date! (${(_c = updater.newestTemplateVersion) != null ? _c : "latest"})`
       ).addButton((button) => __async(this, null, function* () {
-        button.setButtonText(`Checking...`);
-        import_js_logger9.default.time("checkForUpdate");
         if (updateAvailable) {
           button.setButtonText(
             `Update to ${updater.newestTemplateVersion}`
@@ -32572,7 +36095,7 @@ var SettingView = class {
       const titleContainer = modal.titleEl.createDiv({
         cls: "dg-modal-title"
       });
-      const syncIcon = (0, import_obsidian15.getIcon)("refresh-cw");
+      const syncIcon = (0, import_obsidian17.getIcon)("refresh-cw");
       if (syncIcon) {
         titleContainer.appendChild(syncIcon);
       }
@@ -32583,7 +36106,7 @@ var SettingView = class {
       const infoContainer = updateSection.createDiv({
         cls: "dg-update-info"
       });
-      const infoIcon = (0, import_obsidian15.getIcon)("info");
+      const infoIcon = (0, import_obsidian17.getIcon)("info");
       if (infoIcon) {
         infoContainer.appendChild(infoIcon);
       }
@@ -32631,7 +36154,7 @@ var SettingView = class {
     const header = historySection.createDiv({
       cls: "dg-pr-history-header"
     });
-    const chevronIcon = (0, import_obsidian15.getIcon)("chevron-right");
+    const chevronIcon = (0, import_obsidian17.getIcon)("chevron-right");
     if (chevronIcon) {
       header.appendChild(chevronIcon);
     }
@@ -32655,7 +36178,7 @@ var SettingView = class {
       const prItem = prsContainer.createDiv({
         cls: "dg-pr-history-item"
       });
-      const gitPrIcon = (0, import_obsidian15.getIcon)("git-pull-request");
+      const gitPrIcon = (0, import_obsidian17.getIcon)("git-pull-request");
       if (gitPrIcon) {
         prItem.appendChild(gitPrIcon);
       }
@@ -32671,8 +36194,8 @@ var SettingView = class {
 };
 
 // src/views/UpdateGardenRepositoryModal.ts
-var import_obsidian16 = require("obsidian");
-var UpdateGardenRepositoryModal = class extends import_obsidian16.Modal {
+var import_obsidian18 = require("obsidian");
+var UpdateGardenRepositoryModal = class extends import_obsidian18.Modal {
   constructor(app) {
     super(app);
     this.modalEl.addClass("dg-update-modal");
@@ -32688,7 +36211,7 @@ var UpdateGardenRepositoryModal = class extends import_obsidian16.Modal {
     const spinnerContainer = this.loading.createDiv({
       cls: "dg-update-spinner"
     });
-    const spinnerIcon = (0, import_obsidian16.getIcon)("loader-2");
+    const spinnerIcon = (0, import_obsidian18.getIcon)("loader-2");
     if (spinnerIcon) {
       spinnerContainer.appendChild(spinnerIcon);
     }
@@ -32716,7 +36239,7 @@ var UpdateGardenRepositoryModal = class extends import_obsidian16.Modal {
     const iconContainer = successContainer.createDiv({
       cls: "dg-update-icon dg-update-icon-success"
     });
-    const checkIcon = (0, import_obsidian16.getIcon)("check-circle");
+    const checkIcon = (0, import_obsidian18.getIcon)("check-circle");
     if (checkIcon) {
       iconContainer.appendChild(checkIcon);
     }
@@ -32737,7 +36260,7 @@ var UpdateGardenRepositoryModal = class extends import_obsidian16.Modal {
         href: prUrl,
         cls: "dg-update-link"
       });
-      const externalIcon = (0, import_obsidian16.getIcon)("external-link");
+      const externalIcon = (0, import_obsidian18.getIcon)("external-link");
       if (externalIcon) {
         link.appendChild(externalIcon);
       }
@@ -32762,7 +36285,7 @@ var UpdateGardenRepositoryModal = class extends import_obsidian16.Modal {
     const iconContainer = errorContainer.createDiv({
       cls: "dg-update-icon dg-update-icon-error"
     });
-    const alertIcon = (0, import_obsidian16.getIcon)("alert-circle");
+    const alertIcon = (0, import_obsidian18.getIcon)("alert-circle");
     if (alertIcon) {
       iconContainer.appendChild(alertIcon);
     }
@@ -32779,7 +36302,7 @@ var UpdateGardenRepositoryModal = class extends import_obsidian16.Modal {
 
 // src/views/DigitalGardenSettingTab.ts
 var import_js_logger10 = __toESM(require_logger());
-var DigitalGardenSettingTab = class extends import_obsidian17.PluginSettingTab {
+var DigitalGardenSettingTab = class extends import_obsidian19.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
@@ -32809,7 +36332,6 @@ var DigitalGardenSettingTab = class extends import_obsidian17.PluginSettingTab {
         })
       );
       const prModal = new UpdateGardenRepositoryModal(this.app);
-      yield settingView.initialize(prModal);
       const handlePR = (button, updater) => __async(this, null, function* () {
         prModal.renderLoading();
         button.setDisabled(true);
@@ -32832,6 +36354,7 @@ var DigitalGardenSettingTab = class extends import_obsidian17.PluginSettingTab {
           prModal.renderError();
         }
       });
+      yield settingView.initialize(prModal);
       if (this.plugin.settings.publishPlatform === "SelfHosted" /* SelfHosted */) {
         settingView.renderCreatePr(prModal, handlePR, siteManager);
         settingView.renderPullRequestHistory(
@@ -32844,7 +36367,236 @@ var DigitalGardenSettingTab = class extends import_obsidian17.PluginSettingTab {
 };
 
 // main.ts
+var import_js_logger12 = __toESM(require_logger());
+
+// src/localExport/LocalExporter.ts
+var import_obsidian20 = require("obsidian");
+var import_promises = __toESM(require("fs/promises"));
+var import_path = __toESM(require("path"));
 var import_js_logger11 = __toESM(require_logger());
+var PRESERVED_FILES = /* @__PURE__ */ new Set(["notes.json", "notes.11tydata.js"]);
+var IMG_USER_PREFIX = "/img/user/";
+var LocalExporter = class {
+  constructor(vault, publisher, settings) {
+    this.vault = vault;
+    this.publisher = publisher;
+    this.settings = settings;
+  }
+  export() {
+    return __async(this, null, function* () {
+      const targetPath = this.settings.localExportPath;
+      if (!targetPath) {
+        new import_obsidian20.Notice(
+          "Set a local garden folder path in plugin settings first."
+        );
+        throw new Error("localExportPath is not configured");
+      }
+      yield this.validateTargetPath(targetPath);
+      yield this.writeEnvFile(targetPath);
+      yield this.writeNavigationOrder(targetPath);
+      try {
+        yield this.copyFromVault(
+          this.settings.faviconPath,
+          import_path.default.join(targetPath, "src", "site"),
+          "favicon.svg"
+        );
+      } catch (e) {
+        import_js_logger11.default.warn("Failed to copy favicon", e);
+      }
+      try {
+        yield this.copyFromVault(
+          this.settings.logoPath,
+          import_path.default.join(targetPath, "src", "site"),
+          "logo"
+        );
+      } catch (e) {
+        import_js_logger11.default.warn("Failed to copy logo", e);
+      }
+      const marked = yield this.publisher.getFilesMarkedForPublishing();
+      const notesDir = import_path.default.join(targetPath, NOTE_PATH_BASE2);
+      const imagesDir = import_path.default.join(targetPath, IMAGE_PATH_BASE2);
+      yield import_promises.default.mkdir(notesDir, { recursive: true });
+      yield import_promises.default.mkdir(imagesDir, { recursive: true });
+      const writtenNotePaths = /* @__PURE__ */ new Set();
+      const writtenImagePaths = /* @__PURE__ */ new Set();
+      let notesWritten = 0;
+      let imagesWritten = 0;
+      let failed = 0;
+      for (const file of marked.notes) {
+        try {
+          const [content, assets] = yield this.publisher.compiler.generateMarkdown(file);
+          const notePath = import_path.default.join(notesDir, file.getPath());
+          yield import_promises.default.mkdir(import_path.default.dirname(notePath), { recursive: true });
+          yield import_promises.default.writeFile(notePath, content, "utf-8");
+          writtenNotePaths.add(file.getPath());
+          notesWritten++;
+          for (const image of assets.images) {
+            const imagePath = import_path.default.join(
+              targetPath,
+              "src",
+              "site",
+              image.path
+            );
+            yield import_promises.default.mkdir(import_path.default.dirname(imagePath), {
+              recursive: true
+            });
+            const buffer = Buffer.from(image.content, "base64");
+            yield import_promises.default.writeFile(imagePath, buffer);
+            const relativeImagePath = image.path.startsWith(
+              IMG_USER_PREFIX
+            ) ? image.path.slice(IMG_USER_PREFIX.length) : image.path;
+            writtenImagePaths.add(relativeImagePath);
+            imagesWritten++;
+          }
+        } catch (e) {
+          import_js_logger11.default.error(`Failed to export ${file.getPath()}`, e);
+          failed++;
+        }
+      }
+      for (const imagePath of marked.images) {
+        if (writtenImagePaths.has(imagePath)) {
+          continue;
+        }
+        try {
+          const imageFile = this.vault.getFileByPath(imagePath);
+          if (!imageFile) {
+            import_js_logger11.default.warn(`Image not found in vault: ${imagePath}`);
+            continue;
+          }
+          const binary = yield this.vault.readBinary(imageFile);
+          const destPath = import_path.default.join(imagesDir, imagePath);
+          yield import_promises.default.mkdir(import_path.default.dirname(destPath), { recursive: true });
+          yield import_promises.default.writeFile(destPath, Buffer.from(binary));
+          writtenImagePaths.add(imagePath);
+          imagesWritten++;
+        } catch (e) {
+          import_js_logger11.default.error(`Failed to export image ${imagePath}`, e);
+        }
+      }
+      yield this.cleanStaleFiles(notesDir, writtenNotePaths, PRESERVED_FILES);
+      yield this.cleanStaleFiles(imagesDir, writtenImagePaths, /* @__PURE__ */ new Set());
+      return { notes: notesWritten, images: imagesWritten, failed };
+    });
+  }
+  validateTargetPath(targetPath) {
+    return __async(this, null, function* () {
+      try {
+        yield import_promises.default.access(targetPath);
+      } catch (e) {
+        new import_obsidian20.Notice(`Local garden folder not found: ${targetPath}`);
+        throw new Error(`Target path does not exist: ${targetPath}`);
+      }
+      try {
+        yield import_promises.default.access(import_path.default.join(targetPath, "src", "site"));
+      } catch (e) {
+        new import_obsidian20.Notice(
+          "Folder doesn't look like a digital garden \u2014 expected src/site/ directory at " + targetPath
+        );
+        throw new Error(
+          `Target path missing src/site/ directory: ${targetPath}`
+        );
+      }
+    });
+  }
+  writeEnvFile(targetPath) {
+    return __async(this, null, function* () {
+      const envValues = generateEnvValues(this.settings);
+      const envContent = serializeEnvValues(envValues);
+      yield import_promises.default.writeFile(import_path.default.join(targetPath, ".env"), envContent, "utf-8");
+    });
+  }
+  writeNavigationOrder(targetPath) {
+    return __async(this, null, function* () {
+      const navOrderPath = import_path.default.join(
+        targetPath,
+        "src",
+        "site",
+        "_data",
+        "navigationOrder.json"
+      );
+      if (this.settings.navigationOrder) {
+        yield import_promises.default.mkdir(import_path.default.dirname(navOrderPath), { recursive: true });
+        yield import_promises.default.writeFile(
+          navOrderPath,
+          JSON.stringify(this.settings.navigationOrder, null, 2),
+          "utf-8"
+        );
+      } else {
+        try {
+          yield import_promises.default.unlink(navOrderPath);
+        } catch (e) {
+        }
+      }
+    });
+  }
+  copyFromVault(sourcePath, targetFolder, rename) {
+    return __async(this, null, function* () {
+      if (sourcePath === "")
+        return;
+      const sourceFile = this.vault.getFileByPath(sourcePath);
+      if (sourceFile) {
+        const fileName = (rename == null ? void 0 : rename.includes(".")) ? rename : `${rename != null ? rename : sourceFile.basename}.${sourceFile.extension}`;
+        const targetPath = import_path.default.join(targetFolder, fileName);
+        yield import_promises.default.writeFile(
+          targetPath,
+          Buffer.from(yield this.vault.readBinary(sourceFile))
+        );
+        import_js_logger11.default.debug(`Copied file from ${sourcePath} to ${targetPath}`);
+      } else {
+        import_js_logger11.default.warn(`File not found at '${sourcePath}'`);
+      }
+    });
+  }
+  cleanStaleFiles(dir, writtenPaths, preservedFiles) {
+    return __async(this, null, function* () {
+      try {
+        const existingFiles = yield this.listFilesRecursive(dir);
+        for (const filePath of existingFiles) {
+          const relativePath = import_path.default.relative(dir, filePath).split(import_path.default.sep).join("/");
+          const fileName = import_path.default.basename(filePath);
+          if (preservedFiles.has(fileName)) {
+            continue;
+          }
+          if (!writtenPaths.has(relativePath)) {
+            yield import_promises.default.unlink(filePath);
+            import_js_logger11.default.debug(`Cleaned stale file: ${filePath}`);
+            let parent = import_path.default.dirname(filePath);
+            while (parent !== dir && parent.startsWith(dir)) {
+              try {
+                yield import_promises.default.rmdir(parent);
+              } catch (e) {
+                break;
+              }
+              parent = import_path.default.dirname(parent);
+            }
+          }
+        }
+      } catch (e) {
+        import_js_logger11.default.warn("Failed to clean stale files", e);
+      }
+    });
+  }
+  listFilesRecursive(dir) {
+    return __async(this, null, function* () {
+      const files = [];
+      try {
+        const entries = yield import_promises.default.readdir(dir, { withFileTypes: true });
+        for (const entry of entries) {
+          const fullPath = import_path.default.join(dir, entry.name);
+          if (entry.isDirectory()) {
+            files.push(...yield this.listFilesRecursive(fullPath));
+          } else {
+            files.push(fullPath);
+          }
+        }
+      } catch (e) {
+      }
+      return files;
+    });
+  }
+};
+
+// main.ts
 var defaultTheme = {
   name: "Red Graphite",
   author: "SeanWcom",
@@ -32910,22 +36662,30 @@ var DEFAULT_SETTINGS = {
     noBacklinksMessage: "",
     searchButtonText: "",
     searchPlaceholder: "",
+    searchNotStarted: "",
+    searchEnterHotkey: "",
     searchEnterHint: "",
+    searchNavigateHotkey: "",
     searchNavigateHint: "",
+    searchCloseHotkey: "",
     searchCloseHint: "",
     searchNoResults: "",
-    searchPreviewPlaceholder: ""
+    searchPreviewPlaceholder: "",
+    canvasDragHint: "",
+    canvasZoomHint: "",
+    canvasResetHint: ""
   },
-  logLevel: void 0
+  logLevel: void 0,
+  localExportPath: ""
 };
-import_js_logger11.default.useDefaults({
-  defaultLevel: import_js_logger11.default.WARN,
+import_js_logger12.default.useDefaults({
+  defaultLevel: import_js_logger12.default.WARN,
   formatter: function(messages, _context) {
     messages.unshift((/* @__PURE__ */ new Date()).toUTCString());
     messages.unshift("DG: ");
   }
 });
-var DigitalGarden = class extends import_obsidian19.Plugin {
+var DigitalGarden = class extends import_obsidian22.Plugin {
   constructor() {
     super(...arguments);
     this.isPublishing = false;
@@ -32935,13 +36695,13 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
       this.appVersion = this.manifest.version;
       console.log("Initializing DigitalGarden plugin v" + this.appVersion);
       yield this.loadSettings();
-      this.settings.logLevel && import_js_logger11.default.setLevel(this.settings.logLevel);
-      import_js_logger11.default.info(
-        "Digital garden log level set to " + import_js_logger11.default.getLevel().name
+      this.settings.logLevel && import_js_logger12.default.setLevel(this.settings.logLevel);
+      import_js_logger12.default.info(
+        "Digital garden log level set to " + import_js_logger12.default.getLevel().name
       );
       this.addSettingTab(new DigitalGardenSettingTab(this.app, this));
       yield this.addCommands();
-      (0, import_obsidian19.addIcon)("digital-garden-icon", seedling);
+      (0, import_obsidian22.addIcon)("digital-garden-icon", seedling);
       this.addRibbonIcon(
         "digital-garden-icon",
         "Digital Garden Publication Center",
@@ -32949,6 +36709,28 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
           this.openPublishModal();
         })
       );
+      this.checkForTemplateUpdates();
+    });
+  }
+  checkForTemplateUpdates() {
+    return __async(this, null, function* () {
+      if (this.settings.publishPlatform !== "SelfHosted" /* SelfHosted */) {
+        return;
+      }
+      try {
+        const siteManager = new DigitalGardenSiteManager(
+          this.app.metadataCache,
+          this.settings
+        );
+        const updater = yield (yield siteManager.getTemplateUpdater()).checkForUpdates();
+        if (hasUpdates(updater)) {
+          new import_obsidian22.Notice(
+            `Digital Garden: A new site template version (${updater.newestTemplateVersion}) is available. Update in the plugin settings.`,
+            1e4
+          );
+        }
+      } catch (e) {
+      }
     });
   }
   onunload() {
@@ -32973,7 +36755,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
         id: "quick-publish-and-share-note",
         name: "Quick Publish And Share Note",
         callback: () => __async(this, null, function* () {
-          new import_obsidian19.Notice("Adding publish flag to note and publishing it.");
+          new import_obsidian22.Notice("Adding publish flag to note and publishing it.");
           yield this.setPublishFlagValue(true);
           const activeFile = this.app.workspace.getActiveFile();
           const event = this.app.metadataCache.on(
@@ -33000,8 +36782,8 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
           yield this.publishSingleNote();
         })
       });
-      if (this.settings["ENABLE_DEVELOPER_TOOLS"] && import_obsidian19.Platform.isDesktop) {
-        import_js_logger11.default.info("Developer tools enabled");
+      if (this.settings["ENABLE_DEVELOPER_TOOLS"] && import_obsidian22.Platform.isDesktop) {
+        import_js_logger12.default.info("Developer tools enabled");
         const publisher = new Publisher(
           this.app.vault,
           this.app.metadataCache,
@@ -33019,7 +36801,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
             })
           });
         }).catch((e) => {
-          import_js_logger11.default.error("Unable to load generateGardenSnapshot", e);
+          import_js_logger12.default.error("Unable to load generateGardenSnapshot", e);
         });
       }
       this.addCommand({
@@ -33028,7 +36810,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
         // TODO: move to publisher?
         callback: () => __async(this, null, function* () {
           if (this.isPublishing) {
-            new import_obsidian19.Notice(
+            new import_obsidian22.Notice(
               "A publish operation is already in progress. Please wait for it to complete."
             );
             return;
@@ -33036,7 +36818,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
           this.isPublishing = true;
           const statusBarItem = this.addStatusBarItem();
           try {
-            new import_obsidian19.Notice("Processing files to publish...");
+            new import_obsidian22.Notice("Processing files to publish...");
             const { vault, metadataCache } = this.app;
             const publisher = new Publisher(
               vault,
@@ -33060,7 +36842,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
             const imagesToDelete = publishStatus.deletedImagePaths;
             const totalItems = filesToPublish.length + filesToDelete.length + imagesToDelete.length;
             if (totalItems === 0) {
-              new import_obsidian19.Notice("Garden is already fully synced!");
+              new import_obsidian22.Notice("Garden is already fully synced!");
               statusBarItem.remove();
               this.isPublishing = false;
               return;
@@ -33069,7 +36851,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
               statusBarItem,
               filesToPublish.length + filesToDelete.length + imagesToDelete.length
             );
-            new import_obsidian19.Notice(
+            new import_obsidian22.Notice(
               `Publishing ${filesToPublish.length} notes, deleting ${filesToDelete.length} notes and ${imagesToDelete.length} images. See the status bar in lower right corner for progress.`,
               8e3
             );
@@ -33084,16 +36866,16 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
               statusBar.increment();
             }
             statusBar.finish(8e3);
-            new import_obsidian19.Notice(
+            new import_obsidian22.Notice(
               `Successfully published ${filesToPublish.length} notes to your garden.`
             );
             if (filesToDelete.length > 0) {
-              new import_obsidian19.Notice(
+              new import_obsidian22.Notice(
                 `Successfully deleted ${filesToDelete.length} notes from your garden.`
               );
             }
             if (imagesToDelete.length > 0) {
-              new import_obsidian19.Notice(
+              new import_obsidian22.Notice(
                 `Successfully deleted ${imagesToDelete.length} images from your garden.`
               );
             }
@@ -33106,7 +36888,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
               return;
             }
             console.error(e);
-            new import_obsidian19.Notice(
+            new import_obsidian22.Notice(
               "Unable to publish multiple notes, something went wrong."
             );
           }
@@ -33154,12 +36936,55 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
           yield this.setAsHomePage();
         })
       });
+      this.addCommand({
+        id: "dg-reorder-navigation",
+        name: "Reorder navigation",
+        callback: () => __async(this, null, function* () {
+          this.openNavigationOrderModal();
+        })
+      });
+      if (import_obsidian22.Platform.isDesktop) {
+        this.addCommand({
+          id: "export-garden-to-local-folder",
+          name: "Export Garden to Local Folder",
+          callback: () => __async(this, null, function* () {
+            try {
+              new import_obsidian22.Notice("Exporting garden to local folder...");
+              const { vault, metadataCache } = this.app;
+              const publisher = new Publisher(
+                vault,
+                metadataCache,
+                this.settings
+              );
+              const exporter = new LocalExporter(
+                vault,
+                publisher,
+                this.settings
+              );
+              const result = yield exporter.export();
+              if (result.failed > 0) {
+                new import_obsidian22.Notice(
+                  `Exported ${result.notes} notes and ${result.images} images (${result.failed} failed). Check console for details.`,
+                  8e3
+                );
+              } else {
+                new import_obsidian22.Notice(
+                  `Exported ${result.notes} notes and ${result.images} images to ${this.settings.localExportPath}`,
+                  8e3
+                );
+              }
+            } catch (e) {
+              import_js_logger12.default.error("Local export failed", e);
+            }
+          })
+        });
+      }
     });
   }
   getActiveFile(workspace) {
     const activeFile = workspace.getActiveFile();
     if (!activeFile) {
-      new import_obsidian19.Notice(
+      new import_obsidian22.Notice(
         "No file is open/active. Please open a file and try again."
       );
       return null;
@@ -33180,10 +37005,10 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
         );
         const fullUrl = siteManager.getNoteUrl(activeFile);
         yield navigator.clipboard.writeText(fullUrl);
-        new import_obsidian19.Notice(`Note URL copied to clipboard`);
+        new import_obsidian22.Notice(`Note URL copied to clipboard`);
       } catch (e) {
         console.log(e);
-        new import_obsidian19.Notice(
+        new import_obsidian22.Notice(
           "Unable to copy note URL to clipboard, something went wrong."
         );
       }
@@ -33199,12 +37024,12 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
           return;
         }
         if (activeFile.extension !== "md" && activeFile.extension !== "canvas") {
-          new import_obsidian19.Notice(
+          new import_obsidian22.Notice(
             "The current file is not a markdown or canvas file. Please open a supported file and try again."
           );
           return;
         }
-        new import_obsidian19.Notice("Publishing note...");
+        new import_obsidian22.Notice("Publishing note...");
         const publisher = new Publisher(
           vault,
           metadataCache,
@@ -33220,9 +37045,9 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
         }).compile();
         const publishSuccessful = yield publisher.publish(publishFile);
         if (publishSuccessful) {
-          new import_obsidian19.Notice(`Successfully published note to your garden.`);
+          new import_obsidian22.Notice(`Successfully published note to your garden.`);
         } else {
-          new import_obsidian19.Notice("Unable to publish note, something went wrong.");
+          new import_obsidian22.Notice("Unable to publish note, something went wrong.");
         }
         return publishSuccessful;
       } catch (e) {
@@ -33231,7 +37056,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
           return false;
         }
         console.error(e);
-        new import_obsidian19.Notice("Unable to publish note, something went wrong.");
+        new import_obsidian22.Notice("Unable to publish note, something went wrong.");
         return false;
       }
     });
@@ -33273,7 +37098,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
       }
       const currentFileCache = this.app.metadataCache.getFileCache(activeFile);
       if ((_a2 = currentFileCache == null ? void 0 : currentFileCache.frontmatter) == null ? void 0 : _a2["dg-home" /* HOME */]) {
-        new import_obsidian19.Notice("This note is already set as the garden home page.");
+        new import_obsidian22.Notice("This note is already set as the garden home page.");
         return;
       }
       const existingHomePages = [];
@@ -33291,7 +37116,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
             frontmatter["dg-publish" /* PUBLISH */] = true;
           }
         );
-        new import_obsidian19.Notice(
+        new import_obsidian22.Notice(
           `${activeFile.basename} is now your garden's home page and has been marked for publishing.`
         );
       } else {
@@ -33314,7 +37139,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
                   frontmatter["dg-publish" /* PUBLISH */] = true;
                 }
               );
-              new import_obsidian19.Notice(
+              new import_obsidian22.Notice(
                 `${activeFile.basename} is now your garden's home page and has been marked for publishing.`
               );
             }
@@ -33328,16 +37153,37 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
     if (error.errorType === "build_limit_reached") {
       const used = (_a2 = error.buildsUsed) != null ? _a2 : 0;
       const limit = (_b = error.monthlyLimit) != null ? _b : 0;
-      new import_obsidian19.Notice(
+      new import_obsidian22.Notice(
         `Publishing blocked: You've used all ${used}/${limit} builds this month. Upgrade to Pro for 1000 builds/month at dashboard.forestry.md/settings`,
         1e4
       );
     } else {
-      new import_obsidian19.Notice(
+      new import_obsidian22.Notice(
         `Publishing blocked: Storage limit exceeded. Free up space or upgrade at dashboard.forestry.md/settings`,
         1e4
       );
     }
+  }
+  openNavigationOrderModal() {
+    return __async(this, null, function* () {
+      const connection = yield PublishPlatformConnectionFactory.createPublishPlatformConnection(
+        this.settings
+      );
+      const repositoryConnection = new RepositoryConnection(connection);
+      const publisher = new Publisher(
+        this.app.vault,
+        this.app.metadataCache,
+        this.settings
+      );
+      const modal = new NavigationOrderModal(
+        this.app,
+        repositoryConnection,
+        publisher,
+        this.settings,
+        () => this.saveSettings()
+      );
+      modal.open();
+    });
   }
   openPublishModal() {
     const siteManager = new DigitalGardenSiteManager(
@@ -33363,7 +37209,7 @@ var DigitalGarden = class extends import_obsidian19.Plugin {
     this.publishModal.open();
   }
 };
-var HomePageConfirmationModal = class extends import_obsidian19.Modal {
+var HomePageConfirmationModal = class extends import_obsidian22.Modal {
   constructor(app, newHomeFile, existingHomeFile, onConfirm) {
     super(app);
     this.newHomeFile = newHomeFile;
@@ -33440,6 +37286,22 @@ js-logger/src/logger.js:
    * js-logger - http://github.com/jonnyreeves/js-logger
    * Jonny Reeves, http://jonnyreeves.co.uk/
    * js-logger may be freely distributed under the MIT license.
+   *)
+
+is-plain-object/dist/is-plain-object.mjs:
+  (*!
+   * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
+   *
+   * Copyright (c) 2014-2017, Jon Schlinkert.
+   * Released under the MIT License.
+   *)
+
+sortablejs/modular/sortable.esm.js:
+  (**!
+   * Sortable 1.15.7
+   * @author	RubaXa   <trash@rubaxa.org>
+   * @author	owenm    <owen23355@gmail.com>
+   * @license MIT
    *)
 */
 
