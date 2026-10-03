@@ -1,0 +1,10 @@
+{
+  "id": "siqi-calendar-visual-layers",
+  "name": "SIQI Calendar Visual Layers",
+  "version": "0.2.1",
+  "minAppVersion": "1.5.0",
+  "description": "Apply visualLayer frontmatter to Full Calendar events for overlap/z-index and softer background-like blocks.",
+  "author": "SIQI / Claudian",
+  "main": "main.js",
+  "isDesktopOnly": false
+}

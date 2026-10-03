@@ -17,6 +17,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tarfile
 import urllib.request
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -28,6 +29,16 @@ DEFAULT_EXCLUDED_PLUGINS = {
     # push protection blocks in public repositories.
     "smart-composer",
 }
+
+# Locally maintained forks/plugins can lack a Community Plugins registry entry.
+# Preserve upstream provenance separately from the exact local source overlay.
+LOCAL_UPSTREAM_REPOS = {
+    "google-drive-sync-gsq": "https://github.com/RichardX366/Obsidian-Google-Drive.git",
+}
+LOCAL_SOURCE_ROOTS = {
+    "google-drive-sync-gsq": Path("../../obsidian-google-drive-filter"),
+}
+LOCAL_SOURCE_EXCLUDES = {".git", "node_modules", "dist", "coverage", "__pycache__"}
 
 
 def run(cmd: List[str], cwd: Optional[Path] = None, check: bool = True, timeout: Optional[int] = None) -> subprocess.CompletedProcess:
@@ -102,8 +113,9 @@ def read_submodule_commits(vault: Path) -> Dict[str, str]:
     return result
 
 
-def read_registry(cache_path: Path, refresh: bool = False) -> Dict[str, Dict[str, Any]]:
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
+def read_registry(cache_path: Path, refresh: bool = False, write_cache: bool = True) -> Dict[str, Dict[str, Any]]:
+    if write_cache:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
     data = None
     if cache_path.exists() and not refresh:
         data = load_json(cache_path, None)
@@ -111,14 +123,16 @@ def read_registry(cache_path: Path, refresh: bool = False) -> Dict[str, Dict[str
         try:
             with urllib.request.urlopen(REGISTRY_URL, timeout=20) as r:
                 raw = r.read().decode("utf-8")
-            cache_path.write_text(raw)
+            if write_cache:
+                cache_path.write_text(raw)
             data = json.loads(raw)
         except Exception as e:
             # macOS Python installations sometimes miss CA roots. Fall back to curl.
             try:
                 cp = run(["curl", "-fsSL", REGISTRY_URL], check=True, timeout=30)
                 raw = cp.stdout
-                cache_path.write_text(raw)
+                if write_cache:
+                    cache_path.write_text(raw)
                 data = json.loads(raw)
             except Exception as e2:
                 print(f"WARN: failed to fetch registry: {e}; curl fallback also failed: {e2}", file=sys.stderr)
@@ -175,6 +189,9 @@ def resolve_repo(plugin: Dict[str, Any], submods: Dict[str, Dict[str, str]], reg
     if pid in submods:
         return submods[pid]["url"], "submodule", submods[pid].get("path", "")
 
+    if pid in LOCAL_UPSTREAM_REPOS:
+        return LOCAL_UPSTREAM_REPOS[pid], "locally-derived-upstream", ""
+
     # BRAT can identify by repo, but often not by plugin id. If only one BRAT repo matches dynamic-views etc. via repo name, use it.
     for key, info in brat_by_key.items():
         if key.lower().endswith("/" + pid.lower()) or key.lower().split("/")[-1] == pid.lower():
@@ -192,6 +209,34 @@ def resolve_repo(plugin: Dict[str, Any], submods: Dict[str, Dict[str, str]], reg
     return "", "unresolved", ""
 
 
+def archive_local_source_overlay(plugin_id: str, repo_root: Path, output_dir: Path, dry_run: bool = False) -> Tuple[str, str]:
+    relative_root = LOCAL_SOURCE_ROOTS.get(plugin_id)
+    if relative_root is None:
+        return "not-applicable", ""
+    source_root = (repo_root / relative_root).resolve()
+    output = output_dir / f"{safe_slug(plugin_id)}-source.tar.gz"
+    if not source_root.is_dir():
+        if output.is_file():
+            return "archived-existing", str(output.relative_to(repo_root))
+        return "missing", f"local source directory missing: {source_root}"
+
+    source_files = [
+        path for path in source_root.rglob("*")
+        if path.is_file()
+        and not any(part in LOCAL_SOURCE_EXCLUDES for part in path.relative_to(source_root).parts)
+        and not path.name.startswith(".env")
+        and path.suffix.lower() not in {".pem", ".key"}
+    ]
+    if dry_run:
+        return "dry-run", f"would archive {len(source_files)} local source files to {output.relative_to(repo_root)}"
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    with tarfile.open(output, "w:gz") as archive:
+        for path in source_files:
+            archive.add(path, arcname=Path(plugin_id) / path.relative_to(source_root), recursive=False)
+    return "archived", str(output.relative_to(repo_root))
+
+
 def git_archive_bundle(repo_url: str, plugin_id: str, mirror_dir: Path, bundle_dir: Path, verify_dir: Path, dry_run: bool = False) -> Tuple[str, str]:
     if not repo_url or not ("github.com" in repo_url or repo_url.endswith(".git") or repo_url.startswith("git@")):
         return "skipped", "no usable git repo url"
@@ -202,7 +247,7 @@ def git_archive_bundle(repo_url: str, plugin_id: str, mirror_dir: Path, bundle_d
     verify = verify_dir / slug
 
     if dry_run:
-        return "dry-run", str(bundle.relative_to(Path.cwd()))
+        return "dry-run", f"would archive {repo_url} to {bundle.relative_to(Path.cwd())}"
 
     mirror_dir.mkdir(parents=True, exist_ok=True)
     bundle_dir.mkdir(parents=True, exist_ok=True)
@@ -227,24 +272,33 @@ def git_archive_bundle(repo_url: str, plugin_id: str, mirror_dir: Path, bundle_d
         return "failed", str(e)
 
 
-def snapshot_installed_plugin(vault: Path, plugin: Dict[str, Any], snap_root: Path) -> Tuple[str, str]:
+def snapshot_installed_plugin(vault: Path, plugin: Dict[str, Any], snap_root: Path, dry_run: bool = False) -> Tuple[str, str]:
     src = vault / ".obsidian" / "plugins" / plugin["folder"]
     dest = snap_root / plugin["folder"]
     if not src.exists():
         return "missing", "installed folder missing"
-    if dest.exists():
-        shutil.rmtree(dest)
-    dest.mkdir(parents=True, exist_ok=True)
-    copied = 0
+
+    items_to_copy = []
     for item in src.iterdir():
         if item.name == "node_modules" or item.name.startswith("."):
             continue
         if item.is_file() and item.name in BUILD_KEEP:
-            shutil.copy2(item, dest / item.name)
-            copied += 1
+            items_to_copy.append(item)
         elif item.is_dir() and item.name in {"assets", "dist", "styles", "media"}:
+            items_to_copy.append(item)
+
+    copied = len(items_to_copy)
+    if dry_run:
+        return "dry-run", f"would snapshot {copied} entries to {dest.relative_to(Path.cwd())}"
+
+    if dest.exists():
+        shutil.rmtree(dest)
+    dest.mkdir(parents=True, exist_ok=True)
+    for item in items_to_copy:
+        if item.is_file():
+            shutil.copy2(item, dest / item.name)
+        elif item.is_dir():
             shutil.copytree(item, dest / item.name, ignore=shutil.ignore_patterns("node_modules", ".git", ".DS_Store"))
-            copied += 1
     return "snapshotted", f"{copied} entries"
 
 
@@ -260,7 +314,7 @@ def write_yaml_like(path: Path, data: Any) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--vault", default="../Guo-lab-s-Obsidian", help="Path to Obsidian vault")
-    parser.add_argument("--dry-run", action="store_true", help="Do not clone/fetch/bundle; only generate inventory")
+    parser.add_argument("--dry-run", action="store_true", help="Plan archive changes without writing files, deleting files, cloning, fetching, or bundling")
     parser.add_argument("--refresh-registry", action="store_true", help="Refresh Obsidian community registry cache")
     parser.add_argument("--skip-bundles", action="store_true", help="Only inventory and snapshot installed builds")
     parser.add_argument("--include-excluded", action="store_true", help="Include plugins normally excluded from public archives")
@@ -276,7 +330,7 @@ def main() -> int:
     date = dt.datetime.now().strftime("%Y-%m-%d")
     vault_name = vault.name
 
-    registry = read_registry(root / "cache" / "community-plugins.json", refresh=args.refresh_registry)
+    registry = read_registry(root / "cache" / "community-plugins.json", refresh=args.refresh_registry, write_cache=not args.dry_run)
     installed = read_installed_plugins(vault)
     if not args.include_excluded:
         for plugin_id in DEFAULT_EXCLUDED_PLUGINS:
@@ -291,14 +345,19 @@ def main() -> int:
     bundle_dir = root / "bundles"
     verify_dir = root / ".verify"
 
+    excluded_actions: List[Dict[str, str]] = []
     if not args.include_excluded:
         for plugin_id in DEFAULT_EXCLUDED_PLUGINS:
             old_snapshot = snap_root / plugin_id
             old_bundle = bundle_dir / f"{safe_slug(plugin_id)}.bundle"
             if old_snapshot.exists():
-                shutil.rmtree(old_snapshot)
+                excluded_actions.append({"plugin": plugin_id, "action": "remove snapshot", "path": str(old_snapshot.relative_to(root))})
+                if not args.dry_run:
+                    shutil.rmtree(old_snapshot)
             if old_bundle.exists():
-                old_bundle.unlink()
+                excluded_actions.append({"plugin": plugin_id, "action": "remove bundle", "path": str(old_bundle.relative_to(root))})
+                if not args.dry_run:
+                    old_bundle.unlink()
 
     plugins: List[Dict[str, Any]] = []
     for pid, plugin in sorted(installed.items()):
@@ -314,7 +373,10 @@ def main() -> int:
         else:
             archive_status, archive_detail = "skipped", "--skip-bundles"
 
-        snap_status, snap_detail = ("dry-run", "") if args.dry_run else snapshot_installed_plugin(vault, plugin, snap_root)
+        snap_status, snap_detail = snapshot_installed_plugin(vault, plugin, snap_root, dry_run=args.dry_run)
+        local_source_status, local_source_detail = archive_local_source_overlay(
+            pid, root, root / "local-sources", dry_run=args.dry_run
+        )
 
         plugins.append({
             "id": pid,
@@ -332,21 +394,33 @@ def main() -> int:
             "archive_detail": archive_detail,
             "installed_snapshot_status": snap_status,
             "installed_snapshot_detail": snap_detail,
+            "local_source_archive_status": local_source_status,
+            "local_source_archive_detail": local_source_detail,
         })
 
     inventory = {
         "generated_at": now,
         "vault_name": vault_name,
         "registry_url": REGISTRY_URL,
+        "dry_run": args.dry_run,
         "counts": {
             "installed": len(plugins),
             "enabled": sum(1 for p in plugins if p["enabled"]),
             "bundled": sum(1 for p in plugins if p["archive_status"] == "bundled"),
+            "dry_run": sum(1 for p in plugins if p["archive_status"] == "dry-run"),
             "failed": sum(1 for p in plugins if p["archive_status"] == "failed"),
             "unresolved": sum(1 for p in plugins if p["repo_source"] == "unresolved"),
         },
+        "excluded_actions": excluded_actions,
         "plugins": plugins,
     }
+
+    if args.dry_run:
+        print("DRY RUN: no files were written, deleted, cloned, fetched, bundled, or snapshotted.")
+        print(json.dumps(inventory["counts"], ensure_ascii=False, indent=2))
+        if excluded_actions:
+            print(json.dumps({"excluded_actions": excluded_actions}, ensure_ascii=False, indent=2))
+        return 0
 
     write_yaml_like(root / "plugins.yaml", inventory)
 

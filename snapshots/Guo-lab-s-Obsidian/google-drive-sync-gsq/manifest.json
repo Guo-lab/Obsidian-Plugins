@@ -1,0 +1,10 @@
+{
+	"id": "google-drive-sync-gsq",
+	"name": "Google Drive Sync GSQ",
+	"version": "1.0.1",
+	"minAppVersion": "1.13.0",
+	"description": "Siqi Guo\u2019s extension of Google Drive Sync with gitignore-style sync exclusions.",
+	"author": "Siqi Guo; based on Richard Xiong\u2019s Google Drive Sync",
+	"authorUrl": "https://ogd.richardxiong.com",
+	"isDesktopOnly": false
+}

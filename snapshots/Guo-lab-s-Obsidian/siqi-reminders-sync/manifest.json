@@ -1,0 +1,10 @@
+{
+  "id": "siqi-reminders-sync",
+  "name": "SIQI Reminders Sync",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Sync Apple Reminders into Obsidian task inbox and Full Calendar local reminder events.",
+  "author": "SIQI / Claudian",
+  "main": "main.js",
+  "isDesktopOnly": true
+}

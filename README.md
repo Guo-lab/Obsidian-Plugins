@@ -16,6 +16,7 @@ Obsidian-Plugins/
   plugins.yaml                 # generated inventory: installed plugins, repo URLs, enabled state, archive status
   bundles/                     # tracked git bundle archives; these contain real source history
   snapshots/                   # tracked installed plugin build snapshots from vaults
+  local-sources/               # source overlays for locally maintained plugin forks
   scripts/
     archive_obsidian_plugins.py
   reports/                     # generated reports for each archive run
@@ -33,6 +34,12 @@ A bundle can be restored without the upstream repo:
 git clone bundles/dataview.bundle dataview
 ```
 
+For a locally maintained fork, `local-sources/` preserves its current working source tree alongside the upstream `.bundle`. These source overlays exclude Git metadata, dependencies, generated build directories, and common private key files; they are source backups, not standalone build environments. The inventory records the overlay path and status. If the external working tree is moved or removed, an existing overlay remains in place and the next archive run keeps referring to it rather than clearing it.
+
+Keep editable source backups here, outside the vault's `.obsidian/plugins/` runtime folders. Obsidian loads installed plugin builds from that directory, while this archive keeps source and Git history for recovery and maintenance. The installed build is separately preserved under `snapshots/`.
+
+Plugins without a resolvable source repository are still preserved as installed build snapshots. A snapshot can restore the installed plugin files, but it does not contain the original editable source tree or full Git history.
+
 ## Typical workflow
 
 From this repo:
@@ -40,6 +47,14 @@ From this repo:
 ```bash
 python3 scripts/archive_obsidian_plugins.py --vault ../Guo-lab-s-Obsidian
 ```
+
+To inspect the planned changes without touching archive outputs:
+
+```bash
+python3 scripts/archive_obsidian_plugins.py --vault ../Guo-lab-s-Obsidian --dry-run
+```
+
+Dry run mode does not write `plugins.yaml` or reports, update `cache/`, clone/fetch mirrors, create bundles, delete excluded plugin artifacts, or overwrite snapshots.
 
 The script will:
 

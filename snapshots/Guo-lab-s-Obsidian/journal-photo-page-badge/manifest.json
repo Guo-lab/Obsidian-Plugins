@@ -1,0 +1,9 @@
+{
+  "id": "journal-photo-page-badge",
+  "name": "Journal Photo Page Badge",
+  "version": "0.1.0",
+  "minAppVersion": "1.11.0",
+  "description": "Shows a dynamic X / N badge on Journal Photo Gallery cards.",
+  "author": "Guo Lab",
+  "isDesktopOnly": false
+}

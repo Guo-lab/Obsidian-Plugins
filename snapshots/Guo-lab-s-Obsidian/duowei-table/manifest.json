@@ -1,0 +1,9 @@
+{
+  "id": "duowei-table",
+  "name": "Duowei Table",
+  "version": "0.0.2",
+  "minAppVersion": "1.10.0",
+  "description": "Local structured data in .duowei files, with table, kanban, and gallery views plus a Bases-compatible layout.",
+  "author": "peyote",
+  "isDesktopOnly": false
+}

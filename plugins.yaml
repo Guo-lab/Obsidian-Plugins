@@ -1,21 +1,24 @@
 {
-  "generated_at": "2026-06-22 16:19:46",
+  "generated_at": "2026-10-03 07:38:31",
   "vault_name": "Guo-lab-s-Obsidian",
   "registry_url": "https://raw.githubusercontent.com/obsidianmd/obsidian-releases/master/community-plugins.json",
+  "dry_run": false,
   "counts": {
-    "installed": 64,
-    "enabled": 46,
-    "bundled": 64,
+    "installed": 83,
+    "enabled": 61,
+    "bundled": 80,
+    "dry_run": 0,
     "failed": 0,
-    "unresolved": 0
+    "unresolved": 3
   },
+  "excluded_actions": [],
   "plugins": [
     {
       "id": "3d-graph",
       "folder": "3d-graph",
       "name": "3D Graph",
       "version": "1.0.5",
-      "enabled": true,
+      "enabled": false,
       "author": "Alexander Weichart",
       "authorUrl": "https://github.com/AlexW00",
       "repo_url": "https://github.com/alexw00/obsidian-3d-graph.git",
@@ -25,7 +28,28 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/3d-graph.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "ai-tagger-universe",
+      "folder": "ai-tagger-universe",
+      "name": "AI Tagger Universe",
+      "version": "1.0.20",
+      "enabled": true,
+      "author": "Nie Hu",
+      "authorUrl": "https://github.com/niehu2018",
+      "repo_url": "https://github.com/agents365-ai/obsidian-ai-tagger-universe.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/ai-tagger-universe.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "better-word-count",
@@ -42,7 +66,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/better-word-count.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "buttons",
@@ -59,7 +85,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/buttons.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "calendar",
@@ -76,13 +104,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/calendar.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "2 entries"
+      "installed_snapshot_detail": "2 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "callout-manager",
       "folder": "callout-manager",
       "name": "Callout Manager",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "enabled": true,
       "author": "eth-p",
       "authorUrl": "https://github.com/eth-p",
@@ -93,13 +123,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/callout-manager.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "cmdr",
       "folder": "cmdr",
       "name": "Commander",
-      "version": "0.5.5",
+      "version": "0.5.12",
       "enabled": true,
       "author": "jsmorabito & phibr0",
       "authorUrl": "https://github.com/phibr0",
@@ -110,13 +142,34 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/cmdr.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "colored-tags",
+      "folder": "colored-tags",
+      "name": "Colored Tags",
+      "version": "7.0.1",
+      "enabled": true,
+      "author": "Pavel Frankov",
+      "authorUrl": "https://github.com/pfrankov",
+      "repo_url": "https://github.com/pfrankov/obsidian-colored-tags.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/colored-tags.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "contribution-graph",
       "folder": "contribution-graph",
       "name": "Contribution Graph",
-      "version": "0.10.0",
+      "version": "0.11.0",
       "enabled": true,
       "author": "vran",
       "authorUrl": "https://github.com/vran-dev",
@@ -127,7 +180,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/contribution-graph.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "dataview",
@@ -144,7 +199,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/dataview.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "dataview-publisher",
@@ -161,13 +218,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/dataview-publisher.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "2 entries"
+      "installed_snapshot_detail": "2 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "digitalgarden",
       "folder": "digitalgarden",
       "name": "Digital Garden",
-      "version": "2.76.4",
+      "version": "2.94.1",
       "enabled": true,
       "author": "Ole Eskild Steensen",
       "authorUrl": "https://docs.forestry.md/",
@@ -178,7 +237,28 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/digitalgarden.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "dragger",
+      "folder": "dragger",
+      "name": "Dragger",
+      "version": "2.0.0",
+      "enabled": true,
+      "author": "Ariestar",
+      "authorUrl": "https://github.com/Ariestar",
+      "repo_url": "https://github.com/ariestar/obsidian-dragger.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/dragger.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "draw-harada-method",
@@ -195,13 +275,34 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/draw-harada-method.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "duowei-table",
+      "folder": "duowei-table",
+      "name": "Duowei Table",
+      "version": "0.0.2",
+      "enabled": true,
+      "author": "peyote",
+      "authorUrl": "",
+      "repo_url": "https://github.com/jepicaju862-lab/duowei-table.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/duowei-table.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "dynamic-views",
       "folder": "dynamic-views",
       "name": "Dynamic Views",
-      "version": "0.14.0",
+      "version": "0.15.0",
       "enabled": true,
       "author": "churnish",
       "authorUrl": "",
@@ -212,7 +313,28 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/dynamic-views.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "easy-sync",
+      "folder": "easy-sync",
+      "name": "EasySync",
+      "version": "1.5.4",
+      "enabled": false,
+      "author": "Jiao Yingxing",
+      "authorUrl": "https://github.com/jiaoyingxing",
+      "repo_url": "https://github.com/jiaoyingxing/easy-sync.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/easy-sync.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "file-explorer-note-count",
@@ -229,7 +351,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/file-explorer-note-count.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "file-tree-alternative",
@@ -246,7 +370,66 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/file-tree-alternative.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "full-calendar-remastered",
+      "folder": "full-calendar-remastered",
+      "name": "Full Calendar Remastered",
+      "version": "0.13.6",
+      "enabled": true,
+      "author": "Jovi Koikkara",
+      "authorUrl": "https://github.com/YouFoundJK",
+      "repo_url": "https://github.com/obsidian-full-calendar-remastered/plugin-full-calendar.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/full-calendar-remastered.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "google-drive-sync",
+      "folder": "google-drive-sync",
+      "name": "Google Drive Sync",
+      "version": "3.1.1",
+      "enabled": false,
+      "author": "Richard Xiong",
+      "authorUrl": "https://ogd.richardxiong.com",
+      "repo_url": "https://github.com/richardx366/Obsidian-Google-Drive.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/google-drive-sync.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "google-drive-sync-gsq",
+      "folder": "google-drive-sync-gsq",
+      "name": "Google Drive Sync GSQ",
+      "version": "1.0.1",
+      "enabled": true,
+      "author": "Siqi Guo; based on Richard Xiong’s Google Drive Sync",
+      "authorUrl": "https://ogd.richardxiong.com",
+      "repo_url": "https://github.com/RichardX366/Obsidian-Google-Drive.git",
+      "repo_source": "locally-derived-upstream",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/google-drive-sync-gsq.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "archived",
+      "local_source_archive_detail": "local-sources/google-drive-sync-gsq-source.tar.gz"
     },
     {
       "id": "heatmap-calendar",
@@ -263,14 +446,16 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/heatmap-calendar.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "homepage",
       "folder": "homepage",
       "name": "Homepage",
-      "version": "4.4.4",
-      "enabled": false,
+      "version": "4.5.0",
+      "enabled": true,
       "author": "novov",
       "authorUrl": "https://novov.me",
       "repo_url": "https://github.com/mirnovov/obsidian-homepage.git",
@@ -280,13 +465,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/homepage.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "image-captions",
       "folder": "image-captions",
       "name": "Image Captions",
-      "version": "1.1.7",
+      "version": "1.2.1",
       "enabled": false,
       "author": "Alan Grainger",
       "authorUrl": "https://github.com/alangrainger",
@@ -297,13 +484,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/image-captions.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "image-converter",
       "folder": "image-converter",
       "name": "Image Converter",
-      "version": "1.4.4",
+      "version": "1.4.6",
       "enabled": true,
       "author": "xRyul",
       "authorUrl": "https://github.com/xryul",
@@ -314,7 +503,47 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/image-converter.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "ink-annotation",
+      "folder": "ink-annotation",
+      "name": "Ink-Annotation",
+      "version": "1.0.1",
+      "enabled": true,
+      "author": "peyote",
+      "authorUrl": "",
+      "repo_url": "https://github.com/jepicaju862-lab/ink-annotation.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/ink-annotation.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "journal-photo-page-badge",
+      "folder": "journal-photo-page-badge",
+      "name": "Journal Photo Page Badge",
+      "version": "0.1.0",
+      "enabled": true,
+      "author": "Guo Lab",
+      "authorUrl": "",
+      "repo_url": "",
+      "repo_source": "unresolved",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "skipped",
+      "archive_detail": "repo unresolved",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "latex-ocr",
@@ -331,13 +560,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/latex-ocr.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "make-md",
       "folder": "make-md",
       "name": "make.md",
-      "version": "1.3.4",
+      "version": "1.3.5",
       "enabled": false,
       "author": "make.md",
       "authorUrl": "https://www.make.md",
@@ -348,13 +579,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/make-md.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "maps",
       "folder": "maps",
       "name": "Maps",
-      "version": "0.1.6",
+      "version": "0.2.2",
       "enabled": false,
       "author": "Obsidian",
       "authorUrl": "https://obsidian.md",
@@ -365,7 +598,28 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/maps.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "media-extended",
+      "folder": "media-extended",
+      "name": "Media Extended",
+      "version": "4.2.7",
+      "enabled": true,
+      "author": "AidenLx",
+      "authorUrl": "https://aidenlx.site",
+      "repo_url": "https://github.com/aidenlx/media-extended.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/media-extended.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "mermaid-tools",
@@ -382,7 +636,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/mermaid-tools.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "metadata-menu",
@@ -399,7 +655,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/metadata-menu.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "multi-column-markdown",
@@ -416,7 +674,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/multi-column-markdown.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "nav-link-header",
@@ -433,7 +693,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/nav-link-header.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "note-refactor-obsidian",
@@ -450,13 +712,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/note-refactor-obsidian.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "notebook-navigator",
       "folder": "notebook-navigator",
       "name": "Notebook Navigator",
-      "version": "3.2.0",
+      "version": "3.4.3",
       "enabled": true,
       "author": "Johan Sanneblad",
       "authorUrl": "https://github.com/johansan",
@@ -467,7 +731,28 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/notebook-navigator.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "notion-bases",
+      "folder": "notion-bases",
+      "name": "Notion Bases",
+      "version": "1.13.0",
+      "enabled": true,
+      "author": "bgarciamoura",
+      "authorUrl": "https://github.com/bgarciamoura",
+      "repo_url": "https://github.com/bgarciamoura/obsidian-notion-bases-plugin.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/notion-bases.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-annotator",
@@ -484,7 +769,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-annotator.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "2 entries"
+      "installed_snapshot_detail": "2 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-citation-plugin",
@@ -501,13 +788,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-citation-plugin.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-excalidraw-plugin",
       "folder": "obsidian-excalidraw-plugin",
       "name": "Excalidraw",
-      "version": "2.24.2",
+      "version": "2.27.3",
       "enabled": true,
       "author": "Zsolt Viczian",
       "authorUrl": "https://excalidraw-obsidian.online",
@@ -518,14 +807,16 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-excalidraw-plugin.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-full-calendar",
       "folder": "obsidian-full-calendar",
       "name": "Full Calendar",
       "version": "0.10.7",
-      "enabled": true,
+      "enabled": false,
       "author": "Davis Haupt",
       "authorUrl": "https://davi.sh",
       "repo_url": "https://github.com/obsidian-community/obsidian-full-calendar.git",
@@ -535,13 +826,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-full-calendar.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-git",
       "folder": "obsidian-git",
       "name": "Git",
-      "version": "2.38.5",
+      "version": "2.40.0",
       "enabled": false,
       "author": "Vinzent",
       "authorUrl": "https://github.com/Vinzent03",
@@ -552,7 +845,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-git.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-habit-tracker",
@@ -569,13 +864,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-habit-tracker.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-hover-editor",
       "folder": "obsidian-hover-editor",
       "name": "Hover Editor",
-      "version": "0.11.29",
+      "version": "0.11.31",
       "enabled": true,
       "author": "NothingIsLost",
       "authorUrl": "https://github.com/nothingislost",
@@ -586,13 +883,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-hover-editor.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-importer",
       "folder": "obsidian-importer",
       "name": "Importer",
-      "version": "1.8.12",
+      "version": "3.1.9",
       "enabled": false,
       "author": "Obsidian",
       "authorUrl": "https://obsidian.md",
@@ -603,7 +902,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-importer.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-kanban",
@@ -620,13 +921,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-kanban.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-latex-suite",
       "folder": "obsidian-latex-suite",
       "name": "Latex Suite",
-      "version": "1.11.5",
+      "version": "1.13.3",
       "enabled": true,
       "author": "artisticat",
       "authorUrl": "https://github.com/artisticat1",
@@ -637,13 +940,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-latex-suite.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-linter",
       "folder": "obsidian-linter",
       "name": "Linter",
-      "version": "1.32.0",
+      "version": "1.33.0",
       "enabled": true,
       "author": "Victor Tao",
       "authorUrl": "https://github.com/platers",
@@ -654,7 +959,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-linter.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-map-view",
@@ -671,13 +978,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-map-view.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-meta-bind-plugin",
       "folder": "obsidian-meta-bind-plugin",
       "name": "Meta Bind",
-      "version": "1.4.15",
+      "version": "1.5.1",
       "enabled": true,
       "author": "Moritz Jung",
       "authorUrl": "https://www.moritzjung.dev/",
@@ -688,7 +997,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-meta-bind-plugin.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-mind-map",
@@ -705,7 +1016,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-mind-map.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "2 entries"
+      "installed_snapshot_detail": "2 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-pandoc",
@@ -722,7 +1035,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-pandoc.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-pandoc-reference-list",
@@ -739,13 +1054,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-pandoc-reference-list.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-plantuml",
       "folder": "obsidian-plantuml",
       "name": "PlantUML",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "enabled": true,
       "author": "Johannes Theiner",
       "authorUrl": "https://github.com/joethei/",
@@ -756,7 +1073,28 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-plantuml.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "obsidian-shellcommands",
+      "folder": "obsidian-shellcommands",
+      "name": "Shell commands",
+      "version": "0.23.0",
+      "enabled": true,
+      "author": "Jarkko Linnanvirta",
+      "authorUrl": "https://github.com/Taitava",
+      "repo_url": "https://github.com/taitava/obsidian-shellcommands.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/obsidian-shellcommands.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-style-settings",
@@ -773,14 +1111,16 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-style-settings.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-tasks-plugin",
       "folder": "obsidian-tasks-plugin",
       "name": "Tasks",
-      "version": "8.2.2",
-      "enabled": false,
+      "version": "8.4.0",
+      "enabled": true,
       "author": "Clare Macrae and Ilyas Landikov (created by Martin Schenck)",
       "authorUrl": "https://github.com/obsidian-tasks-group",
       "repo_url": "https://github.com/obsidian-tasks-group/obsidian-tasks.git",
@@ -790,7 +1130,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-tasks-plugin.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-tracker",
@@ -807,7 +1149,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-tracker.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-wakatime",
@@ -824,7 +1168,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-wakatime.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian-zotero-desktop-connector",
@@ -841,13 +1187,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian-zotero-desktop-connector.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "obsidian42-brat",
       "folder": "obsidian42-brat",
       "name": "BRAT",
-      "version": "2.0.8",
+      "version": "2.2.0",
       "enabled": true,
       "author": "TfTHacker",
       "authorUrl": "https://github.com/TfTHacker",
@@ -858,7 +1206,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/obsidian42-brat.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "pdf-plus",
@@ -875,14 +1225,16 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/pdf-plus.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "periodic-notes",
       "folder": "periodic-notes",
       "name": "Periodic Notes",
       "version": "0.0.17",
-      "enabled": true,
+      "enabled": false,
       "author": "Liam Cain",
       "authorUrl": "https://github.com/liamcain/",
       "repo_url": "https://github.com/liamcain/obsidian-periodic-notes.git",
@@ -892,7 +1244,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/periodic-notes.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "pexels-banner",
@@ -909,7 +1263,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/pexels-banner.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "pseudocode-in-obs",
@@ -926,13 +1282,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/pseudocode-in-obs.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "quartz-syncer",
       "folder": "quartz-syncer",
       "name": "Quartz Syncer",
-      "version": "1.15.3",
+      "version": "2.1.0",
       "enabled": false,
       "author": "Emile Bangma",
       "authorUrl": "https://github.com/saberzero1",
@@ -943,14 +1301,16 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/quartz-syncer.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "quickadd",
       "folder": "quickadd",
       "name": "QuickAdd",
-      "version": "2.12.3",
-      "enabled": true,
+      "version": "2.28.0",
+      "enabled": false,
       "author": "Christian B. B. Houmann",
       "authorUrl": "https://bagerbach.com",
       "repo_url": "https://github.com/chhoumann/quickadd.git",
@@ -960,13 +1320,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/quickadd.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "realclaudian",
       "folder": "realclaudian",
       "name": "Claudian",
-      "version": "2.0.25",
+      "version": "2.3.7",
       "enabled": true,
       "author": "Yishen Tu",
       "authorUrl": "https://github.com/YishenTu",
@@ -977,13 +1339,72 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/realclaudian.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "sheet-plus",
+      "folder": "sheet-plus",
+      "name": "Sheet Plus",
+      "version": "2.13.2",
+      "enabled": true,
+      "author": "ljcoder",
+      "authorUrl": "https://github.com/ljcoder2015",
+      "repo_url": "https://github.com/ljcoder2015/obsidian-sheet-plus.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/sheet-plus.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "siqi-calendar-visual-layers",
+      "folder": "siqi-calendar-visual-layers",
+      "name": "SIQI Calendar Visual Layers",
+      "version": "0.2.1",
+      "enabled": true,
+      "author": "SIQI / Claudian",
+      "authorUrl": "",
+      "repo_url": "",
+      "repo_source": "unresolved",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "skipped",
+      "archive_detail": "repo unresolved",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "2 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "siqi-reminders-sync",
+      "folder": "siqi-reminders-sync",
+      "name": "SIQI Reminders Sync",
+      "version": "0.1.0",
+      "enabled": true,
+      "author": "SIQI / Claudian",
+      "authorUrl": "",
+      "repo_url": "",
+      "repo_source": "unresolved",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "skipped",
+      "archive_detail": "repo unresolved",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "2 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "smart-connections",
       "folder": "smart-connections",
       "name": "Smart Connections",
-      "version": "4.5.3",
+      "version": "4.7.2",
       "enabled": false,
       "author": "Brian Petro",
       "authorUrl": "https://smartconnections.app",
@@ -994,7 +1415,28 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/smart-connections.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "socrates-pen",
+      "folder": "socrates-pen",
+      "name": "Socrates",
+      "version": "0.28.0",
+      "enabled": true,
+      "author": "xesws",
+      "authorUrl": "",
+      "repo_url": "https://github.com/xesws/socrates-pen.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/socrates-pen.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "table-editor-obsidian",
@@ -1011,7 +1453,28 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/table-editor-obsidian.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "tag-wrangler",
+      "folder": "tag-wrangler",
+      "name": "Tag Wrangler",
+      "version": "0.6.5",
+      "enabled": true,
+      "author": "PJ Eby",
+      "authorUrl": "https://github.com/pjeby",
+      "repo_url": "https://github.com/pjeby/tag-wrangler.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/tag-wrangler.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "2 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "tags-routes",
@@ -1028,13 +1491,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/tags-routes.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "templater-obsidian",
       "folder": "templater-obsidian",
       "name": "Templater",
-      "version": "2.20.5",
+      "version": "2.25.1",
       "enabled": true,
       "author": "SilentVoid",
       "authorUrl": "https://github.com/SilentVoid13",
@@ -1045,13 +1510,15 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/templater-obsidian.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "terminal",
       "folder": "terminal",
       "name": "Terminal",
-      "version": "3.26.0",
+      "version": "3.27.2",
       "enabled": false,
       "author": "polyipseity",
       "authorUrl": "https://github.com/polyipseity",
@@ -1062,14 +1529,16 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/terminal.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "vscode-editor",
       "folder": "vscode-editor",
       "name": "VSCode Editor",
       "version": "1.0.5",
-      "enabled": false,
+      "enabled": true,
       "author": "sunxvming",
       "authorUrl": "https://github.com/sunxvming",
       "repo_url": "https://github.com/sunxvming/obsidian-vscode-editor.git",
@@ -1079,7 +1548,9 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/vscode-editor.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     },
     {
       "id": "ytranscript",
@@ -1096,7 +1567,28 @@
       "archive_status": "bundled",
       "archive_detail": "bundles/ytranscript.bundle",
       "installed_snapshot_status": "snapshotted",
-      "installed_snapshot_detail": "3 entries"
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
+    },
+    {
+      "id": "zotero-redisearch-rag",
+      "folder": "zotero-redisearch-rag",
+      "name": "Zotero Research Assistant",
+      "version": "1.0.12",
+      "enabled": false,
+      "author": "Jens Mittelbach",
+      "authorUrl": "https://www.jensmittelbach.de",
+      "repo_url": "https://github.com/jmiba/zotero-redisearch-rag.git",
+      "repo_source": "obsidian-community-registry",
+      "submodule_path": "",
+      "submodule_commit": "",
+      "archive_status": "bundled",
+      "archive_detail": "bundles/zotero-redisearch-rag.bundle",
+      "installed_snapshot_status": "snapshotted",
+      "installed_snapshot_detail": "3 entries",
+      "local_source_archive_status": "not-applicable",
+      "local_source_archive_detail": ""
     }
   ]
 }

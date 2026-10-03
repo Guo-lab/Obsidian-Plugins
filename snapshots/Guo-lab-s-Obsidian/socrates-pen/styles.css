@@ -1,0 +1,1388 @@
+/* ============================================================
+   骨架（v0.5.0）
+
+   .socrates-pen
+   ├── .sp-brand   品牌条        flex:0 0 auto    只画一次
+   ├── .sp-alert   错误条        flex:0 5 auto    有界，自己滚
+   ├── .sp-log     对话区        flex:1 0 0       唯一主滚动区
+   ├── .sp-panel   审批面板      flex:0 1000 auto 第一个让位，自己滚
+   └── .sp-dock    底座          flex:0 1 auto    贴底
+        ├── .sp-quote   flex:0 100 auto
+        ├── .sp-chips   flex:0 10 auto   有界，自己滚
+        ├── .sp-status  flex:0 0 auto
+        └── .sp-form    flex:0 0 auto    永不压缩
+
+   真正保证布局不塌的不是那些 max-height，是 flex-shrink 的权重阶梯：
+   权重会乘以 base size，差两个数量级就等于严格优先级。让位顺序是
+   面板 → 引文 → 芯片，输入行永远在，对话区永远至少 4em。
+   即使某个主题让百分比无法解析，这个保证依然成立。
+
+   颜色一律走库主题变量。唯一例外是启动卡 .sp-splash：那是深色岛，
+   色标钉死，浅色主题下也不反选（见该块注释）。
+   ============================================================ */
+
+.socrates-pen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* .socrates-pen 就是 contentEl(.view-content)：主题给它的 padding / overflow-y
+     一直在参与布局，显式接管，否则下面的高度分配会被主题悄悄改掉。 */
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  font-size: 13px;
+}
+
+/* ── 品牌条 ── */
+.socrates-pen .sp-brand {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.socrates-pen .sp-dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+
+.socrates-pen .sp-dot.is-ok {
+  background: var(--interactive-accent);
+}
+
+/* 连得上 sidecar，但这套模型配置是坏的（钥匙废了 / 型号不存在 / 节点没视觉）。
+   以前这一档不存在，于是它和「一切正常」共用绿点。 */
+.socrates-pen .sp-dot.is-warn {
+  background: var(--text-warning);
+}
+
+.socrates-pen .sp-dot.is-down {
+  background: var(--text-error);
+}
+
+.socrates-pen .sp-brand-name {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-normal);
+}
+
+/* 健康行退居次要：单行省略，全文进 tooltip。它是给人扫一眼的，不是主角。 */
+.socrates-pen .sp-brand-sub {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-monospace);
+  font-size: 10px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.socrates-pen .sp-brand-tools {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 2px;
+}
+
+.socrates-pen button.sp-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  box-shadow: none;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.socrates-pen button.sp-icon:hover:not(:disabled) {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.socrates-pen button.sp-icon:disabled {
+  opacity: 0.35;
+}
+
+/* Fast Mode。**用 transition 而不是 animation**：加了 @keyframes 就得同步
+   在 prefers-reduced-motion 那块里关掉它（check-css.mjs 第 3 条闸），
+   而这枚开关根本不需要持续动画——它只是从灰变亮。 */
+.socrates-pen button.sp-fast {
+  transition: color 120ms ease;
+}
+
+.socrates-pen button.sp-fast.is-on {
+  color: var(--text-accent);
+}
+
+.socrates-pen button.sp-fast.is-on:hover:not(:disabled) {
+  color: var(--text-accent-hover);
+}
+
+/* 这一轮压过上下文。比 is-on 再退半档，说的是「开着，而且刚才削了点东西」。 */
+.socrates-pen button.sp-fast.is-trim {
+  color: var(--text-warning);
+}
+
+.socrates-pen button.sp-icon .svg-icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* ── 错误条 ── */
+.socrates-pen .sp-alert {
+  flex: 0 5 auto;
+  min-height: 0;
+  /* 窄栏 5em 兜底，高栏跟着长——带绝对路径的 sandbox 错误一条就超过 3 行 */
+  max-height: clamp(5em, 22%, 14em);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  color: var(--text-error);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* ── 对话区：唯一主滚动区，只长不缩 ── */
+.socrates-pen .sp-log {
+  flex: 1 0 0;
+  /* 硬底线。与百分比能否解析无关——即使面板和底座一起要地方，
+     对话区也保留 4em，不会出现「只剩一条边框」的退化状态。 */
+  min-height: 4em;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 空态：在对话区里垂直居中。v0.6.0 的启动 Logo 会挂进来。 */
+.socrates-pen .sp-empty {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.socrates-pen .sp-kicker {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.socrates-pen .sp-turn.is-note {
+  align-self: stretch;
+  margin: 6px 0;
+}
+
+.socrates-pen .sp-turn.is-note .sp-kicker {
+  text-align: center;
+}
+
+.socrates-pen .sp-turn.is-note .sp-body {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+  border-top: 1px dashed var(--background-modifier-border);
+  border-bottom: 1px dashed var(--background-modifier-border);
+  padding: 6px 8px;
+}
+
+.socrates-pen .sp-turn.is-user {
+  align-self: flex-end;
+  max-width: 92%;
+}
+
+/* 请求失败落的是错误气泡，不是空流式（v0.18.0 评测报告 P0）：
+   红边 + 错误色 + 一颗「去设置」。它是终态，永远不该再闪光标。 */
+.socrates-pen .sp-turn.is-error {
+  align-self: stretch;
+}
+
+.socrates-pen .sp-turn.is-error .sp-kicker {
+  color: var(--text-error);
+}
+
+.socrates-pen .sp-turn.is-error .sp-body {
+  background: var(--background-secondary);
+  border-left: 3px solid var(--text-error);
+  padding: 6px 10px;
+  border-radius: 2px 6px 6px 6px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--text-error);
+  overflow-wrap: anywhere;
+}
+
+.socrates-pen .sp-err-btn {
+  margin: 4px 0 0 10px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 11.5px;
+  color: var(--text-on-accent);
+  background: var(--interactive-accent);
+  cursor: pointer;
+}
+
+.socrates-pen .sp-err-btn:hover {
+  background: var(--interactive-accent-hover);
+}
+
+.socrates-pen .sp-turn.is-user .sp-kicker {
+  text-align: right;
+}
+
+.socrates-pen .sp-turn.is-user .sp-body {
+  background: var(--background-primary-alt);
+  border-right: 3px solid var(--text-accent);
+  padding: 5px 8px;
+  border-radius: 6px 2px 6px 6px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* 助手气泡左侧的微缩苏格拉底。4px 是这幅画的清晰度下限，再小只剩一团灰。
+   字号写死不跟随容器：它要跟正文行高对齐，不是要占满宽度。 */
+.socrates-pen .sp-turn.is-assistant {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  min-width: 0;
+}
+
+.socrates-pen .sp-turn-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.socrates-pen .sp-avatar {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  font-family: var(--font-monospace);
+  font-size: 4px;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  font-variant-ligatures: none;
+  color: var(--text-muted);
+  opacity: 0.85;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body {
+  background: var(--background-secondary);
+  border-left: 3px solid var(--interactive-accent);
+  padding: 6px 10px;
+  border-radius: 2px 6px 6px 6px;
+  line-height: 1.45;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body p {
+  margin: 0 0 0.35em;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body p:last-child {
+  margin-bottom: 0;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body h1,
+.socrates-pen .sp-turn.is-assistant .sp-body h2 {
+  font-size: 14px;
+  margin: 0.55em 0 0.2em;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body h3,
+.socrates-pen .sp-turn.is-assistant .sp-body h4 {
+  font-size: 13px;
+  margin: 0.45em 0 0.15em;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body ul,
+.socrates-pen .sp-turn.is-assistant .sp-body ol {
+  margin: 0.15em 0 0.4em;
+  padding-left: 1.15em;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body li {
+  margin: 0.05em 0;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body pre,
+.socrates-pen .sp-turn.is-assistant .sp-body table {
+  font-size: 12px;
+  margin: 0.3em 0 0.45em;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body th,
+.socrates-pen .sp-turn.is-assistant .sp-body td {
+  border: 1px solid var(--background-modifier-border);
+  padding: 2px 6px;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body blockquote {
+  margin: 0.3em 0 0.4em;
+  padding-left: 0.7em;
+}
+
+.socrates-pen .sp-turn.is-assistant .sp-body > :last-child {
+  margin-bottom: 0;
+}
+
+.socrates-pen .sp-tool-msg {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.socrates-pen .sp-tool {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  font-family: var(--font-monospace);
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 1px 0 3px;
+  border-bottom: 1px dashed var(--background-modifier-border);
+}
+
+.socrates-pen .sp-tool .sp-kicker {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.socrates-pen .sp-tool.is-bad {
+  color: var(--text-error);
+  border-bottom-color: var(--text-error);
+}
+
+/* ── 审批面板：在流内，不是浮窗。第一个让位，超出自己滚 ── */
+.socrates-pen .sp-panel {
+  flex: 0 1000 auto;
+  min-height: 0;
+  /* 45% 是常态那一档：面板高 1244px 以下时都是它在管；560px 只在超高侧栏接管。
+     窄栏下 120px 保底。剩下的由内部的 .sp-fold 自己滚。 */
+  max-height: clamp(120px, 45%, 560px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--background-primary);
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.socrates-pen .sp-panel h4 {
+  margin: 0;
+  font-size: 13px;
+}
+
+.socrates-pen .sp-where {
+  font-family: var(--font-monospace);
+  font-size: 11px;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.socrates-pen .sp-warn {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.socrates-pen .sp-panel .sp-fold {
+  margin: 0;
+  padding: 0;
+  /* 不写死高度：面板是 flex column，让 diff 区吃满标题/警告/按钮之外的全部空间。
+     面板自己有上限，所以这里 grow 不会失控；用户批准写盘前看的就是这一块，
+     它才是最该铺开的。 */
+  flex: 1 1 auto;
+  min-height: 90px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  font-size: 11px;
+  background: var(--background-secondary);
+  border-radius: 4px;
+}
+
+/* 一眼看出哪段是原文、哪段是要换上去的 */
+.socrates-pen .sp-diff {
+  padding: 5px 8px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+}
+
+.socrates-pen .sp-diff.is-old {
+  border-left: 3px solid var(--text-error);
+  color: var(--text-muted);
+}
+
+.socrates-pen .sp-diff.is-new {
+  border-left: 3px solid var(--interactive-accent);
+  color: var(--text-normal);
+}
+
+/* 动作行吸底：diff 滚多远，允许 / 拒绝都在面板底边可点。
+   sticky 在流内，不是浮窗。 */
+.socrates-pen .sp-panel-actions {
+  position: sticky;
+  bottom: -8px;
+  display: flex;
+  gap: 6px;
+  padding: 6px 0 0;
+  background: var(--background-primary);
+}
+
+/* ── 底座：贴底，内部有让位优先级 ── */
+.socrates-pen .sp-dock {
+  container-type: inline-size;
+  flex: 0 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.socrates-pen .sp-quote {
+  flex: 0 100 auto;
+  min-height: 0;
+  border-left: 3px solid var(--text-accent);
+  padding: 4px 8px;
+  color: var(--text-muted);
+  background: var(--background-secondary);
+  border-radius: 0 4px 4px 0;
+  font-size: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+}
+
+/* 宽侧栏下摘录不必钉死两行 */
+@container (min-width: 420px) {
+  .socrates-pen .sp-quote {
+    -webkit-line-clamp: 4;
+  }
+}
+
+@container (min-width: 640px) {
+  .socrates-pen .sp-quote {
+    -webkit-line-clamp: 6;
+  }
+}
+
+/* 芯片：换行排列，但有界。窄栏下自己滚，宽栏下根本碰不到上限。
+   按自然宽排（0 1 auto）：五个英文长标签两行内放下，写回芯片首屏可见
+   （v0.18.0 评测报告 P1——撑满宽度时 5 枚占 3 行，核心入口被折进滚动）。
+   overscroll-behavior 不能省——否则在芯片区滑到底会带着对话区一起跳。 */
+.socrates-pen .sp-chips {
+  flex: 0 10 auto;
+  min-height: 0;
+  max-height: 8em;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* white-space: normal 是让长标签活下来的那一行：按钮默认 nowrap，
+   而中文标签已经 200px 宽，英文等义标签比整个侧栏还宽。 */
+/* 追问变多了（v0.8.0 起两条实时 + 后续的深挖），宽侧栏别把它们压进滚动条 */
+@container (min-width: 420px) {
+  .socrates-pen .sp-chips {
+    max-height: 10em;
+  }
+}
+
+@container (min-width: 640px) {
+  .socrates-pen .sp-chips {
+    max-height: 13em;
+  }
+}
+
+/* 对话前态（v0.18.2）：还没发过第一句话（含纯错误气泡态），对话区没内容
+   占位，解除上限让五枚全展开——写回是核心入口，不该在窄侧栏里折进滚动条。
+   首轮真实对话后回到有界滚动（深挖动态芯片只在那之后堆高）。特异性比
+   容器查询高一档，位置无所谓，放这儿和别的芯片规则做邻居。 */
+.socrates-pen.is-prechat .sp-chips {
+  max-height: none;
+}
+
+.socrates-pen .sp-chips button {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  height: auto;
+  padding: 4px 10px;
+  border-radius: 11px;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+}
+
+.socrates-pen .sp-chips button.is-dyn {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--background-modifier-border);
+  color: var(--text-muted);
+}
+
+.socrates-pen .sp-chips button.is-dyn:hover:not(:disabled) {
+  color: var(--text-normal);
+  box-shadow: inset 0 0 0 1px var(--text-accent);
+}
+
+/* 后台挖出来的：比即时那两条重一档，且排在最前（顺序由 dynRank 决定）。
+   它是「跳出来」的问题，最容易被忽略，长得跟旁边一样就等于没有。 */
+.socrates-pen .sp-chips button.is-deep {
+  color: var(--text-normal);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--interactive-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--interactive-accent) 7%, transparent);
+  animation: sp-deep-in 260ms ease-out;
+}
+.socrates-pen .sp-chips button.is-deep:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--interactive-accent);
+  background: color-mix(in srgb, var(--interactive-accent) 14%, transparent);
+}
+
+@keyframes sp-deep-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.socrates-pen .sp-status {
+  flex: 0 0 auto;
+  font-family: var(--font-monospace);
+  font-size: 10px;
+  color: var(--text-accent);
+}
+
+.socrates-pen .sp-status.is-usage {
+  color: var(--text-faint);
+}
+
+/* 输入行永不压缩。窄栏下「用当前选区」自己换到上一行，不挤输入框。 */
+.socrates-pen .sp-form {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.socrates-pen .sp-form .sp-input {
+  flex: 1 1 130px;
+  min-width: 0;
+  font-size: 12px;
+}
+
+.socrates-pen .sp-form button {
+  flex: 0 0 auto;
+  font-size: 12px;
+}
+
+.socrates-pen .sp-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 0 6px;
+}
+
+.socrates-pen .sp-thumbs.is-off {
+  display: none;
+}
+
+.socrates-pen .sp-thumb {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  overflow: hidden;
+  background: var(--background-primary);
+}
+
+.socrates-pen .sp-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.socrates-pen .sp-thumb-x {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0 4px;
+  line-height: 1.2;
+  font-size: 12px;
+  color: var(--text-on-accent);
+  background: var(--interactive-accent);
+  border: 0;
+  cursor: pointer;
+}
+
+.socrates-pen .sp-body-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.socrates-pen .sp-body-thumbs img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.socrates-pen .sp-body-pic {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.socrates-pen .sp-hint {
+  margin: 0;
+  max-width: 32ch;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   启动 Logo（v0.6.0）
+
+   字符画的字号是**反解**出来的，不是缩放出来的：
+     自然宽度 = 列数 × 字号 × 字宽比   =>   字号 = 可用宽 / (列数 × 字宽比)
+   这样布局高度天然跟着字号走。用 transform: scale() 就不行——它不参与布局，
+   缩放后外层盒仍占原高度，得靠 JS 追平，还会把 text-shadow 的厚度一起缩掉。
+
+   --sp-cols 由 logo.ts 在模块加载时算出并写在元素上；
+   --sp-adv（字宽比）由 PenView 实测一次写在根上，随主题换字体重测。
+   ============================================================ */
+
+/* 这张卡是深色岛，不跟库的浅色主题反选。密度字符靠暗底衬浅色才成立；
+   若把 --background-secondary 当底、--text-muted 当字，浅色主题会把脸洗成一团浅灰。
+   色标与 README hero 同源：scripts/render-hero.py 的 TINTS["noble"] 与 TEMPLATE。
+   强调色只进边框，不进底——兑进底会抬饱和度，v0.16.6 已经被读者退过。
+
+   container-type 在这里，所以 100cqi 解析的是**内容盒**，padding 已经扣掉，
+   下面字符画的字号反解不受影响。 */
+.socrates-pen .sp-splash {
+  container-type: inline-size;
+  width: 100%;
+  padding: 16px 12px 14px;
+  border-radius: 10px;
+  color-scheme: dark;
+  background: linear-gradient(
+    150deg,
+    #30293D 0%,
+    #2A2436 60%,
+    #241F2E 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--interactive-accent) 18%, transparent);
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+.socrates-pen .sp-art {
+  font-size: clamp(
+    4px,
+    calc(100cqi / (var(--sp-cols) * var(--sp-adv, 0.6))),
+    var(--sp-art-max, 13px)
+  );
+  font-family: var(--font-monospace);
+  font-variant-ligatures: none;
+  font-kerning: none;
+  /* 方块字标靠 ▀ 与 ▄ 在相邻行首尾相接构成实心笔画，行高一旦大于 1
+     就会露出背景色的横向白缝。 */
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+.socrates-pen .sp-art-row {
+  white-space: pre;
+}
+
+/* 肖像用一种颜色即可：形状信息在字符密度里。字色钉成浅灰，永远衬在岛的暗底上，
+   不跟 --text-muted 走——浅色主题里那支变量是深的，脸会被压成墨渍。 */
+.socrates-pen .sp-splash .sp-art.is-portrait {
+  --sp-art-max: 11px;
+  color: #B3B9C0;
+}
+
+/* 字标：和肖像同一套密度阶画出来的，所以也用同一种处理——单色，不加投影。
+   密度字符自带明暗层次，再叠一层 3D 挤出只会把笔画糊掉。字标比肖像亮一档，
+   层次靠这个拉开。 */
+.socrates-pen .sp-splash .sp-art.is-word {
+  --sp-art-max: 13px;
+  margin-top: 15px;
+  color: #DCDDDE;
+}
+
+/* 标语是一行字，不是一幅画：跟字标同一支等宽字体、同一个色阶，靠字距对齐
+   字符画的疏密感，不做 3D 挤出——那会和密度字符的手工感打架。 */
+.socrates-pen .sp-splash-tag {
+  margin-top: 13px;
+  text-align: center;
+  font-family: var(--font-monospace);
+  font-size: clamp(11px, 4.4cqi, 15px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em; /* 抵消末字后多出的字距，视觉才真居中 */
+  color: #DCDDDE;
+}
+
+.socrates-pen .sp-splash-sub {
+  margin-top: 6px;
+  text-align: center;
+  font-family: var(--font-monospace);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: #9AA0A6;
+}
+
+/* 宽窄两档都在 DOM 里，由容器查询挑一档显示——比在 JS 里测宽度选资产
+   少一条生命周期，也不需要 ResizeObserver。 */
+.socrates-pen .sp-art.is-wide {
+  display: none;
+}
+
+@container (min-width: 330px) {
+  .socrates-pen .sp-art.is-wide {
+    display: block;
+  }
+  .socrates-pen .sp-art.is-narrow {
+    display: none;
+  }
+}
+
+@container (min-width: 480px) {
+  .socrates-pen .sp-splash .sp-art.is-portrait {
+    --sp-art-max: 14px;
+  }
+  .socrates-pen .sp-splash .sp-art.is-word {
+    --sp-art-max: 16px;
+  }
+}
+
+/* 超宽侧栏：别让 Logo 停止生长 */
+@container (min-width: 680px) {
+  .socrates-pen .sp-splash .sp-art.is-portrait {
+    --sp-art-max: 18px;
+  }
+  .socrates-pen .sp-splash .sp-art.is-word {
+    --sp-art-max: 21px;
+  }
+}
+
+/* ── 入场：头像逐行浮现，字标从左擦出，标语最后淡入 ── */
+.socrates-pen .sp-splash.is-enter .sp-art.is-portrait .sp-art-row {
+  opacity: 0;
+  animation: sp-line-in 240ms ease-out forwards;
+  animation-delay: calc(var(--i, 0) * 14ms);
+}
+
+@keyframes sp-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.socrates-pen .sp-splash.is-enter .sp-art.is-word {
+  clip-path: inset(0 100% 0 0);
+  animation: sp-wipe 460ms cubic-bezier(0.22, 0.61, 0.36, 1) 420ms forwards;
+}
+
+@keyframes sp-wipe {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.socrates-pen .sp-splash.is-enter .sp-splash-tag,
+.socrates-pen .sp-splash.is-enter .sp-splash-sub {
+  opacity: 0;
+  animation: sp-line-in 320ms ease-out 800ms forwards;
+}
+
+/* 忙的时候横在状态行上面的进度条。**不确定型**：我们不知道模型还要写多久，
+   画一条会走到头的假进度就是在骗人。它只回答一件事——还在动。
+   真实的数字在下面那行状态行里（推理字数是真从流里数出来的）。 */
+.socrates-pen .sp-bar {
+  height: 2px;
+  margin: var(--size-2-1) 0;
+  border-radius: 1px;
+  background: var(--background-modifier-border);
+  overflow: hidden;
+}
+
+.socrates-pen .sp-bar-fill {
+  width: 34%;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--interactive-accent);
+  animation: sp-bar-shuttle 1.4s ease-in-out infinite;
+}
+
+@keyframes sp-bar-shuttle {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* 关掉穿梭，但**保留这条**：它是「还在动」唯一的视觉信号，
+     整条填满比一片空白诚实。 */
+  .socrates-pen .sp-bar-fill {
+    animation: none;
+    width: 100%;
+    opacity: 0.5;
+  }
+  .socrates-pen .sp-chips button.is-deep {
+    animation: none;
+  }
+  .socrates-pen .sp-splash.is-enter .sp-art-row,
+  .socrates-pen .sp-splash.is-enter .sp-art.is-word,
+  .socrates-pen .sp-splash.is-enter .sp-splash-tag,
+  .socrates-pen .sp-splash.is-enter .sp-splash-sub {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+}
+
+/* ── 学习画像面板（v0.25.0）。第二个视图挂同一个 .socrates-pen 类，继承
+   .sp-icon / .sp-bar / .sp-alert / .is-off；根是 overflow:hidden，所以
+   .sp-report-scroll 是唯一的滚动容器。颜色一律主题变量，雷达跟 accent 走。 ── */
+.socrates-pen .sp-report-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--size-4-2) var(--size-4-3) var(--size-4-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4-2);
+}
+
+.socrates-pen.sp-report .sp-alert {
+  flex: 0 0 auto;
+  max-height: none;
+  border-bottom: none;
+  padding: 4px 0;
+}
+
+.socrates-pen .sp-report-head {
+  margin: 0;
+  font-size: var(--font-ui-large);
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.socrates-pen .sp-report-sub {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.socrates-pen .sp-report-note {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-line;
+  padding: 4px 8px;
+  border-left: 3px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  border-radius: 0 4px 4px 0;
+}
+
+.socrates-pen .sp-report-hint {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.socrates-pen .sp-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.socrates-pen .sp-report-progress {
+  font-family: var(--font-monospace);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* 确定型进度条：知道编到第几轮就画到第几轮。放在 .sp-bar-fill 之后，
+   压过穿梭动画；「减少动态效果」下那条 100% 宽的兜底也被这里的宽度接管。 */
+.socrates-pen .sp-bar-fill.is-det {
+  animation: none;
+  width: var(--sp-pct, 0%);
+  opacity: 1;
+  transition: width 200ms ease-out;
+}
+
+/* 雷达 */
+.socrates-pen .sp-radar-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.socrates-pen .sp-radar {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  color: var(--text-muted);
+}
+
+.socrates-pen .sp-radar-ring,
+.socrates-pen .sp-radar-spoke {
+  fill: none;
+  stroke: var(--background-modifier-border);
+  stroke-width: 1;
+}
+
+.socrates-pen .sp-radar-area {
+  fill: color-mix(in srgb, var(--interactive-accent) 18%, transparent);
+  stroke: var(--interactive-accent);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.socrates-pen .sp-radar-pt {
+  fill: var(--interactive-accent);
+  stroke: var(--background-primary);
+  stroke-width: 1;
+}
+
+.socrates-pen .sp-radar-pt.is-null {
+  fill: var(--background-primary);
+  stroke: var(--text-faint);
+  stroke-dasharray: 2 1;
+}
+
+.socrates-pen .sp-radar-label {
+  fill: var(--text-normal);
+  font-family: var(--font-interface);
+}
+
+.socrates-pen .sp-radar-label.is-weak {
+  fill: var(--text-error);
+}
+
+.socrates-pen .sp-radar-label.is-strong {
+  fill: var(--text-success);
+}
+
+.socrates-pen .sp-radar-scale {
+  fill: var(--text-faint);
+  font-family: var(--font-monospace);
+}
+
+/* 轴表：summary 就是表格行，展开看证据 */
+.socrates-pen .sp-axes {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.socrates-pen .sp-axes-head,
+.socrates-pen .sp-axis-sum {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.4em 3.4em 5.5em;
+  gap: 6px;
+  align-items: baseline;
+  font-size: 12px;
+}
+
+.socrates-pen .sp-axes-head {
+  color: var(--text-faint);
+  font-size: 11px;
+  padding: 0 6px;
+}
+
+.socrates-pen .sp-axis > summary {
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  list-style: none;
+}
+
+.socrates-pen .sp-axis > summary::-webkit-details-marker {
+  display: none;
+}
+
+.socrates-pen .sp-axis > summary:hover {
+  background: var(--background-modifier-hover);
+}
+
+.socrates-pen .sp-axis[open] > summary {
+  background: var(--background-secondary);
+}
+
+.socrates-pen .sp-axis-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.socrates-pen .sp-score {
+  font-family: var(--font-monospace);
+  text-align: right;
+  font-weight: 600;
+}
+
+.socrates-pen .sp-score.is-weak {
+  color: var(--text-error);
+}
+
+.socrates-pen .sp-score.is-strong {
+  color: var(--text-success);
+}
+
+.socrates-pen .sp-score.is-null {
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
+.socrates-pen .sp-axis-mastery,
+.socrates-pen .sp-axis-n {
+  font-family: var(--font-monospace);
+  color: var(--text-muted);
+  text-align: right;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.socrates-pen .sp-axis-body {
+  padding: 4px 6px 8px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.socrates-pen .sp-axis-def {
+  color: var(--text-muted);
+}
+
+.socrates-pen .sp-axis-h {
+  color: var(--text-faint);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.socrates-pen .sp-why,
+.socrates-pen .sp-evs {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.socrates-pen .sp-evs li {
+  margin-bottom: 4px;
+}
+
+.socrates-pen .sp-ev-time,
+.socrates-pen .sp-ev-ref,
+.socrates-pen .sp-ev-type {
+  font-family: var(--font-monospace);
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-right: 6px;
+}
+
+.socrates-pen .sp-ev-type.is-bad {
+  color: var(--text-error);
+}
+
+.socrates-pen .sp-ev-type.is-good {
+  color: var(--text-success);
+}
+
+/* 照 .sp-quote：读者原话，左边一道 accent */
+.socrates-pen .sp-ev-quote {
+  border-left: 3px solid var(--text-accent);
+  padding: 2px 8px;
+  color: var(--text-muted);
+  background: var(--background-secondary);
+  border-radius: 0 4px 4px 0;
+  overflow-wrap: anywhere;
+}
+
+/* 书架 */
+.socrates-pen .sp-report-h3 {
+  margin: var(--size-4-2) 0 0;
+  font-size: var(--font-ui-medium);
+  font-weight: 600;
+}
+
+.socrates-pen .sp-vault-wrap {
+  overflow-x: auto;
+}
+
+.socrates-pen table.sp-vault {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.socrates-pen .sp-vault th,
+.socrates-pen .sp-vault td {
+  text-align: left;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  vertical-align: top;
+}
+
+.socrates-pen .sp-vault th {
+  color: var(--text-faint);
+  font-weight: 500;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.socrates-pen .sp-vault td.is-num {
+  font-family: var(--font-monospace);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.socrates-pen .sp-vault tr.is-current {
+  background: color-mix(in srgb, var(--interactive-accent) 7%, transparent);
+}
+
+.socrates-pen .sp-vault-merged {
+  display: block;
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.socrates-pen .sp-vault-chip {
+  display: inline-block;
+  margin: 0 6px 2px 0;
+  white-space: nowrap;
+}
+
+/* 放在最后。双类名提一级特异性，压过上面那些 display:flex，不用 !important。 */
+.socrates-pen .is-off.is-off {
+  display: none;
+}
+
+/* 设置页的「高级」折叠区。展开状态不落盘——每次进设置页默认折叠，
+   这是读者要的。样式只借主题变量，不硬编码任何色值。 */
+.sp-set-advanced > summary {
+  cursor: pointer;
+  padding: var(--size-4-2) 0;
+  font-weight: var(--font-semibold);
+  color: var(--text-muted);
+}
+
+.sp-set-advanced > summary:hover {
+  color: var(--text-normal);
+}
+
+.sp-set-advanced[open] > summary {
+  color: var(--text-normal);
+}
+
+/* 设置页那块累计统计。只借主题变量。 */
+.sp-set-usage {
+  margin-bottom: var(--size-4-4);
+}
+
+.sp-set-usage > p {
+  margin: var(--size-2-1) 0;
+}
+
+/* 读者自己定的泡泡。这排按钮现在有四档，从轻到重：
+   is-dyn（中性描边）< is-custom（这一档）< is-deep（强调色+底色）< 固定芯片（实心底）。
+   给它一档带强调色的描边：一眼认得出「这几个是我加的」，又不越过深挖——
+   深挖是「跳出来的问题」，读者最容易漏，得留着最抢眼的那一档。
+
+   **描边用 inset box-shadow，不用 border**：邻居 is-dyn/is-deep 都是这么写的，
+   同源。box-shadow 不参与布局，换档时按钮尺寸一个像素都不动；border 要靠
+   box-sizing 才不撑大，那是个这份文件里没有设过的前提。
+
+   **没有 @keyframes**：check-css.mjs 要求每个动画都能在
+   prefers-reduced-motion: reduce 下关掉，而这里本来也不需要动效——
+   自定义泡泡是常驻按钮，不是这一轮才蹦出来的。 */
+.socrates-pen .sp-chips button.is-custom {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text-accent) 45%, transparent);
+  color: var(--text-muted);
+}
+
+.socrates-pen .sp-chips button.is-custom:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--text-accent);
+  color: var(--text-normal);
+  background: color-mix(in srgb, var(--text-accent) 6%, transparent);
+}
+
+/* 设置页的「自定义泡泡」一节。
+   注意这些选择器**不带 .socrates-pen 前缀**：设置页的 containerEl 不在视图
+   容器里（和上面的 .sp-set-advanced 同源）。所以文件末尾那条通用
+   `.socrates-pen .is-off` 在这儿够不着，隐藏要自己写一条。 */
+.sp-set-chip {
+  border-radius: var(--radius-s);
+  margin: var(--size-4-1) 0;
+  padding: 0 var(--size-4-2);
+  box-shadow: inset 0 0 0 1px var(--background-modifier-border);
+}
+.sp-set-chip > summary {
+  cursor: pointer;
+  padding: var(--size-4-2) 0;
+  font-weight: var(--font-semibold);
+  color: var(--text-muted);
+  /* 读者的 prompt 首行可能很长，折起来时压成一行，别把这一节撑成一堵墙。 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sp-set-chip > summary:hover,
+.sp-set-chip[open] > summary {
+  color: var(--text-normal);
+}
+/* 指令框要能真的写下一段话：Obsidian 默认的 textarea 在设置页里很窄。 */
+.sp-set-chip textarea.sp-set-chip-prompt {
+  width: 100%;
+  min-width: 12em;
+  resize: vertical;
+  font-family: var(--font-text);
+  line-height: 1.5;
+}
+.sp-set-chips-note.is-off {
+  display: none;
+}
+
+/* Big Bang: the workspace owns geometry; every pane keeps its original shell. */
+.sp-workspace {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.sp-big-bang-bar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.sp-big-bang-bar[hidden], .sp-workspace button[hidden] { display: none; }
+.sp-agent-grid {
+  display: grid;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.sp-agent-grid.is-multi { gap: 8px; }
+.sp-agent-grid.is-overflowing {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.sp-agent-cell {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.sp-agent-grid.is-multi .sp-agent-cell {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+}
+.sp-agent-grid.is-multi .sp-agent-cell.is-active {
+  border-color: var(--interactive-accent);
+}
+.sp-agent-content { height: 100%; min-height: 0; min-width: 0; }
+.sp-agent-grid.is-multi .sp-brand { flex-wrap: wrap; }
+.sp-agent-grid.is-multi .sp-brand-tools { flex-wrap: wrap; margin-left: auto; }
+.sp-workspace button:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 2px; }
+
+.sp-agent-ready, .sp-big-bang-hint { display: none; }
+.sp-agent-grid.is-multi .sp-empty .sp-splash,
+.sp-agent-grid.is-multi .sp-empty .sp-hint,
+.sp-agent-grid.is-multi .sp-brand-sub { display: none; }
+.sp-agent-grid.is-multi .sp-agent-ready {
+  display: block;
+  color: var(--text-normal);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+.sp-agent-grid.is-multi .sp-big-bang-hint {
+  display: block;
+  max-width: 28em;
+  margin: 0 auto;
+  padding: 0 16px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.65;
+}
+.sp-agent-grid.is-multi .sp-brand-tools { max-width: calc(100% - 70px); gap: 1px; }
+.sp-agent-grid.is-multi button.sp-icon { width: 24px; height: 24px; }
